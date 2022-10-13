@@ -1,13 +1,12 @@
 import { styled } from "@stitches/react";
-import type { NextPage } from "next";
-import { useTheme } from "next-themes";
-import Head from "next/head";
 import { useEffect, useState } from "react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useTheme } from "next-themes";
 import Button from "../components/button/Button";
 
 const Home: NextPage = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -16,10 +15,6 @@ const Home: NextPage = () => {
   if (!mounted) {
     return null;
   }
-
-  const onClickHandler = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
 
   return (
     <FlexBox as="div" css={{ height: "100%", justifyContent: "center" }}>
@@ -35,14 +30,10 @@ const Home: NextPage = () => {
           flex: 1,
           justifyContent: "space-between",
           alignItems: "center",
-          maxWidth: "700px",
           padding: "16px",
           backgroundColor: "$gray-02",
         }}>
         <p>{`Welcome to Circuit Workout.`}</p>
-        <Button type="primary" onClick={onClickHandler}>
-          {theme}
-        </Button>
       </FlexBox>
     </FlexBox>
   );
