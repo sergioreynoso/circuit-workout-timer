@@ -1,38 +1,45 @@
-import { styled } from "@stitches/react";
 import { useTheme } from "next-themes";
 import React from "react";
 import Button from "../button";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+import DropdownMenu from "../dropdown_menu/DropdownMenu";
+import { styled } from "../../styles/stitches.congif";
+import { User } from "../../types/next-auth";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
-  const { data: session } = useSession();
-
-  const onClickHandler = () => {
-    // setTheme(theme === "light" ? "dark" : "light");
-    console.log("click");
-    session ? signOut({ callbackUrl: "http://localhost:3000/" }) : signIn();
-  };
-
-  console.log(session);
+  const { data: session, status } = useSession();
 
   return (
-    <Wrapper>
-      <Heading>{session?.user?.name}</Heading>
-      <Button type="primary" onClick={onClickHandler}>
-        {session ? "Sign Out" : "Sign In"}
-      </Button>
-    </Wrapper>
+    <Flex>
+      <Heading>Workout Timer</Heading>
+
+      {status === "authenticated" ? (
+        <DropdownMenu user={session.user as User} />
+      ) : (
+        <Button
+          type={session ? "secondary" : "primary"}
+          css={{ marginRight: "8px" }}
+          onClick={() =>
+            signIn(undefined, {
+              callbackUrl: "http://localhost:3000/dashboard",
+            })
+          }>
+          Sign In
+        </Button>
+      )}
+    </Flex>
   );
 };
 
-const Wrapper = styled("header", {
+const Flex = styled("header", {
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "baseline",
-  padding: "$md",
-  color: "$primary-05",
-  backgroundColor: "$primary-12",
+  alignItems: "center",
+  height: 64,
+  paddingLeft: "$md",
+  color: "$gray-01",
+  backgroundColor: "$gray-12",
 });
 
 const Heading = styled("span", {
