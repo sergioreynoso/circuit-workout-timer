@@ -2,8 +2,6 @@ import { styled } from "@stitches/react";
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useTheme } from "next-themes";
-import Button from "../components/button/Button";
 
 const Home: NextPage = () => {
   const [mounted, setMounted] = useState(false);

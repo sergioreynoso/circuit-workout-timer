@@ -1,8 +1,13 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export default NextAuth({
+  adapter: PrismaAdapter(prisma),
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
@@ -21,15 +26,15 @@ export default NextAuth({
       },
     }),
   ],
-  callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.sub as string;
-      }
-      return session;
-    },
-  },
-  session: {
-    strategy: "jwt",
-  },
+  // callbacks: {
+  //   session: async ({ session, token }) => {
+  //     if (session?.user) {
+  //       session.user.id = token.sub as string;
+  //     }
+  //     return session;
+  //   },
+  // },
+  // session: {
+  //   strategy: "jwt",
+  // },
 });
