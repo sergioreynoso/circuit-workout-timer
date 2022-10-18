@@ -26,15 +26,15 @@ export default NextAuth({
       },
     }),
   ],
-  // callbacks: {
-  //   session: async ({ session, token }) => {
-  //     if (session?.user) {
-  //       session.user.id = token.sub as string;
-  //     }
-  //     return session;
-  //   },
-  // },
-  // session: {
-  //   strategy: "jwt",
-  // },
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub as string;
+      }
+      return session;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
 });
