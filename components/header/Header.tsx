@@ -5,6 +5,7 @@ import { useSession, signIn } from "next-auth/react";
 import DropdownMenu from "../dropdown_menu/DropdownMenu";
 import { styled } from "../../styles/stitches.congif";
 import { User } from "../../types/next-auth";
+import Link from "next/link";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -15,10 +16,15 @@ const Header = () => {
       <Heading>Workout Timer</Heading>
 
       {status === "authenticated" ? (
-        <DropdownMenu user={session.user as User} />
+        <Flex css={{ gap: "24px" }}>
+          <Link href={"/dashboard"}>
+            <Atag>Dashboard</Atag>
+          </Link>
+          <DropdownMenu user={session.user as User} />
+        </Flex>
       ) : (
         <Button
-          type={session ? "secondary" : "primary"}
+          type="primary"
           css={{ marginRight: "8px" }}
           onClick={() =>
             signIn(undefined, {
@@ -46,6 +52,12 @@ const Heading = styled("span", {
   fontSize: "large",
   fontWeight: "bold",
   textTransform: "uppercase",
+});
+
+const Atag = styled("a", {
+  fontWeight: "$700",
+  textDecoration: "none",
+  cursor: "pointer",
 });
 
 export default Header;
