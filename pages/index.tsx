@@ -26,9 +26,9 @@ const Home: NextPage = () => {
         as="main"
         css={{
           flex: 1,
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
-          padding: "16px",
+          padding: "24px",
           backgroundColor: "$gray-02",
         }}>
         <p>{`Welcome to Circuit Workout.`}</p>

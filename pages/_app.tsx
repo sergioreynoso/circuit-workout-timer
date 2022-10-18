@@ -8,6 +8,10 @@ import { globalStyles } from "../styles";
 import { theme } from "../styles/stitches.congif";
 import Header from "../components/header";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 function MyApp({
   Component,
   pageProps: { session, ...pageProps },
@@ -15,19 +19,21 @@ function MyApp({
   globalStyles();
   return (
     <SessionProvider session={session}>
-      <AuthWrapper>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem={true}
-          value={{
-            light: theme.light,
-            dark: theme.dark,
-          }}>
-          <Header />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </AuthWrapper>
+      <QueryClientProvider client={queryClient}>
+        <AuthWrapper>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={true}
+            value={{
+              light: theme.light,
+              dark: theme.dark,
+            }}>
+            <Header />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </AuthWrapper>
+      </QueryClientProvider>
     </SessionProvider>
   );
 }
