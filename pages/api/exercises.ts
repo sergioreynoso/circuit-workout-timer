@@ -7,12 +7,12 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const workout = await prisma?.workouts.findUnique({
+      const exercises = await prisma?.exercises.findMany({
         where: {
-          id: req.query.id as string,
+          workoutsId: req.query.id as string,
         },
       });
-      res.status(200).json(workout);
+      res.status(200).json(exercises);
     } catch (error) {
       res.status(400).json({ message: "Something went wrong" });
     }
