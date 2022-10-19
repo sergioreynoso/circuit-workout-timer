@@ -1,80 +1,62 @@
-import Link from "next/link";
 import { Exercises, Workouts } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { FC } from "react";
 import { styled } from "../../styles/stitches.congif";
+import Preloader from "../../components/preloader";
+import Timer from "../../components/timer";
+import axios from "axios";
+
+export type Exercise = Omit<Exercises, "workoutsId">;
 
 const Workout = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, isLoading, error } = useQuery(
-    ["workout"],
-    () => fetch(`/api/workout?id=${id}`).then((res) => res.json()),
-    { cacheTime: 0 }
-  );
-  const workout: Workouts = data;
-  const workoutId = workout?.id;
+  const fetchWorkout = (id: string | undefined): Promise<Workouts> =>
+    axios.get(`/api/workout?id=${id}`).then((res) => res.data);
 
-  const exerciseQuery = useQuery(
-    ["exercise"],
-    () => fetch(`/api/exercises?id=${workoutId}`).then((res) => res.json()),
-    { cacheTime: 0, enabled: !!workoutId }
+  const fetchExercises = (id: string | undefined): Promise<Exercise[]> =>
+    axios.get(`/api/exercises?id=${id}`).then((res) => res.data);
+
+  const workoutQuery = useQuery(["workout", id], () =>
+    fetchWorkout(id as string)
   );
 
-  if (isLoading) {
+  const exerciseQuery = useQuery(["exercises", id], () =>
+    fetchExercises(id as string)
+  );
+
+  if (workoutQuery.isLoading && exerciseQuery.isLoading) {
     return (
-      <Flex
-        css={{
-          justifyContent: "center",
-          padding: "24px",
-        }}>
-        <p>Loading...</p>
-      </Flex>
-    );
-  }
-
-  if (error) {
-    return (
-      <Flex
-        css={{
-          justifyContent: "center",
-          padding: "24px",
-        }}>
-        <p>Error Loading data</p>
-      </Flex>
-    );
-  }
-
-  console.log(exerciseQuery.data);
-
-  return (
-    <Flex
-      css={{
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-      }}>
-      <p>{workout.workout_name}</p>
       <Flex>
-        <UList>
-          {exerciseQuery.data?.map((exercise: Exercises) => {
-            return (
-              <List as="li" key={exercise.id}>
-                {exercise.exercise_name}
-              </List>
-            );
-          })}
-        </UList>
+        <Preloader label="Loading..." />
       </Flex>
-    </Flex>
-  );
+    );
+  }
+
+  if (workoutQuery.error) return `Error loading workout: ${workoutQuery.error}`;
+  if (exerciseQuery.error)
+    return `Error loading exercises: ${exerciseQuery.error}`;
+
+  if (workoutQuery.isSuccess && exerciseQuery.isSuccess) {
+    return (
+      <Flex>
+        <p>{workoutQuery.data.workout_name}</p>
+        <Flex>
+          <Timer workout={workoutQuery.data} exercises={exerciseQuery.data} />
+        </Flex>
+      </Flex>
+    );
+  }
 };
 
 const Flex = styled("div", {
   display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "24px",
 });
 
 const UList = styled("ul", {
