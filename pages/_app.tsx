@@ -9,6 +9,7 @@ import { theme } from "../styles/stitches.congif";
 import Header from "../components/header";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ function MyApp({
             <Component {...pageProps} />
           </ThemeProvider>
         </AuthWrapper>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionProvider>
   );
