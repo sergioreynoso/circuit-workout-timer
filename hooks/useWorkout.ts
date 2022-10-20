@@ -1,27 +1,28 @@
-import { Workouts } from "@prisma/client";
-import { useMemo } from "react";
-import { getTimestamp } from "../lib/getTimestamp";
-import { Exercise } from "../pages/workout/[id]";
+import { Exercise as ExerciseDb, Workout } from "@prisma/client";
 
-export type Workout = Exercise & {
-  timestamp: { start: number; end: number };
-};
+import { useMemo } from "react";
+import { addTimestamp } from "../lib/addTimestamp";
+
+export interface Exercise extends ExerciseDb {
+  timestamp?: { start: number; end: number };
+}
 
 const warmUp: Exercise = {
   id: "",
   type: "REST",
   exercise_name: "Warm up",
-  duration: 3000,
+  duration: 10000,
+  workoutId: "",
 };
 
 export function useWorkout(
-  workout: Workouts,
+  workout: Workout,
   exercises: Exercise[] | undefined
-): [Workout[], number] {
+): [Exercise[], number] {
   const totalSets = workout.set_count;
   const setRest = workout.set_rest;
 
-  let workoutList = useMemo(() => {
+  let workoutExercises = useMemo(() => {
     let array = [warmUp];
     if (exercises) {
       for (let i = 0; i < totalSets; i++) {
@@ -33,6 +34,7 @@ export function useWorkout(
             id: "",
             exercise_name: "Set Rest",
             duration: setRest,
+            workoutId: "",
           });
       }
     }
@@ -41,13 +43,13 @@ export function useWorkout(
   }, [exercises, totalSets, setRest]);
 
   const workoutTotalTime = useMemo((): number => {
-    return workoutList.reduce((prev, curr) => prev + curr.duration, 0);
+    return workoutExercises.reduce((prev, curr) => prev + curr.duration, 0);
   }, [workout]);
 
-  workoutList = useMemo(
-    () => getTimestamp(workoutList, workoutTotalTime),
-    [workoutList, workoutTotalTime]
+  workoutExercises = useMemo(
+    () => addTimestamp(workoutExercises, workoutTotalTime),
+    [workoutExercises, workoutTotalTime]
   );
 
-  return [workoutList as Workout[], workoutTotalTime];
+  return [workoutExercises as Exercise[], workoutTotalTime];
 }
