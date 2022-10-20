@@ -1,54 +1,55 @@
-import { Workouts } from "@prisma/client";
+import React from "react";
+import { Workout } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
-import Button from "../components/button";
-import prisma from "../lib/prisma";
+import axios from "axios";
+
 import { styled } from "../styles/stitches.congif";
+import Preloader from "../components/preloader";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
-  const workoutQuery = useQuery(["workouts"], () =>
-    fetch(`api/workouts?id=${session?.user?.id}`).then((res) => res.json())
+
+  if (status === "loading") return <p>Loading...</p>;
+
+  const userId: string | undefined = session?.user?.id;
+
+  const fetchWorkout = (id: string | undefined): Promise<Workout[]> =>
+    axios.get(`api/workouts?id=${id}`).then((res) => res.data);
+
+  const workoutQuery = useQuery(["workouts", userId], () =>
+    fetchWorkout(userId)
   );
 
-  if (workoutQuery.isLoading) {
+  if (workoutQuery.isLoading) return <Preloader label="loading..." />;
+  if (workoutQuery.error)
+    return <Preloader label={`Error:${workoutQuery.error}`} />;
+
+  if (workoutQuery.isSuccess) {
     return (
       <Flex
+        as="main"
         css={{
-          justifyContent: "center",
-          padding: "24px",
+          alignItems: "center",
+          paddingTop: "24px",
         }}>
-        <p>Loading...</p>
+        <UList>
+          {workoutQuery.data.map((workout) => {
+            return (
+              <List as="li" key={workout.id}>
+                <Link href={`/workout/${workout.id}`}>
+                  <LinkTag>
+                    <Label> {workout.workout_name}</Label>
+                  </LinkTag>
+                </Link>
+              </List>
+            );
+          })}
+        </UList>
       </Flex>
     );
   }
-
-  const workouts: Workouts[] = workoutQuery.data;
-
-  return (
-    <Flex
-      as="main"
-      css={{
-        alignItems: "center",
-        paddingTop: "24px",
-      }}>
-      <UList>
-        {workouts.map((work) => {
-          return (
-            <List as="li" key={work.id}>
-              <Link href={`/workout/${work.id}`}>
-                <LinkTag>
-                  <Label> {work.workout_name}</Label>
-                </LinkTag>
-              </Link>
-            </List>
-          );
-        })}
-      </UList>
-    </Flex>
-  );
 };
 
 const Flex = styled("div", {
