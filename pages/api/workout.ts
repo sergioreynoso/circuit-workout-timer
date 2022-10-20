@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const workout = await prisma?.workouts.findUnique({
+      const workout = await prisma?.workout.findUnique({
         where: {
           id: req.query.id as string,
         },

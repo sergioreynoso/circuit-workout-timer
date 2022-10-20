@@ -7,9 +7,9 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const exercises = await prisma?.exercises.findMany({
+      const exercises = await prisma?.exercise.findMany({
         where: {
-          workoutsId: req.query.id as string,
+          workoutId: req.query.id as string,
         },
       });
       res.status(200).json(exercises);

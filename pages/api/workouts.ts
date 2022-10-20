@@ -1,6 +1,5 @@
 import prisma from "../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Workouts } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,11 +7,12 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const workouts = await prisma?.workouts.findMany({
+      const workouts = await prisma?.workout.findMany({
         where: {
           userId: req.query.id as string,
         },
       });
+      console.log(req.query.id);
       res.status(200).json(workouts);
     } catch (error) {
       res.status(400).json({ message: "Something went wrong" });
