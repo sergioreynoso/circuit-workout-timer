@@ -45,7 +45,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  workouts      Workouts[]
+  workouts      Workout[]
 }
 
 model VerificationToken {
@@ -56,26 +56,27 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Workouts {
+model Workout {
   id           String      @id @default(cuid())
   workout_name String      @db.VarChar(50)
   set_count    Int         @default(0)
   set_rest     Int         @default(0)
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  exercises    Exercises[]
+  exercises    Exercise[]
 }
 
-model Exercises {
+model Exercise {
   id            String   @id @default(cuid())
   exercise_name String   @db.VarChar(50)
   type          Type     @default(EXERCISE)
   duration      Int      @default(0)
-  workout       Workouts @relation(fields: [workoutsId], references: [id], onDelete: Cascade)
-  workoutsId    String
+  workout       Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workoutId     String
 }
 
 enum Type {
   EXERCISE
   REST
+  WARMUP
 }
