@@ -4,6 +4,7 @@ import { styled } from "../../styles/stitches.congif";
 import Preloader from "../../components/preloader";
 import Timer from "../../components/timer";
 import useLoadWorkout from "../../hooks/useLoadWorkout";
+import Link from "next/link";
 
 const Workout = () => {
   const router = useRouter();
@@ -25,6 +26,9 @@ const Workout = () => {
     return (
       <Flex>
         <Heading1>{workoutQuery.data.workout_name}</Heading1>
+        <Link href={`/edit_workout/${id as string}`}>
+          <Edit>Edit</Edit>
+        </Link>
         <Flex>
           <Timer workout={workoutQuery.data} exercises={exerciseQuery.data} />
         </Flex>
@@ -41,6 +45,13 @@ const Flex = styled("div", {
   padding: "24px",
 });
 
-const Heading1 = styled("h1", {});
+const Heading1 = styled("h1", {
+  marginBottom: "$xl",
+});
+
+const Edit = styled("a", {
+  color: "$primary-09",
+  cursor: "pointer",
+});
 
 export default Workout;
