@@ -1,31 +1,14 @@
 import React from "react";
-import { Exercise as ExerciseDb, Workout } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { styled } from "../../styles/stitches.congif";
 import Preloader from "../../components/preloader";
 import Timer from "../../components/timer";
-import axios from "axios";
-
-export type Exercise = Omit<ExerciseDb, "workoutsId">;
+import useLoadWorkout from "../../hooks/useLoadWorkout";
 
 const Workout = () => {
   const router = useRouter();
   const { id } = router.query;
-
-  const fetchWorkout = (id: string | undefined): Promise<Workout> =>
-    axios.get(`/api/workout?id=${id}`).then((res) => res.data);
-
-  const fetchExercises = (id: string | undefined): Promise<Exercise[]> =>
-    axios.get(`/api/exercises?id=${id}`).then((res) => res.data);
-
-  const workoutQuery = useQuery(["workout", id], () =>
-    fetchWorkout(id as string)
-  );
-
-  const exerciseQuery = useQuery(["exercises", id], () =>
-    fetchExercises(id as string)
-  );
+  const [workoutQuery, exerciseQuery] = useLoadWorkout(id as string);
 
   if (workoutQuery.isLoading && exerciseQuery.isLoading)
     return <Preloader label="Loading..." />;
