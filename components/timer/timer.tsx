@@ -1,7 +1,6 @@
 import React from "react";
 import { Workout } from "@prisma/client";
-import { useWorkout } from "../../hooks/useWorkout";
-import { Exercise } from "../../pages/workout/[id]";
+import { Exercise, useWorkout } from "../../hooks/useWorkout";
 import useTimer from "../../hooks/useTimer";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
@@ -16,8 +15,6 @@ type TimerProps = {
 const Timer = ({ workout, exercises }: TimerProps) => {
   const [workoutExercises, workoutTotalTime] = useWorkout(workout, exercises);
   const [remainingTime, isTimer, startTimer] = useTimer(workoutTotalTime);
-
-  console.log(workoutExercises);
 
   return (
     <Box as="main">
