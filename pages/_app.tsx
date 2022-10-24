@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
-import AuthWrapper from "../components/auth/AuthWrapper";
+import AuthWrapper from "../components/auth/authWrapper";
 
 import { ThemeProvider } from "next-themes";
 import { globalStyles } from "../styles";
