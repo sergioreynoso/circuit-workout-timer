@@ -19,7 +19,7 @@ const Edit = () => {
 
   return (
     <Box>
-      <Heading1>{`Edit ${workoutQuery.data.workout_name}`}</Heading1>
+      <Heading1>Edit Workout</Heading1>
       <Link href={`/workout/${workoutId as string}`}>
         <Back>Back</Back>
       </Link>
