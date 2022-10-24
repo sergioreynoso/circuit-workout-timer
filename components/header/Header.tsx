@@ -2,7 +2,7 @@ import { useTheme } from "next-themes";
 import React from "react";
 import Button from "../button";
 import { useSession, signIn } from "next-auth/react";
-import DropdownMenu from "../dropdown_menu/DropdownMenu";
+import DropdownMenu from "../dropdownMenu";
 import { styled } from "../../styles/stitches.congif";
 import { User } from "../../types/next-auth";
 import Link from "next/link";
@@ -24,7 +24,7 @@ const Header = () => {
         </Flex>
       ) : (
         <Button
-          type="primary"
+          color="primary"
           css={{ marginRight: "8px" }}
           onClick={() =>
             signIn(undefined, {
