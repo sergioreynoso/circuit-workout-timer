@@ -4,7 +4,9 @@ import axios from "axios";
 
 const useAllWorkoutsQuery = (userId: string): UseQueryResult<Workout[]> => {
   const fetchWorkouts = (userId: string): Promise<Workout[]> =>
-    axios.get(`/api/workouts?id=${userId}`).then((res) => res.data);
+    axios
+      .get(`/api/workouts`, { params: { id: userId } })
+      .then((res) => res.data);
 
   return useQuery(["workouts", userId], () => fetchWorkouts(userId));
 };

@@ -6,15 +6,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    const workoutId = req.query.id;
     try {
       const exercises = await prisma?.exercise.findMany({
         where: {
-          workoutId: req.query.id as string,
+          workoutId: workoutId as string,
         },
       });
       res.status(200).json(exercises);
     } catch (error) {
-      res.status(400).json({ message: "Something went wrong" });
+      res
+        .status(400)
+        .json({ message: "Something went wrong loading exercises" });
     }
   }
 }

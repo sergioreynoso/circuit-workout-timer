@@ -6,10 +6,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    const workoutId = req.query.id;
     try {
       const workout = await prisma?.workout.findUnique({
         where: {
-          id: req.query.id as string,
+          id: workoutId as string,
         },
       });
       res.status(200).json(workout);
@@ -25,9 +26,9 @@ export default async function handler(
           id: req.body.id,
         },
         data: {
-          workout_name: req.body.name,
-          set_count: req.body.set,
-          set_rest: req.body.rest,
+          workout_name: req.body.workout_name,
+          set_count: req.body.set_count,
+          set_rest: req.body.set_rest,
         },
       });
       res.status(200).json(workout);
