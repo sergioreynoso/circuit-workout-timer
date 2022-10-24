@@ -17,16 +17,16 @@ const Button = styled("button", {
     backgroundColor: "$gray-11",
   },
   variants: {
-    type: {
+    color: {
       primary: {
         color: "$text-white",
-        backgroundColor: "$primary-09",
+        backgroundColor: "$primary-03",
 
         "&:hover": {
-          backgroundColor: "$primary-10",
+          backgroundColor: "$primary-04",
         },
         "&:active": {
-          backgroundColor: "$primary-11",
+          backgroundColor: "$primary-05",
         },
       },
       secondary: {
