@@ -1,15 +1,15 @@
 import React from "react";
 import { Workout } from "@prisma/client";
-import { Exercise, useWorkout } from "../../hooks/useWorkout";
+import { ExerciseWithTimestamp, useWorkout } from "../../hooks/useWorkout";
 import useTimer from "../../hooks/useTimer";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
-import Timer_control from "../timer_control";
-import Exercise_counter from "../exercise_counter";
+import Timer_control from "../timerControl";
+import Exercise_counter from "../exerciseCounter";
 
 type TimerProps = {
   workout: Workout;
-  exercises: Exercise[] | undefined;
+  exercises: ExerciseWithTimestamp[] | undefined;
 };
 
 const Timer = ({ workout, exercises }: TimerProps) => {
@@ -18,7 +18,7 @@ const Timer = ({ workout, exercises }: TimerProps) => {
 
   return (
     <Box as="main">
-      <Heading2>{formatTime(remainingTime)}</Heading2>
+      <p>{formatTime(remainingTime)}</p>
       <Exercise_counter
         workoutExercises={workoutExercises}
         remainingTime={remainingTime}
@@ -34,7 +34,5 @@ const Box = styled("div", {
   alignItems: "center",
   gap: "$2x",
 });
-
-const Heading2 = styled("h2", {});
 
 export default Timer;
