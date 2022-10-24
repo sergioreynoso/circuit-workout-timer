@@ -18,17 +18,4 @@ export default async function handler(
       res.status(400).json({ message: "Something went wrong" });
     }
   }
-  if (req.method === "POST") {
-    try {
-      // await prisma.note.create({
-      //   data: {
-      //     title,
-      //     content,
-      //   },
-      // });
-      res.status(200).json({ message: "Workout Created" });
-    } catch (error) {
-      res.status(400).json({ message: "Something went wrong" });
-    }
-  }
 }
