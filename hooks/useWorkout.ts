@@ -1,9 +1,8 @@
-import { Exercise as ExerciseDb, Workout } from "@prisma/client";
-
+import { Exercise, Workout } from "@prisma/client";
 import { useMemo } from "react";
 import { addTimestamp } from "../lib/addTimestamp";
 
-export interface Exercise extends ExerciseDb {
+export interface ExerciseWithTimestamp extends Exercise {
   timestamp?: { start: number; end: number };
 }
 
@@ -17,8 +16,8 @@ const warmUp: Exercise = {
 
 export function useWorkout(
   workout: Workout,
-  exercises: Exercise[] | undefined
-): [Exercise[], number] {
+  exercises: ExerciseWithTimestamp[] | undefined
+): [ExerciseWithTimestamp[], number] {
   const totalSets = workout.set_count;
   const setRest = workout.set_rest;
 
@@ -51,5 +50,5 @@ export function useWorkout(
     [workoutExercises, workoutTotalTime]
   );
 
-  return [workoutExercises as Exercise[], workoutTotalTime];
+  return [workoutExercises as ExerciseWithTimestamp[], workoutTotalTime];
 }
