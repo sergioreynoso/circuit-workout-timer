@@ -16,7 +16,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
   const [inputValue, setInputValue] = useState({
     name: workoutData.workout_name,
     set: workoutData.set_count,
-    rest: workoutData.set_rest,
+    rest: Math.round(workoutData.set_rest / 1000),
   });
   const { name, set, rest } = inputValue;
 
@@ -36,7 +36,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
       id: workoutData.id,
       workout_name: name,
       set_count: Number(set),
-      set_rest: Math.round(Number(rest * 1000)),
+      set_rest: Number(rest * 1000),
     });
   };
 
@@ -62,7 +62,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
         type="number"
         label="Set rest in seconds"
         name="rest"
-        value={Math.round(Number(rest) / 1000)}
+        value={rest}
         onChange={handleChange}
         placeholder=""
       />
