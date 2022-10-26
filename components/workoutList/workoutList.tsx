@@ -14,7 +14,7 @@ const WorkoutList = ({ userId }: { userId: string }) => {
     <ListWrapper>
       {data.map((workout) => {
         return (
-          <List as="li" key={workout.id}>
+          <List key={workout.id}>
             <Link href={`/workout/${workout.id}`}>
               <LinkTag>
                 <Label> {workout.workout_name}</Label>
