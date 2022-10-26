@@ -76,7 +76,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
           </div>
         )}
       </div>
-      <Button color="primary" type="submit">
+      <Button color="violet" type="submit">
         Update Workout
       </Button>
     </Box>
