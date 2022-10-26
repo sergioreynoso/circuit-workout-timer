@@ -6,14 +6,14 @@ import Timer from "../../components/timer";
 
 import Link from "next/link";
 import useWorkoutQuery from "../../hooks/useWorkoutQuery";
-import useExerciseQuery from "../../hooks/useExerciseQuery";
+import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
 
 const Workout = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const workoutQuery = useWorkoutQuery(id as string);
-  const exerciseQuery = useExerciseQuery(id as string);
+  const exerciseQuery = useAllExerciseQuery(id as string);
 
   if (workoutQuery.isLoading && exerciseQuery.isLoading)
     return <Preloader label="Loading..." />;
@@ -29,9 +29,15 @@ const Workout = () => {
   return (
     <Box>
       <Heading1>{workoutQuery.data.workout_name}</Heading1>
-      <Link href={`/editWorkout/${id as string}`}>
-        <Edit>Edit</Edit>
-      </Link>
+      <Navigation>
+        <Link href="/dashboard">
+          <LinkTag>Back</LinkTag>
+        </Link>
+        <Link href={`/editWorkout/${id as string}`}>
+          <LinkTag>Edit</LinkTag>
+        </Link>
+      </Navigation>
+
       <Box>
         <Timer workout={workoutQuery.data} exercises={exerciseQuery.data} />
       </Box>
@@ -51,7 +57,13 @@ const Heading1 = styled("h1", {
   marginBottom: "$xl",
 });
 
-const Edit = styled("a", {
+const Navigation = styled("nav", {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "$3x",
+});
+
+const LinkTag = styled("a", {
   color: "$primary-09",
   cursor: "pointer",
 });
