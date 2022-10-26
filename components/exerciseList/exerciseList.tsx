@@ -1,10 +1,7 @@
-import Link from "next/link";
 import React from "react";
 import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
-import Dialog from "../dialog";
 import EditExercise from "../editExcersise";
 import Preloader from "../preloader";
 
