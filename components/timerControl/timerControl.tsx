@@ -19,7 +19,7 @@ const TimerControl = ({ startTimer, isTimer }: TimerControlProps) => {
   };
 
   return (
-    <Button color="primary" onClick={onClickHandler}>
+    <Button color="violet" onClick={onClickHandler}>
       {label}
     </Button>
   );
