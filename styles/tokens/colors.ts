@@ -3,14 +3,15 @@ import {
   indigoDark,
   teal,
   tealDark,
-  mauve,
-  mauveDark,
-  grayDark,
   blackA,
   whiteA,
+  mauve,
+  mauveDark,
+  mauveA,
+  mauveDarkA,
 } from "@radix-ui/colors";
 
-export type ColorCategoryTypes = "primary" | "secondary" | "gray";
+export type ColorCategoryTypes = "primary" | "secondary" | "gray" | "grayA";
 
 export type PaletteTypes = {
   [key in ColorCategoryTypes]: {
@@ -25,11 +26,13 @@ const themes: { [key in ThemeTypes]: PaletteTypes } = {
     primary: indigo,
     secondary: teal,
     gray: mauve,
+    grayA: mauveA,
   },
   dark: {
     primary: indigoDark,
     secondary: tealDark,
     gray: mauveDark,
+    grayA: mauveDarkA,
   },
 };
 
@@ -56,6 +59,21 @@ const makePalette = (theme: ThemeTypes) => {
     "gray-10": palette.gray.mauve10,
     "gray-11": palette.gray.mauve11,
     "gray-12": palette.gray.mauve12,
+  };
+
+  const grayA = {
+    "grayA-01": palette.grayA.mauveA1,
+    "grayA-02": palette.grayA.mauveA2,
+    "grayA-03": palette.grayA.mauveA3,
+    "grayA-04": palette.grayA.mauveA4,
+    "grayA-05": palette.grayA.mauveA5,
+    "grayA-06": palette.grayA.mauveA6,
+    "grayA-07": palette.grayA.mauveA7,
+    "grayA-08": palette.grayA.mauveA8,
+    "grayA-09": palette.grayA.mauveA9,
+    "grayA-10": palette.grayA.mauveA10,
+    "grayA-11": palette.grayA.mauveA11,
+    "grayA-12": palette.grayA.mauveA12,
   };
 
   const primary = {
@@ -91,6 +109,7 @@ const makePalette = (theme: ThemeTypes) => {
   return {
     ...text,
     ...gray,
+    ...grayA,
     ...primary,
     ...secondary,
   };
