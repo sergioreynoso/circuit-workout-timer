@@ -7,7 +7,7 @@ const Button = styled("button", {
   padding: "$md $xl",
   cursor: "pointer",
   fontWeight: "$700",
-  color: "$gray-01",
+  color: "$primary-12",
   backgroundColor: "$gray-12",
 
   "&:hover": {
@@ -18,24 +18,12 @@ const Button = styled("button", {
   },
   variants: {
     color: {
-      primary: {
-        color: "$text-white",
-        backgroundColor: "$primary-03",
+      violet: {
+        color: "$primary-01",
+        backgroundColor: "$primary-09",
 
         "&:hover": {
-          backgroundColor: "$primary-04",
-        },
-        "&:active": {
-          backgroundColor: "$primary-05",
-        },
-      },
-      secondary: {
-        color: "$primary-09",
-        backgroundColor: "$primary-02",
-        border: "2px solid $primary-09",
-
-        "&:hover": {
-          backgroundColor: "$primary-04",
+          backgroundColor: "$primary-10",
         },
         "&:active": {
           backgroundColor: "$primary-05",
