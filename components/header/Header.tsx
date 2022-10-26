@@ -13,18 +13,20 @@ const Header = () => {
 
   return (
     <Flex>
-      <Heading>Workout Timer</Heading>
+      <Link href={"/"}>
+        <NextATag>WORKOUT TIMER</NextATag>
+      </Link>
 
       {status === "authenticated" ? (
         <Flex css={{ gap: "24px" }}>
           <Link href={"/dashboard"}>
-            <Atag>Dashboard</Atag>
+            <NextATag>Dashboard</NextATag>
           </Link>
           <DropdownMenu user={session.user as User} />
         </Flex>
       ) : (
         <Button
-          color="primary"
+          color="violet"
           css={{ marginRight: "8px" }}
           onClick={() =>
             signIn(undefined, {
@@ -54,7 +56,7 @@ const Heading = styled("span", {
   textTransform: "uppercase",
 });
 
-const Atag = styled("a", {
+const NextATag = styled("a", {
   fontWeight: "$700",
   textDecoration: "none",
   cursor: "pointer",
