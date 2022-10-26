@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import EditWorkoutForm from "../../components/editWorkoutForm";
+import ExerciseList from "../../components/exerciseList";
 import Preloader from "../../components/preloader";
 import useWorkoutQuery from "../../hooks/useWorkoutQuery";
 import { styled } from "../../styles/stitches.congif";
@@ -18,22 +19,33 @@ const Edit = () => {
     return <Preloader label={`Error loading workout: ${workoutQuery.error}`} />;
 
   return (
-    <Box>
-      <Heading1>Edit Workout</Heading1>
-      <Link href={`/workout/${workoutId as string}`}>
-        <Back>Back</Back>
-      </Link>
+    <Wrapper>
+      <Header>
+        <Heading1>Edit Workout</Heading1>
+        <Link href={`/workout/${workoutId as string}`}>
+          <Back>Back</Back>
+        </Link>
+      </Header>
       <EditWorkoutForm workoutData={workoutQuery.data} />
-    </Box>
+      <ExerciseList workoutId={workoutId as string} />
+    </Wrapper>
   );
 };
 
-const Box = styled("div", {
+const Wrapper = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "24px",
+});
+
+const Header = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "center",
-  padding: "24px",
+  gap: "$lg",
+  padding: "$2x",
 });
 
 const Heading1 = styled("h1", {
