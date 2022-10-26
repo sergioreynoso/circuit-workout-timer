@@ -26,7 +26,6 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
       ...prev,
       [name]: value,
     }));
-    console.log(inputValue);
   };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
