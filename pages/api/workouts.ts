@@ -12,6 +12,9 @@ export default async function handler(
         where: {
           userId: userId as string,
         },
+        orderBy: {
+          display_seq: "asc",
+        },
       });
       res.status(200).json(workouts);
     } catch (error) {
