@@ -1,9 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import React, { useState } from "react";
+import React from "react";
 import { keyframes, styled } from "../../styles/stitches.congif";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import EditExerciseForm from "../editExerciseForm";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import Button from "../button";
 
 type Props = {
