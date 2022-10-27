@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const exerciseId = req.query.id;
+    const exerciseId = req.body.id;
     try {
       const workout = await prisma?.exercise.delete({
         where: {

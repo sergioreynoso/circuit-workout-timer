@@ -3,6 +3,7 @@ import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import AddExerciseDialog from "../addExerciseDialog";
+import DeleteExerciseDialog from "../deleteExerciseDialog";
 import EditExerciseDialog from "../editExcersiseDialog";
 import Preloader from "../preloader";
 
@@ -31,6 +32,7 @@ const ExerciseList = ({ workoutId }: { workoutId: string }) => {
             <ListItemTitle>{item.exercise_name}</ListItemTitle>
             <ListItemDuration>{formatTime(item.duration)}</ListItemDuration>
             <EditExerciseDialog exerciseData={item} />
+            <DeleteExerciseDialog exerciseId={item.id} />
           </ListItem>
         ))}
       </ListWrapper>
