@@ -6,9 +6,14 @@ import { Workout } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-type WorkoutUpdate = Omit<Workout, "userId">;
+type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
-const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
+type Props = {
+  workoutData: Workout;
+  children?: JSX.Element;
+};
+
+const EditWorkoutForm = ({ workoutData, children }: Props) => {
   const mutation = useMutation((workout: WorkoutUpdate) => {
     return axios.post("/api/workout", workout);
   });
@@ -40,7 +45,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
   };
 
   return (
-    <Box as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
+    <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
       <Input
         type="text"
         label="Workout Name"
@@ -65,6 +70,7 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
         onChange={handleChange}
         placeholder=""
       />
+      {children}
       <div>
         {mutation.isLoading ? (
           "Adding todo..."
@@ -75,14 +81,15 @@ const EditWorkoutForm = ({ workoutData }: { workoutData: Workout }) => {
           </div>
         )}
       </div>
+
       <Button color="violet" type="submit">
         Update Workout
       </Button>
-    </Box>
+    </Wrapper>
   );
 };
 
-const Box = styled("div", {
+const Wrapper = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
