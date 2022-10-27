@@ -29,6 +29,28 @@ const Button = styled("button", {
           backgroundColor: "$primary-05",
         },
       },
+      red: {
+        color: "$primary-01",
+        backgroundColor: "red",
+
+        "&:hover": {
+          backgroundColor: "$primary-10",
+        },
+        "&:active": {
+          backgroundColor: "$primary-05",
+        },
+      },
+      gray: {
+        color: "$gray-11",
+        backgroundColor: "$gray-03",
+
+        "&:hover": {
+          backgroundColor: "$gray-04",
+        },
+        "&:active": {
+          backgroundColor: "$gray-05",
+        },
+      },
     },
   },
 });
