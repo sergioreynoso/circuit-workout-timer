@@ -2,7 +2,8 @@ import React from "react";
 import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
-import EditExercise from "../editExcersise";
+import AddExerciseDialog from "../addExerciseDialog";
+import EditExerciseDialog from "../editExcersiseDialog";
 import Preloader from "../preloader";
 
 const ExerciseList = ({ workoutId }: { workoutId: string }) => {
@@ -18,15 +19,18 @@ const ExerciseList = ({ workoutId }: { workoutId: string }) => {
   return (
     <Wrapper>
       <Header>
-        <h3>Build wourk out</h3>
-        <p>Add exercises or rests between exercises. </p>
+        <h3>Add exercise</h3>
+        <AddExerciseDialog
+          workoutId={workoutId}
+          exercisesTotalCount={data.length}
+        />
       </Header>
       <ListWrapper>
         {data.map((item) => (
           <ListItem key={item.id}>
             <ListItemTitle>{item.exercise_name}</ListItemTitle>
             <ListItemDuration>{formatTime(item.duration)}</ListItemDuration>
-            <EditExercise exerciseData={item} />
+            <EditExerciseDialog exerciseData={item} />
           </ListItem>
         ))}
       </ListWrapper>
@@ -41,10 +45,9 @@ const Wrapper = styled("div", {
 
 const Header = styled("div", {
   display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
+  justifyContent: "space-between",
+  alignItems: "center",
   gap: "$sm",
-  maxWidth: "$bp-sm",
   padding: "$lg",
 });
 
@@ -65,13 +68,6 @@ const ListItem = styled("li", {
   padding: "$lg",
   color: "$primary-12",
   backgroundColor: "$primary-03",
-  cursor: "pointer",
-  "&:hover": {
-    backgroundColor: "$primary-04",
-  },
-  "&:active": {
-    backgroundColor: "$primary-05",
-  },
 });
 
 const ListItemTitle = styled("p", {
