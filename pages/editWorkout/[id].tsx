@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import Button from "../../components/button";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
 import Preloader from "../../components/preloader";
@@ -26,8 +27,9 @@ const Edit = () => {
           <Back>Back</Back>
         </Link>
       </Header>
-      <EditWorkoutForm workoutData={workoutQuery.data} />
-      <ExerciseList workoutId={workoutId as string} />
+      <EditWorkoutForm workoutData={workoutQuery.data}>
+        <ExerciseList workoutId={workoutId as string} />
+      </EditWorkoutForm>
     </Wrapper>
   );
 };
