@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "../../styles/stitches.congif";
 import * as LabelPrimitive from "@radix-ui/react-label";
+import { Flex } from "../layout";
 
 interface InputProps {
   value: string | number;
@@ -9,6 +10,7 @@ interface InputProps {
   placeholder: string;
   type: string;
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  isRequired?: boolean;
 }
 
 const Input = ({
@@ -17,10 +19,11 @@ const Input = ({
   name,
   placeholder,
   type = "text",
+  isRequired = false,
   onChange,
 }: InputProps) => {
   return (
-    <Box>
+    <Flex layout="column" css={{ gap: "$sm" }}>
       <Label htmlFor={name} css={{ lineHeight: "$100" }}>
         {label}
       </Label>
@@ -30,15 +33,11 @@ const Input = ({
         name={name}
         defaultValue={value}
         onChange={onChange}
+        required={isRequired}
       />
-    </Box>
+    </Flex>
   );
 };
-const Box = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "$sm",
-});
 
 const InputField = styled("input", {
   all: "unset",
