@@ -3,11 +3,12 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import Dialog from "../dialog";
+import AlertDialog from "../alertDialog/alertDialog";
+import { Title, Cancel, Action } from "@radix-ui/react-alert-dialog";
 import Input from "../input";
 import { Exercise } from "@prisma/client";
 import Button from "../button";
+import { Flex } from "../layout";
 
 type Props = {
   exerciseData: ExerciseWithTimestamp;
@@ -19,7 +20,7 @@ const EditExerciseDialog = ({ exerciseData, children }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
-    (exercise: Omit<Exercise, "workoutId">) =>
+    (exercise: Omit<Exercise, "workoutId" | "display_seq">) =>
       axios.post("/api/exercise", exercise),
     {
       onSuccess: () => {
@@ -57,40 +58,52 @@ const EditExerciseDialog = ({ exerciseData, children }: Props) => {
   };
 
   return (
-    <Dialog label="Edit" isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle>Edit Exercise</DialogTitle>
-      <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
-        <Input
-          type="text"
-          label="Exercise Name"
-          name="name"
-          value={name}
-          onChange={handleChange}
-          placeholder=""
-        />
-        <Input
-          type="number"
-          label="duration"
-          name="duration"
-          value={duration}
-          onChange={handleChange}
-          placeholder=""
-        />
-        <div>{mutation.isLoading && "Updating exercise..."}</div>
-        <Button color="violet" type="submit">
-          Update Workout
-        </Button>
-      </Wrapper>
-    </Dialog>
+    <AlertDialog label="Edit" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Flex layout="column">
+        <Title>Edit Exercise</Title>
+        <Flex
+          as="form"
+          css={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "$lg",
+            gap: "$xl",
+          }}
+          onSubmit={onFormSubmit}>
+          <Input
+            type="text"
+            label="Exercise Name"
+            name="name"
+            value={name}
+            onChange={handleChange}
+            placeholder=""
+            isRequired={true}
+          />
+          <Input
+            type="number"
+            label="duration"
+            name="duration"
+            value={duration}
+            onChange={handleChange}
+            placeholder=""
+            isRequired={true}
+          />
+          <div>{mutation.isLoading && "Updating exercise..."}</div>
+
+          <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
+            <Cancel asChild>
+              <Button color="gray">Cancel</Button>
+            </Cancel>
+            {/* <Action asChild onClick={(event) => event.preventDefault()}> */}
+            <Button color="violet" type="submit">
+              Save
+            </Button>
+            {/* </Action> */}
+          </Flex>
+        </Flex>
+      </Flex>
+    </AlertDialog>
   );
 };
-
-const Wrapper = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "24px",
-});
-
 export default EditExerciseDialog;
