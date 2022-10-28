@@ -1,5 +1,4 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import { useState } from "react";
 import { keyframes, styled } from "../../styles/stitches.congif";
 import Button from "../button";
 
