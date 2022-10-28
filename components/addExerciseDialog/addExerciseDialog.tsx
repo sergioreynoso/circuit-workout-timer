@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { styled } from "../../styles/stitches.congif";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import Dialog from "../dialog";
+import AlertDialog from "../alertDialog/alertDialog";
+import { Title, Cancel, Action } from "@radix-ui/react-alert-dialog";
 import Input from "../input";
 import Button from "../button";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
+import { Flex } from "../layout";
 
 type Props = {
   workoutId: string;
@@ -16,8 +16,8 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
   const mutation = useExerciseMutation(() => setIsOpen(false));
 
   const [{ name, duration, workoutId }, setInputValue] = useState({
-    name: "Name your exercise",
-    duration: 0,
+    name: "",
+    duration: 30,
     workoutId: id,
   });
 
@@ -42,40 +42,52 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
   };
 
   return (
-    <Dialog label="Add Exercise" isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle>Add Exercise</DialogTitle>
-      <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
-        <Input
-          type="text"
-          label="Exercise Name"
-          name="name"
-          value={name}
-          onChange={handleChange}
-          placeholder=""
-        />
-        <Input
-          type="number"
-          label="duration"
-          name="duration"
-          value={duration}
-          onChange={handleChange}
-          placeholder=""
-        />
-        <div>{mutation.isLoading && "Updating exercise..."}</div>
-        <Button color="violet" type="submit">
-          Add Exercise
-        </Button>
-      </Wrapper>
-    </Dialog>
+    <AlertDialog label="Add Exercise" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Flex layout="column">
+        <Title>Add Exercise</Title>
+        <Flex
+          as="form"
+          css={{
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "$lg",
+            gap: "$xl",
+          }}
+          onSubmit={onFormSubmit}>
+          <Input
+            type="text"
+            label="Exercise Name"
+            name="name"
+            value={name}
+            onChange={handleChange}
+            placeholder=""
+            isRequired={true}
+          />
+          <Input
+            type="number"
+            label="Duration in seconds"
+            name="duration"
+            value={duration}
+            onChange={handleChange}
+            placeholder=""
+            isRequired={true}
+          />
+          <div>{mutation.isLoading && "Updating exercise..."}</div>
+          <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
+            <Cancel asChild>
+              <Button color="gray">Cancel</Button>
+            </Cancel>
+            {/* <Action asChild> */}
+            <Button color="violet" type="submit">
+              Save
+            </Button>
+            {/* </Action> */}
+          </Flex>
+        </Flex>
+      </Flex>
+    </AlertDialog>
   );
 };
-
-const Wrapper = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "24px",
-});
 
 export default AddExerciseDialog;
