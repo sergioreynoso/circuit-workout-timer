@@ -28,7 +28,10 @@ const Edit = () => {
         </Link>
       </Header>
       <EditWorkoutForm workoutData={workoutQuery.data}>
-        <ExerciseList workoutId={workoutId as string} />
+        <ExerciseList
+          workoutId={workoutId as string}
+          data={workoutQuery.data.exercises}
+        />
       </EditWorkoutForm>
     </Wrapper>
   );

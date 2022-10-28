@@ -12,6 +12,13 @@ export default async function handler(
         where: {
           id: workoutId as string,
         },
+        include: {
+          exercises: {
+            orderBy: {
+              display_seq: "asc",
+            },
+          },
+        },
       });
       res.status(200).json(workout);
     } catch (error) {

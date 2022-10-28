@@ -3,28 +3,19 @@ import { useRouter } from "next/router";
 import { styled } from "../../styles/stitches.congif";
 import Preloader from "../../components/preloader";
 import Timer from "../../components/timer";
-
 import Link from "next/link";
 import useWorkoutQuery from "../../hooks/useWorkoutQuery";
-import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
 
 const Workout = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const workoutQuery = useWorkoutQuery(id as string);
-  const exerciseQuery = useAllExerciseQuery(id as string);
 
-  if (workoutQuery.isLoading && exerciseQuery.isLoading)
-    return <Preloader label="Loading..." />;
+  if (workoutQuery.isLoading) return <Preloader label="Loading..." />;
 
   if (workoutQuery.error || !workoutQuery.isSuccess)
     return <Preloader label={`Error loading workout: ${workoutQuery.error}`} />;
-
-  if (exerciseQuery.error || !exerciseQuery.isSuccess)
-    return (
-      <Preloader label={`Error loading exercise: ${exerciseQuery.error}`} />
-    );
 
   return (
     <Box>
@@ -39,7 +30,10 @@ const Workout = () => {
       </Navigation>
 
       <Box>
-        <Timer workout={workoutQuery.data} exercises={exerciseQuery.data} />
+        <Timer
+          workout={workoutQuery.data}
+          exercises={workoutQuery.data.exercises}
+        />
       </Box>
     </Box>
   );

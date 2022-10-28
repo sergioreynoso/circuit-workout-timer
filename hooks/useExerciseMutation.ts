@@ -1,17 +1,17 @@
 import { Exercise } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
 
-const useExerciseMutation = (onUpdate: () => void) => {
+type Endpoint = "exercise" | "createExercise" | "deleteExercise";
+
+const useExerciseMutation = (endpoint: Endpoint, onSuccess: () => void) => {
   const queryClient = useQueryClient();
   return useMutation(
-    (exercise: Omit<Exercise, "id">) =>
-      axios.post("/api/createExercise", exercise),
+    (exercise: Partial<Exercise>) => axios.post(`/api/${endpoint}`, exercise),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["exercises"]);
-        onUpdate();
+        queryClient.invalidateQueries(["workout"]);
+        onSuccess();
       },
     }
   );

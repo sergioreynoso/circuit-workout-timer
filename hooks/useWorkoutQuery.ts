@@ -1,8 +1,14 @@
-import { Workout } from "@prisma/client";
+import { Exercise, Workout } from "@prisma/client";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
 
-const useWorkoutQuery = (workoutId: string): UseQueryResult<Workout> => {
+export interface WorkoutWithExercises extends Workout {
+  exercises: Exercise[];
+}
+
+const useWorkoutQuery = (
+  workoutId: string
+): UseQueryResult<WorkoutWithExercises> => {
   const fetchWorkout = (workoutId: string): Promise<Workout> =>
     axios
       .get(`/api/workout`, { params: { id: workoutId } })
