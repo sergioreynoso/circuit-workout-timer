@@ -20,7 +20,7 @@ const Header = () => {
       {status === "authenticated" ? (
         <Flex css={{ gap: "24px" }}>
           <Link href={"/dashboard"}>
-            <NextATag>Dashboard</NextATag>
+            <NextATag>Workouts</NextATag>
           </Link>
           <DropdownMenu user={session.user as User} />
         </Flex>
