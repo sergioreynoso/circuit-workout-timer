@@ -43,7 +43,7 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
 
   return (
     <AlertDialog label="Add Exercise" isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Flex layout="column">
+      <Flex direction="column">
         <Title>Add Exercise</Title>
         <Flex
           as="form"

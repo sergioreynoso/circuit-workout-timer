@@ -19,7 +19,7 @@ const ExerciseList = ({ workoutId }: { workoutId: string }) => {
     return <Preloader label={`Error loading workout: ${error}`} />;
 
   return (
-    <Flex layout="column">
+    <Flex direction="column">
       <Flex
         css={{
           justifyContent: "space-between",
@@ -32,7 +32,7 @@ const ExerciseList = ({ workoutId }: { workoutId: string }) => {
           exercisesTotalCount={data.length}
         />
       </Flex>
-      <Flex as="ul" layout="column" css={{ gap: "$sm", minWidth: "$bp-sm" }}>
+      <Flex as="ul" direction="column" css={{ gap: "$sm", minWidth: "$bp-sm" }}>
         {data.map((item) => (
           <Item key={item.id}>
             <ItemTitle>{item.exercise_name}</ItemTitle>

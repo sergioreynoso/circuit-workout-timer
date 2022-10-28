@@ -23,7 +23,7 @@ const Input = ({
   onChange,
 }: InputProps) => {
   return (
-    <Flex layout="column" css={{ gap: "$sm" }}>
+    <Flex direction="column" css={{ gap: "$sm" }}>
       <Label htmlFor={name} css={{ lineHeight: "$100" }}>
         {label}
       </Label>

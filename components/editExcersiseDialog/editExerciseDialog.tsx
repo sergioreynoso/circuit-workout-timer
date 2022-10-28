@@ -59,7 +59,7 @@ const EditExerciseDialog = ({ exerciseData, children }: Props) => {
 
   return (
     <AlertDialog label="Edit" isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Flex layout="column">
+      <Flex direction="column">
         <Title>Edit Exercise</Title>
         <Flex
           as="form"
