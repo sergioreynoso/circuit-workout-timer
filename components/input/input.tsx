@@ -34,6 +34,7 @@ const Input = ({
         defaultValue={value}
         onChange={onChange}
         required={isRequired}
+        autoComplete="off"
       />
     </Flex>
   );
