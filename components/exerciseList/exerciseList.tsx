@@ -1,23 +1,18 @@
+import { Exercise } from "@prisma/client";
 import React from "react";
-import useAllExerciseQuery from "../../hooks/useAllExerciseQuery";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import AddExerciseDialog from "../addExerciseDialog";
 import DeleteExerciseDialog from "../deleteExerciseDialog";
 import EditExerciseDialog from "../editExcersiseDialog";
 import { Flex } from "../layout";
-import Preloader from "../preloader";
 
-const ExerciseList = ({ workoutId }: { workoutId: string }) => {
-  const { data, isLoading, error, isSuccess } = useAllExerciseQuery(
-    workoutId as string
-  );
+type Props = {
+  workoutId: string;
+  data: Exercise[];
+};
 
-  if (isLoading) return <Preloader label="Loading..." />;
-
-  if (error || !isSuccess)
-    return <Preloader label={`Error loading workout: ${error}`} />;
-
+const ExerciseList = ({ workoutId, data }: Props) => {
   return (
     <Flex direction="column">
       <Flex

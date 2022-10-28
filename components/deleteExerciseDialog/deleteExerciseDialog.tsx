@@ -8,8 +8,7 @@ import {
 import AlertDialog from "../alertDialog";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
-import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useExerciseMutation from "../../hooks/useExerciseMutation";
 
 type Props = {
   exerciseId: string;
@@ -18,17 +17,9 @@ type Props = {
 const DeleteExerciseDialog = ({ exerciseId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation(
-    (exercise: { id: string }) => axios.post("/api/deleteExercise", exercise),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["exercises"]);
-        setIsOpen(false);
-      },
-    }
+  const mutation = useExerciseMutation("deleteExercise", () =>
+    setIsOpen(false)
   );
-
   const onClickHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
