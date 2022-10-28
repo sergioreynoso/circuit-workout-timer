@@ -2,6 +2,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { styled } from "../styles/stitches.congif";
 import WorkoutList from "../components/workoutList";
+import { Flex } from "../components/layout";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -12,20 +13,16 @@ const Dashboard = () => {
   const userId: string | undefined = session?.user?.id;
 
   return (
-    <Box
+    <Flex
       as="main"
       css={{
+        justifyContent: "center",
+
         alignItems: "center",
         paddingTop: "24px",
       }}>
       {userId ? <WorkoutList userId={userId} /> : null}
-    </Box>
+    </Flex>
   );
 };
-
-const Box = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-});
-
 export default Dashboard;
