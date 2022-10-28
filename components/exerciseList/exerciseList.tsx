@@ -5,6 +5,7 @@ import { styled } from "../../styles/stitches.congif";
 import AddExerciseDialog from "../addExerciseDialog";
 import DeleteExerciseDialog from "../deleteExerciseDialog";
 import EditExerciseDialog from "../editExcersiseDialog";
+import { Flex } from "../layout";
 import Preloader from "../preloader";
 
 const ExerciseList = ({ workoutId }: { workoutId: string }) => {
@@ -18,61 +19,51 @@ const ExerciseList = ({ workoutId }: { workoutId: string }) => {
     return <Preloader label={`Error loading workout: ${error}`} />;
 
   return (
-    <Wrapper>
-      <Header>
+    <Flex layout="column">
+      <Flex
+        css={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "$lg",
+        }}>
         <h3>Add exercise</h3>
         <AddExerciseDialog
           workoutId={workoutId}
           exercisesTotalCount={data.length}
         />
-      </Header>
-      <ListWrapper>
+      </Flex>
+      <Flex as="ul" layout="column" css={{ gap: "$sm", minWidth: "$bp-sm" }}>
         {data.map((item) => (
-          <ListItem key={item.id}>
-            <ListItemTitle>{item.exercise_name}</ListItemTitle>
-            <ListItemDuration>{formatTime(item.duration)}</ListItemDuration>
-            <EditExerciseDialog exerciseData={item} />
-            <DeleteExerciseDialog exerciseId={item.id} />
-          </ListItem>
+          <Item key={item.id}>
+            <ItemTitle>{item.exercise_name}</ItemTitle>
+            <Flex
+              css={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "$2x",
+              }}>
+              <ListItemDuration>{formatTime(item.duration)}</ListItemDuration>
+              <EditExerciseDialog exerciseData={item} />
+              <DeleteExerciseDialog exerciseId={item.id} />
+            </Flex>
+          </Item>
         ))}
-      </ListWrapper>
-    </Wrapper>
+      </Flex>
+    </Flex>
   );
 };
 
-const Wrapper = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-});
-
-const Header = styled("div", {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "$sm",
-  padding: "$lg",
-});
-
-const ListWrapper = styled("ul", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "$sm",
-  maxWidth: "$bp-sm",
-  minWidth: "300px",
-  listStyle: "none",
-});
-
-const ListItem = styled("li", {
+const Item = styled("li", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "baseline",
-  gap: "$3x",
+  gap: "$2x",
   padding: "$lg",
   color: "$primary-12",
   backgroundColor: "$primary-03",
 });
 
-const ListItemTitle = styled("p", {
+const ItemTitle = styled("p", {
   fontWeight: "$700",
 });
 
