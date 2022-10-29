@@ -19,11 +19,11 @@ const Button = styled("button", {
   variants: {
     color: {
       violet: {
-        color: "$primary-01",
-        backgroundColor: "$primary-09",
+        color: "$primary-12",
+        backgroundColor: "$primary-03",
 
         "&:hover": {
-          backgroundColor: "$primary-10",
+          backgroundColor: "$primary-04",
         },
         "&:active": {
           backgroundColor: "$primary-05",

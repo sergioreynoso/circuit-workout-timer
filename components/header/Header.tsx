@@ -46,8 +46,8 @@ const Flex = styled("header", {
   alignItems: "center",
   height: 64,
   paddingLeft: "$md",
-  color: "$gray-01",
-  backgroundColor: "$gray-12",
+  color: "$primary-12",
+  backgroundColor: "$primary-03",
 });
 
 const Heading = styled("span", {
