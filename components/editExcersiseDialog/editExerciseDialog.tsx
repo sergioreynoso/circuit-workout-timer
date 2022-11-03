@@ -1,42 +1,28 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import AlertDialog from "../alertDialog/alertDialog";
 import { Title, Cancel, Action } from "@radix-ui/react-alert-dialog";
 import Input from "../input";
-import { Exercise } from "@prisma/client";
 import Button from "../button";
 import { Flex } from "../layout";
+import useExerciseMutation from "../../hooks/useExerciseMutation";
 
 type Props = {
   exerciseData: ExerciseWithTimestamp;
-  children?: JSX.Element;
 };
 
-const EditExerciseDialog = ({ exerciseData, children }: Props) => {
+const EditExerciseDialog = ({ exerciseData }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation(
-    (exercise: Omit<Exercise, "workoutId" | "display_seq">) =>
-      axios.post("/api/exercise", exercise),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["exercises"]);
-        setIsOpen(false);
-      },
-    }
+  const mutation = useExerciseMutation("updateExercise", () =>
+    setIsOpen(false)
   );
 
-  const [inputValue, setInputValue] = useState({
+  const [{ name, duration, type }, setInputValue] = useState({
     name: exerciseData.exercise_name,
     duration: Math.round(exerciseData.duration / 1000),
     type: exerciseData.type,
   });
-
-  const { name, duration, type } = inputValue;
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
