@@ -6,10 +6,14 @@ import DropdownMenu from "../dropdownMenu";
 import { styled } from "../../styles/stitches.congif";
 import { User } from "../../types/next-auth";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (router.asPath === "/createWorkout") return null;
 
   return (
     <Flex>
