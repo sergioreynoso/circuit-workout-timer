@@ -2,7 +2,7 @@ import { Exercise } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-type Endpoint = "exercise" | "createExercise" | "deleteExercise";
+type Endpoint = "updateExercise" | "createExercise" | "deleteExercise";
 
 const useExerciseMutation = (endpoint: Endpoint, onSuccess: () => void) => {
   const queryClient = useQueryClient();
