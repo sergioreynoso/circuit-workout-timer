@@ -5,6 +5,7 @@ import { styled } from "../../styles/stitches.congif";
 import { Workout } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
@@ -14,16 +15,16 @@ type Props = {
 };
 
 const EditWorkoutForm = ({ workoutData, children }: Props) => {
+  const router = useRouter();
   const mutation = useMutation((workout: WorkoutUpdate) => {
-    return axios.post("/api/workout", workout);
+    return axios.post("/api/updateWorkout", workout);
   });
 
-  const [inputValue, setInputValue] = useState({
+  const [{ name, set, rest }, setInputValue] = useState({
     name: workoutData.workout_name,
     set: workoutData.set_count,
     rest: Math.round(workoutData.set_rest / 1000),
   });
-  const { name, set, rest } = inputValue;
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -43,6 +44,8 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
       set_rest: Number(rest * 1000),
     });
   };
+
+  // if (mutation.isSuccess) router.push(`/workout/${workoutData.id}`);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
@@ -94,7 +97,7 @@ const Wrapper = styled("div", {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: "24px",
+  padding: "$lg",
 });
 
 export default EditWorkoutForm;
