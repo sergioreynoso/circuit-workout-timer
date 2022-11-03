@@ -1,7 +1,6 @@
 import type { AppProps } from "next/app";
 
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
-import AuthWrapper from "../components/auth/authWrapper";
 
 import { ThemeProvider } from "next-themes";
 import { globalStyles } from "../styles";
@@ -21,19 +20,18 @@ function MyApp({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <AuthWrapper>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem={true}
-            value={{
-              light: theme.light,
-              dark: theme.dark,
-            }}>
-            <Header />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </AuthWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem={true}
+          value={{
+            light: theme.light,
+            dark: theme.dark,
+          }}>
+          <Header />
+          <Component {...pageProps} />
+        </ThemeProvider>
+
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionProvider>
