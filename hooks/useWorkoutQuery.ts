@@ -11,7 +11,7 @@ const useWorkoutQuery = (
 ): UseQueryResult<WorkoutWithExercises> => {
   const fetchWorkout = (workoutId: string): Promise<Workout> =>
     axios
-      .get(`/api/workout`, { params: { id: workoutId } })
+      .get(`/api/getWorkout`, { params: { id: workoutId } })
       .then((res) => res.data);
 
   return useQuery(["workout", workoutId], () => fetchWorkout(workoutId));
