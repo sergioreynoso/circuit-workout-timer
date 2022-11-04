@@ -1,31 +1,20 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Exercise, Workout } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
 import { Flex } from "../../components/layout";
 import prisma from "../../lib/prisma";
+import useFetchWorkouts from "../../hooks/useFetchWorkouts";
 
 export interface WorkoutWithExercises extends Workout {
   exercises: Exercise[];
 }
-
-type Props = {
-  workout: WorkoutWithExercises;
+type CreateWorkoutProps = {
+  initialData: Workout;
 };
 
-const CreateWorkout = (props: Props) => {
-  const getWorkout = (workoutId: string): Promise<WorkoutWithExercises> =>
-    axios
-      .get(`/api/getWorkout`, { params: { id: workoutId } })
-      .then((res) => res.data);
-
-  const { data } = useQuery({
-    queryKey: ["workout", props.workout.id],
-    queryFn: () => getWorkout(props.workout.id),
-    initialData: props.workout,
-  });
+const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
+  const { data } = useFetchWorkouts("getWorkout", initialData.id, initialData);
 
   return (
     <Flex
@@ -37,7 +26,7 @@ const CreateWorkout = (props: Props) => {
         gap: "$3x",
       }}>
       <h1>Create Workout</h1>
-      <CreateWorkoutForm data={data} />
+      <CreateWorkoutForm data={data as WorkoutWithExercises} />
     </Flex>
   );
 };
@@ -57,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   });
 
   return {
-    props: { workout },
+    props: { initialData: workout },
   };
 };
 

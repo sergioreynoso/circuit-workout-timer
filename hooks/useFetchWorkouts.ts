@@ -2,18 +2,21 @@ import { Workout } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const getWorkout = (userId: string): Promise<Workout[]> =>
-  axios
-    .get(`/api/getAllWorkouts`, { params: { id: userId } })
-    .then((res) => res.data);
+type Endpoint = "getWorkout" | "getAllWorkouts";
 
 const useFetchWorkouts = (
-  userId: string,
-  initialData: Workout[] | undefined
+  endpoint: Endpoint,
+  id: string,
+  initialData: Workout | Workout[] | undefined = undefined
 ) => {
+  const fetchWorkout = (id: string): Promise<Workout[]> =>
+    axios
+      .get(`/api/${endpoint}`, { params: { id: id } })
+      .then((res) => res.data);
+
   return useQuery({
-    queryKey: ["workouts", userId],
-    queryFn: () => getWorkout(userId),
+    queryKey: ["workouts", id],
+    queryFn: () => fetchWorkout(id),
     initialData: initialData,
   });
 };

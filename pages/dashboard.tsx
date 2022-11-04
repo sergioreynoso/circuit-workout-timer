@@ -7,8 +7,6 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { Workout } from "@prisma/client";
 import prisma from "../lib/prisma";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import useFetchWorkouts from "../hooks/useFetchWorkouts";
 
 type DashboardProps = {
@@ -17,7 +15,7 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ id, initialData }: DashboardProps) => {
-  const { data } = useFetchWorkouts(id, initialData);
+  const { data } = useFetchWorkouts("getAllWorkouts", id, initialData);
 
   return (
     <Flex css={{ justifyContent: "center" }}>
