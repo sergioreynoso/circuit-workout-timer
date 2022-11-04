@@ -1,17 +1,11 @@
+import { Workout } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
-import useAllWorkoutsQuery from "../../hooks/useAllWorkoutsQuery";
 import { styled } from "../../styles/stitches.congif";
 import DeleteWorkoutDialog from "../deleteWorkoutDialog";
 import { Flex } from "../layout";
-import Preloader from "../preloader";
 
-const WorkoutList = ({ userId }: { userId: string }) => {
-  const { data, isLoading, error, isSuccess } = useAllWorkoutsQuery(userId);
-
-  if (isLoading) return <Preloader label="loading..." />;
-  if (error || !isSuccess) return <Preloader label={`Error:${error}`} />;
-
+const WorkoutList = ({ data }: { data: Workout[] }) => {
   return (
     <Flex
       direction="column"
