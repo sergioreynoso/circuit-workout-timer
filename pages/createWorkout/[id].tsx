@@ -14,29 +14,10 @@ type Props = {
   workout: WorkoutWithExercises;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const workout = await prisma?.workout.findUnique({
-    where: {
-      id: params?.id as string,
-    },
-    include: {
-      exercises: {
-        orderBy: {
-          display_seq: "asc",
-        },
-      },
-    },
-  });
-
-  return {
-    props: { workout },
-  };
-};
-
 const CreateWorkout = (props: Props) => {
   const getWorkout = (workoutId: string): Promise<WorkoutWithExercises> =>
     axios
-      .get(`/api/workout`, { params: { id: workoutId } })
+      .get(`/api/getWorkout`, { params: { id: workoutId } })
       .then((res) => res.data);
 
   const { data } = useQuery({
@@ -58,6 +39,25 @@ const CreateWorkout = (props: Props) => {
       <CreateWorkoutForm data={data} />
     </Flex>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const workout = await prisma?.workout.findUnique({
+    where: {
+      id: params?.id as string,
+    },
+    include: {
+      exercises: {
+        orderBy: {
+          display_seq: "asc",
+        },
+      },
+    },
+  });
+
+  return {
+    props: { workout },
+  };
 };
 
 export default CreateWorkout;
