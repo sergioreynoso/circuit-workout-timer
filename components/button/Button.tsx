@@ -1,4 +1,3 @@
-import React from "react";
 import { styled } from "../../styles/stitches.congif";
 
 const Button = styled("button", {

@@ -8,7 +8,6 @@ import {
 import AlertDialog from "../alertDialog";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
-import useExerciseMutation from "../../hooks/useExerciseMutation";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 
 type Props = {

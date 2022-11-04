@@ -112,7 +112,8 @@ const StyledSeparator = styled(DropdownMenu.Separator, {
 });
 
 const Arrow = styled(DropdownMenu.Arrow, {
-  fill: "$gray-12",
+  color: "red",
+  fill: "red",
 });
 
 const SettingIcon = styled(GearIcon, {

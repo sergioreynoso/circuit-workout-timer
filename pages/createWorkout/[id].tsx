@@ -1,15 +1,10 @@
-import { Exercise, Workout } from "@prisma/client";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Exercise, Workout } from "@prisma/client";
 import { GetServerSideProps } from "next";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import Button from "../../components/button";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
-import Input from "../../components/input";
 import { Flex } from "../../components/layout";
-import Preloader from "../../components/preloader";
 
 export interface WorkoutWithExercises extends Workout {
   exercises: Exercise[];

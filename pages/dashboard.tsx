@@ -1,14 +1,9 @@
 import React from "react";
 import { useSession } from "next-auth/react";
-import { styled } from "../styles/stitches.congif";
 import WorkoutList from "../components/workoutList";
 import { Flex } from "../components/layout";
-import Button from "../components/button";
+
 import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
-import { GetServerSideProps } from "next";
-import { Workout } from "@prisma/client";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();

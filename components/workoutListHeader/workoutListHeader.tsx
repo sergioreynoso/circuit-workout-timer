@@ -1,7 +1,6 @@
 import { Exercise, Workout } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "../button";

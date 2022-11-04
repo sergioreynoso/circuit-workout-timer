@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
@@ -8,8 +8,6 @@ import axios from "axios";
 import Link from "next/link";
 import { Flex } from "../layout";
 import ExerciseList from "../exerciseList";
-import Preloader from "../preloader";
-import { useSession } from "next-auth/react";
 import { WorkoutWithExercises } from "../../pages/createWorkout/[id]";
 import { useRouter } from "next/router";
 

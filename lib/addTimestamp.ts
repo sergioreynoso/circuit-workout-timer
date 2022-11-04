@@ -1,4 +1,4 @@
-import { Exercise } from "../pages/workout/[id]";
+import { Exercise } from "@prisma/client";
 
 export function addTimestamp(array: Exercise[], totalTime: number) {
   return array.map((item, index) => {

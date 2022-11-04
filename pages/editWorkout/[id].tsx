@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import Button from "../../components/button";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
 import Preloader from "../../components/preloader";
@@ -24,7 +23,7 @@ const Edit = () => {
       <Header>
         <Heading1>Edit Workout</Heading1>
         <Link href={`/workout/${workoutId as string}`}>
-          <Back>Back</Back>
+          <Back>Cancel</Back>
         </Link>
       </Header>
       <EditWorkoutForm workoutData={workoutQuery.data}>

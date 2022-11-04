@@ -2,7 +2,6 @@ import Link from "next/link";
 import React from "react";
 import useAllWorkoutsQuery from "../../hooks/useAllWorkoutsQuery";
 import { styled } from "../../styles/stitches.congif";
-import Button from "../button";
 import DeleteWorkoutDialog from "../deleteWorkoutDialog";
 import { Flex } from "../layout";
 import Preloader from "../preloader";

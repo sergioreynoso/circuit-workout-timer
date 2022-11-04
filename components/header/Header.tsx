@@ -31,7 +31,7 @@ const Header = () => {
       ) : (
         <Button
           color="violet"
-          css={{ marginRight: "8px" }}
+          css={{ marginRight: "$md" }}
           onClick={() =>
             signIn(undefined, {
               callbackUrl: "http://localhost:3000/dashboard",

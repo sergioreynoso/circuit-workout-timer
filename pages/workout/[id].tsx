@@ -22,7 +22,7 @@ const Workout = () => {
       <Heading1>{workoutQuery.data.workout_name}</Heading1>
       <Navigation>
         <Link href="/dashboard">
-          <LinkTag>Back</LinkTag>
+          <LinkTag>Cancel</LinkTag>
         </Link>
         <Link href={`/editWorkout/${id as string}`}>
           <LinkTag>Edit</LinkTag>

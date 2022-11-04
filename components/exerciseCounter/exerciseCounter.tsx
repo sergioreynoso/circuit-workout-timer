@@ -1,4 +1,3 @@
-import { Workout } from "@prisma/client";
 import React, { useEffect, useRef } from "react";
 import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
