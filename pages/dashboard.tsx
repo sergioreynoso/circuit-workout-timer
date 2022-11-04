@@ -6,8 +6,19 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { Workout } from "@prisma/client";
+import prisma from "../lib/prisma";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import useFetchWorkouts from "../hooks/useFetchWorkouts";
 
-const Dashboard = ({ id: userId, data }: { id: string; data: Workout[] }) => {
+type DashboardProps = {
+  id: string;
+  initialData: Workout[];
+};
+
+const Dashboard = ({ id, initialData }: DashboardProps) => {
+  const { data } = useFetchWorkouts(id, initialData);
+
   return (
     <Flex css={{ justifyContent: "center" }}>
       <Flex
@@ -18,8 +29,8 @@ const Dashboard = ({ id: userId, data }: { id: string; data: Workout[] }) => {
           padding: "$2x $lg",
           maxWidth: "600px",
         }}>
-        <WorkoutListHeader userId={userId} />
-        <WorkoutList data={data} />
+        <WorkoutListHeader userId={id} />
+        <WorkoutList data={data as Workout[]} />
       </Flex>
     </Flex>
   );
@@ -52,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       id,
-      data: workouts,
+      initialData: workouts,
     },
   };
 };
