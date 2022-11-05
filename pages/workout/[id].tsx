@@ -1,42 +1,54 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { styled } from "../../styles/stitches.congif";
-import Preloader from "../../components/preloader";
 import Timer from "../../components/timer";
 import Link from "next/link";
-import useWorkoutQuery from "../../hooks/useWorkoutQuery";
+import { GetServerSideProps } from "next";
+import { Exercise, Workout } from "@prisma/client";
 
-const Workout = () => {
-  const router = useRouter();
-  const { id } = router.query;
+export interface WorkoutWithExercises extends Workout {
+  exercises: Exercise[];
+}
 
-  const workoutQuery = useWorkoutQuery(id as string);
-
-  if (workoutQuery.isLoading) return <Preloader label="Loading..." />;
-
-  if (workoutQuery.error || !workoutQuery.isSuccess)
-    return <Preloader label={`Error loading workout: ${workoutQuery.error}`} />;
-
+const WorkoutTimer = ({
+  initialData,
+}: {
+  initialData: WorkoutWithExercises;
+}) => {
   return (
     <Box>
-      <Heading1>{workoutQuery.data.workout_name}</Heading1>
+      <Heading1>{initialData.workout_name}</Heading1>
       <Navigation>
         <Link href="/dashboard">
           <LinkTag>Cancel</LinkTag>
         </Link>
-        <Link href={`/editWorkout/${id as string}`}>
+        <Link href={`/editWorkout/${initialData.id as string}`}>
           <LinkTag>Edit</LinkTag>
         </Link>
       </Navigation>
-
       <Box>
-        <Timer
-          workout={workoutQuery.data}
-          exercises={workoutQuery.data.exercises}
-        />
+        <Timer workout={initialData} exercises={initialData.exercises} />
       </Box>
     </Box>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const workout = await prisma?.workout.findUnique({
+    where: {
+      id: params?.id as string,
+    },
+    include: {
+      exercises: {
+        orderBy: {
+          display_seq: "asc",
+        },
+      },
+    },
+  });
+
+  return {
+    props: { initialData: workout },
+  };
 };
 
 const Box = styled("div", {
@@ -62,4 +74,4 @@ const LinkTag = styled("a", {
   cursor: "pointer",
 });
 
-export default Workout;
+export default WorkoutTimer;
