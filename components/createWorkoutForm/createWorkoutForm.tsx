@@ -8,8 +8,8 @@ import axios from "axios";
 import Link from "next/link";
 import { Flex } from "../layout";
 import ExerciseList from "../exerciseList";
-import { WorkoutWithExercises } from "../../pages/createWorkout/[id]";
 import { useRouter } from "next/router";
+import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 

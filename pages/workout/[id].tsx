@@ -4,16 +4,13 @@ import Timer from "../../components/timer";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { Exercise, Workout } from "@prisma/client";
+import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 
-export interface WorkoutWithExercises extends Workout {
-  exercises: Exercise[];
-}
-
-const WorkoutTimer = ({
-  initialData,
-}: {
+type WorkoutTimerProps = {
   initialData: WorkoutWithExercises;
-}) => {
+};
+
+const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
   return (
     <Box>
       <Heading1>{initialData.workout_name}</Heading1>

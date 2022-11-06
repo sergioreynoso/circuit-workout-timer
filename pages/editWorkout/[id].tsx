@@ -1,39 +1,57 @@
+import { Workout } from "@prisma/client";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
 import Preloader from "../../components/preloader";
-import useWorkoutQuery from "../../hooks/useWorkoutQuery";
+import useFetchWorkout, {
+  WorkoutWithExercises,
+} from "../../hooks/useFetchWorkout";
 import { styled } from "../../styles/stitches.congif";
 
-const Edit = () => {
-  const router = useRouter();
-  const { id: workoutId } = router.query;
+type EditProps = {
+  initialData: WorkoutWithExercises;
+};
 
-  const workoutQuery = useWorkoutQuery(workoutId as string);
+const Edit = ({ initialData }: EditProps) => {
+  const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
 
-  if (workoutQuery.isLoading) return <Preloader label="Loading..." />;
+  if ("id" in data) {
+    return (
+      <Wrapper>
+        <Header>
+          <Heading1>Edit Workout</Heading1>
+          <Link href={`/workout/${data.id}`}>
+            <Back>Cancel</Back>
+          </Link>
+        </Header>
+        <EditWorkoutForm workoutData={data}>
+          <ExerciseList workoutId={data.id} data={data.exercises} />
+        </EditWorkoutForm>
+      </Wrapper>
+    );
+  }
+};
 
-  if (workoutQuery.error || !workoutQuery.isSuccess)
-    return <Preloader label={`Error loading workout: ${workoutQuery.error}`} />;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const workout = await prisma?.workout.findUnique({
+    where: {
+      id: params?.id as string,
+    },
+    include: {
+      exercises: {
+        orderBy: {
+          display_seq: "asc",
+        },
+      },
+    },
+  });
 
-  return (
-    <Wrapper>
-      <Header>
-        <Heading1>Edit Workout</Heading1>
-        <Link href={`/workout/${workoutId as string}`}>
-          <Back>Cancel</Back>
-        </Link>
-      </Header>
-      <EditWorkoutForm workoutData={workoutQuery.data}>
-        <ExerciseList
-          workoutId={workoutId as string}
-          data={workoutQuery.data.exercises}
-        />
-      </EditWorkoutForm>
-    </Wrapper>
-  );
+  return {
+    props: { initialData: workout },
+  };
 };
 
 const Wrapper = styled("div", {

@@ -6,16 +6,18 @@ import { Workout } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
 type Props = {
-  workoutData: Workout;
+  workoutData: WorkoutWithExercises;
   children?: JSX.Element;
 };
 
 const EditWorkoutForm = ({ workoutData, children }: Props) => {
   const router = useRouter();
+
   const mutation = useMutation((workout: WorkoutUpdate) => {
     return axios.post("/api/updateWorkout", workout);
   });
@@ -44,8 +46,6 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
       set_rest: Number(rest * 1000),
     });
   };
-
-  // if (mutation.isSuccess) router.push(`/workout/${workoutData.id}`);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
