@@ -50,7 +50,7 @@ const Content = styled(DropdownMenu.Content, {
 });
 
 const ChevronDown = styled(ChevronDownIcon, {
-  color: "$gray-01",
+  color: "$primary-09",
   transition: ".2s",
 });
 
@@ -112,8 +112,7 @@ const StyledSeparator = styled(DropdownMenu.Separator, {
 });
 
 const Arrow = styled(DropdownMenu.Arrow, {
-  color: "red",
-  fill: "red",
+  fill: "$gray-12",
 });
 
 const SettingIcon = styled(GearIcon, {
