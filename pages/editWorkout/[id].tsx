@@ -18,7 +18,7 @@ type EditProps = {
 const Edit = ({ initialData }: EditProps) => {
   const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
 
-  if ("id" in data) {
+  if ("id" in data && "exercises" in data) {
     return (
       <Wrapper>
         <Header>
