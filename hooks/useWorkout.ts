@@ -16,7 +16,7 @@ const warmUp: ExerciseWithTimestamp = {
 
 export function useWorkout(
   workout: Workout,
-  exercises: ExerciseWithTimestamp[] | undefined
+  exercises: ExerciseWithTimestamp[]
 ): [ExerciseWithTimestamp[], number] {
   const totalSets = workout.set_count;
   const setRest = workout.set_rest;

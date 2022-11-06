@@ -1,6 +1,9 @@
-import { Exercise } from "@prisma/client";
+import { ExerciseWithTimestamp } from "../hooks/useWorkout";
 
-export function addTimestamp(array: Exercise[], totalTime: number) {
+export function addTimestamp(
+  array: ExerciseWithTimestamp[],
+  totalTime: number
+) {
   return array.map((item, index) => {
     let start = array
       .slice(0, index)
