@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
 import { Flex } from "../../components/layout";
 import prisma from "../../lib/prisma";
-import useFetchWorkouts from "../../hooks/useFetchWorkouts";
+import useFetchWorkout from "../../hooks/useFetchWorkout";
 
 export interface WorkoutWithExercises extends Workout {
   exercises: Exercise[];
@@ -14,7 +14,7 @@ type CreateWorkoutProps = {
 };
 
 const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
-  const { data } = useFetchWorkouts("getWorkout", initialData.id, initialData);
+  const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
 
   return (
     <Flex
