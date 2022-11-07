@@ -1,11 +1,10 @@
-import { Workout } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import Button from "../../components/button";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
-import Preloader from "../../components/preloader";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
@@ -16,16 +15,19 @@ type EditProps = {
 };
 
 const Edit = ({ initialData }: EditProps) => {
+  const router = useRouter();
   const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
+
+  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    router.push(`/workout/${initialData.id}`);
+  };
 
   if ("id" in data && "exercises" in data) {
     return (
       <Wrapper>
         <Header>
           <Heading1>Edit Workout</Heading1>
-          <Link href={`/workout/${data.id}`}>
-            <Back>Cancel</Back>
-          </Link>
+          <Button onClick={onCancel}>Cancel</Button>
         </Header>
         <EditWorkoutForm workoutData={data}>
           <ExerciseList workoutId={data.id} data={data.exercises} />
@@ -74,9 +76,9 @@ const Heading1 = styled("h1", {
   marginBottom: "$xl",
 });
 
-const Back = styled("a", {
+const NextLink = styled(Link, {
   color: "$primary-09",
-  cursor: "pointer",
+  textDecoration: "none",
 });
 
 export default Edit;

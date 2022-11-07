@@ -20,14 +20,14 @@ const WorkoutList = ({ data }: { data: Workout[] }) => {
             key={workout.id}
             css={{
               justifyContent: "space-between",
+              alignItems: "center",
               height: "50px",
+              paddingInline: "$lg",
               backgroundColor: "$primary-03",
             }}>
-            <Link href={`/workout/${workout.id}`}>
-              <LinkTag>
-                <Label> {workout.workout_name}</Label>
-              </LinkTag>
-            </Link>
+            <NextLink href={`/workout/${workout.id}`}>
+              {workout.workout_name}
+            </NextLink>
             <DeleteWorkoutDialog workoutId={workout.id} />
           </Flex>
         );
@@ -36,15 +36,12 @@ const WorkoutList = ({ data }: { data: Workout[] }) => {
   );
 };
 
-const Label = styled("div", {
+const NextLink = styled(Link, {
+  flex: 1,
   display: "flex",
-
   alignItems: "center",
   height: "100%",
-  paddingLeft: "24px",
-});
-
-const LinkTag = styled("a", {
+  color: "$primary-12",
   textDecoration: "none",
   cursor: "pointer",
 });

@@ -59,7 +59,7 @@ const WorkoutListHeader = ({ userId }: Props) => {
         <p>Add exercises or rests between exercises. </p>
       </Flex>
 
-      <Button color="violet" onClick={onClickHandler}>
+      <Button colors="primary" onClick={onClickHandler}>
         Add Workout
       </Button>
     </Flex>
