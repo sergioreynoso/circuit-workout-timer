@@ -79,10 +79,10 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
 
           <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>
-              <Button color="gray">Cancel</Button>
+              <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild onClick={(event) => event.preventDefault()}> */}
-            <Button color="violet" type="submit">
+            <Button colors="primary" type="submit">
               Save
             </Button>
             {/* </Action> */}

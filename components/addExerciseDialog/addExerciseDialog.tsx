@@ -78,10 +78,10 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
           <div>{mutation.isLoading && "Updating exercise..."}</div>
           <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>
-              <Button color="gray">Cancel</Button>
+              <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <Button color="violet" type="submit">
+            <Button colors="primary" type="submit">
               Save
             </Button>
             {/* </Action> */}

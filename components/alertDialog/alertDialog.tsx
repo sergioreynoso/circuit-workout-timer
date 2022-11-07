@@ -13,7 +13,7 @@ const AlertDialog = ({ label, children, isOpen, setIsOpen }: Props) => {
   return (
     <AlertDialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogPrimitive.Trigger asChild>
-        <Button color="violet">{label}</Button>
+        <Button colors="primary">{label}</Button>
       </AlertDialogPrimitive.Trigger>
       <AlertDialogPrimitive.Portal>
         <Overlay />

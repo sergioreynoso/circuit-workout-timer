@@ -39,12 +39,10 @@ const DeleteWorkoutDialog = ({ workoutId }: Props) => {
           </Description>
           <Wrapper css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>
-              <Button color="gray">Cancel</Button>
+              <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <Button color="red" onClick={onClickHandler}>
-              Delete
-            </Button>
+            <Button onClick={onClickHandler}>Delete</Button>
             {/* </Action> */}
           </Wrapper>
         </Wrapper>

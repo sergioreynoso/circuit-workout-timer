@@ -20,7 +20,7 @@ const Dialog = ({
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
       <DialogPrimitive.Trigger asChild>
-        <Button color="violet">{label}</Button>
+        <Button colors="primary">{label}</Button>
       </DialogPrimitive.Trigger>
       <DialogPrimitive.Portal>
         <Overlay />

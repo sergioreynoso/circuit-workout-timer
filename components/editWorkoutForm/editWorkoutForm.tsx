@@ -85,7 +85,7 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
         )}
       </div>
 
-      <Button color="violet" type="submit">
+      <Button colors="primary" type="submit">
         Update Workout
       </Button>
     </Wrapper>

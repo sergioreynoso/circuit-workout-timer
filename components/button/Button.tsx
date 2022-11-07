@@ -6,18 +6,18 @@ const Button = styled("button", {
   padding: "$md $xl",
   cursor: "pointer",
   fontWeight: "$700",
-  color: "$primary-12",
-  backgroundColor: "$gray-12",
+  color: "$gray-11",
+  backgroundColor: "$gray-03",
 
   "&:hover": {
-    backgroundColor: "$gray-10",
+    backgroundColor: "$gray-04",
   },
   "&:active": {
-    backgroundColor: "$gray-11",
+    backgroundColor: "$gray-05",
   },
   variants: {
-    color: {
-      violet: {
+    colors: {
+      primary: {
         color: "$primary-12",
         backgroundColor: "$primary-03",
 
@@ -28,26 +28,15 @@ const Button = styled("button", {
           backgroundColor: "$primary-05",
         },
       },
-      red: {
-        color: "$primary-01",
-        backgroundColor: "red",
+      secondary: {
+        color: "$secondary-12",
+        backgroundColor: "$secondary-03",
 
         "&:hover": {
-          backgroundColor: "$primary-10",
+          backgroundColor: "$secondary-04",
         },
         "&:active": {
-          backgroundColor: "$primary-05",
-        },
-      },
-      gray: {
-        color: "$gray-11",
-        backgroundColor: "$gray-03",
-
-        "&:hover": {
-          backgroundColor: "$gray-04",
-        },
-        "&:active": {
-          backgroundColor: "$gray-05",
+          backgroundColor: "$secondary-05",
         },
       },
     },

@@ -43,6 +43,11 @@ const CreateWorkoutForm = ({ data }: { data: WorkoutWithExercises }) => {
     });
   };
 
+  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    router.push(`/dashboard`);
+  };
+
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
       <Input
@@ -84,10 +89,8 @@ const CreateWorkoutForm = ({ data }: { data: WorkoutWithExercises }) => {
       </div>
 
       <Flex css={{ gap: "$lg" }}>
-        <Link href="/dashboard">
-          <Button color="gray">Cancel </Button>
-        </Link>
-        <Button color="violet" type="submit">
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button colors="primary" type="submit">
           Done
         </Button>
       </Flex>
@@ -101,6 +104,15 @@ const Wrapper = styled("div", {
   alignItems: "center",
   justifyContent: "center",
   padding: "$lg",
+});
+
+const NextLink = styled(Link, {
+  color: "$primary-12",
+  textDecoration: "none",
+  padding: "$md $xl",
+  ["&:hover"]: {
+    color: "$primary-11",
+  },
 });
 
 export default CreateWorkoutForm;

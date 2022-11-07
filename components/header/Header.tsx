@@ -17,15 +17,11 @@ const Header = () => {
 
   return (
     <Flex>
-      <Link href={"/"}>
-        <NextATag>WORKOUT TIMER</NextATag>
-      </Link>
+      <NextLink href={"/"}>WORKOUT TIMER</NextLink>
 
       {status === "authenticated" ? (
         <Flex css={{ gap: "24px" }}>
-          <Link href={"/dashboard"}>
-            <NextATag>Workouts</NextATag>
-          </Link>
+          <NextLink href={"/dashboard"}>Workouts</NextLink>
           <DropdownMenu user={session.user as User} />
         </Flex>
       ) : (
@@ -54,16 +50,11 @@ const Flex = styled("header", {
   backgroundColor: "$primary-03",
 });
 
-const Heading = styled("span", {
-  fontSize: "large",
-  fontWeight: "bold",
-  textTransform: "uppercase",
-});
-
-const NextATag = styled("a", {
+const NextLink = styled(Link, {
   fontWeight: "$700",
   textDecoration: "none",
   cursor: "pointer",
+  color: "$primary-12",
 });
 
 export default Header;
