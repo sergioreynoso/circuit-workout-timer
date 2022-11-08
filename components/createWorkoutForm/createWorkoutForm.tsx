@@ -2,22 +2,24 @@ import React, { useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
-import { Exercise, Workout } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { Exercise } from "@prisma/client";
 import Link from "next/link";
 import { Flex } from "../layout";
 import ExerciseList from "../exerciseList";
 import { useRouter } from "next/router";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
+import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import DeleteWorkoutDialog from "../deleteWorkoutDialog";
 
-type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
-
-const CreateWorkoutForm = ({ data }: { data: WorkoutWithExercises }) => {
+const CreateWorkoutForm = ({
+  initialData,
+}: {
+  initialData: WorkoutWithExercises;
+}) => {
   const router = useRouter();
-  const mutation = useMutation((workout: WorkoutUpdate) => {
-    return axios.post("/api/updateWorkout", workout);
-  });
+  const [isDone, setIsDone] = useState<boolean>(false);
+
+  const updateWorkout = useWorkoutMutation("updateWorkout");
 
   const [{ name, set, rest }, setInputValue] = useState({
     name: "",
@@ -35,18 +37,18 @@ const CreateWorkoutForm = ({ data }: { data: WorkoutWithExercises }) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate({
-      id: data.id,
+    setIsDone(true);
+    updateWorkout.mutate({
+      id: initialData.id,
       workout_name: name,
       set_count: Number(set),
       set_rest: Number(rest * 1000),
     });
   };
 
-  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    router.push(`/dashboard`);
-  };
+  if (updateWorkout.isSuccess && isDone) {
+    router.push(`/workout/${initialData.id}`);
+  }
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
@@ -76,20 +78,25 @@ const CreateWorkoutForm = ({ data }: { data: WorkoutWithExercises }) => {
         placeholder=""
       />
 
-      <ExerciseList workoutId={data.id} data={data.exercises as Exercise[]} />
+      <ExerciseList
+        workoutId={initialData.id}
+        exerciseData={initialData.exercises as Exercise[]}
+      />
 
       <div>
-        {mutation.isLoading ? (
+        {updateWorkout.isLoading ? (
           "Adding workout..."
         ) : (
           <div>
-            {mutation.isError ? `An error occurred: ${mutation.error}` : null}
+            {updateWorkout.isError
+              ? `An error occurred: ${updateWorkout.error}`
+              : null}
           </div>
         )}
       </div>
 
       <Flex css={{ gap: "$lg" }}>
-        <Button onClick={onCancel}>Cancel</Button>
+        <DeleteWorkoutDialog label="Cancel" workoutId={initialData.id} />
         <Button colors="primary" type="submit">
           Done
         </Button>
