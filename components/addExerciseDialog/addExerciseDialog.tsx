@@ -13,14 +13,18 @@ type Props = {
 
 const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const mutation = useExerciseMutation("createExercise", () =>
-    setIsOpen(false)
-  );
-
   const [{ name, duration, workoutId }, setInputValue] = useState({
     name: "",
     duration: 30,
     workoutId: id,
+  });
+
+  const mutation = useExerciseMutation("createExercise", () => {
+    setIsOpen(false);
+    setInputValue((prev) => ({
+      ...prev,
+      name: "",
+    }));
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
