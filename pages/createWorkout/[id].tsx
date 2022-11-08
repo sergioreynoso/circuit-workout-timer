@@ -25,7 +25,7 @@ const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
         gap: "$3x",
       }}>
       <h1>Create Workout</h1>
-      <CreateWorkoutForm data={data as WorkoutWithExercises} />
+      <CreateWorkoutForm initialData={data as WorkoutWithExercises} />
     </Flex>
   );
 };
