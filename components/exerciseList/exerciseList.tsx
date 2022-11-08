@@ -9,10 +9,10 @@ import { Flex } from "../layout";
 
 type Props = {
   workoutId: string;
-  data: Exercise[];
+  exerciseData: Exercise[];
 };
 
-const ExerciseList = ({ workoutId, data }: Props) => {
+const ExerciseList = ({ workoutId, exerciseData }: Props) => {
   return (
     <Flex direction="column">
       <Flex
@@ -24,11 +24,11 @@ const ExerciseList = ({ workoutId, data }: Props) => {
         <h3>Add exercise</h3>
         <AddExerciseDialog
           workoutId={workoutId}
-          exercisesTotalCount={data.length}
+          exercisesTotalCount={exerciseData.length}
         />
       </Flex>
       <Flex as="ul" direction="column" css={{ gap: "$sm", minWidth: "$bp-sm" }}>
-        {data.map((item) => (
+        {exerciseData.map((item) => (
           <Item key={item.id}>
             <ItemTitle>{item.exercise_name}</ItemTitle>
             <Flex
