@@ -9,15 +9,24 @@ import AlertDialog from "../alertDialog";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { useRouter } from "next/router";
 
-type Props = {
+type DeleteWorkoutDialogProps = {
+  label: string;
   workoutId: string;
 };
 
-const DeleteWorkoutDialog = ({ workoutId }: Props) => {
+const DeleteWorkoutDialog = ({
+  label = "Delete",
+  workoutId,
+}: DeleteWorkoutDialogProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const mutation = useWorkoutMutation("deleteWorkout", () => setIsOpen(false));
+  const mutation = useWorkoutMutation("deleteWorkout", () => {
+    setIsOpen(false);
+    router.push("/dashboard");
+  });
   const onClickHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -27,7 +36,7 @@ const DeleteWorkoutDialog = ({ workoutId }: Props) => {
   };
 
   return (
-    <AlertDialog label="Delete" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog label={label} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
