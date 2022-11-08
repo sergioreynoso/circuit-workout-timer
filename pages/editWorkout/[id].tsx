@@ -1,8 +1,6 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
-import Button from "../../components/button";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
 import useFetchWorkout, {
@@ -15,21 +13,17 @@ type EditProps = {
 };
 
 const Edit = ({ initialData }: EditProps) => {
-  const router = useRouter();
   const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
 
-  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/workout/${initialData.id}`);
-  };
-
   if ("id" in data && "exercises" in data) {
+    console.log("parent", data.workout_name);
+
     return (
       <Wrapper>
         <Header>
           <Heading1>Edit Workout</Heading1>
-          <Button onClick={onCancel}>Cancel</Button>
         </Header>
-        <EditWorkoutForm workoutData={data}>
+        <EditWorkoutForm initialData={data}>
           <ExerciseList workoutId={data.id} data={data.exercises} />
         </EditWorkoutForm>
       </Wrapper>

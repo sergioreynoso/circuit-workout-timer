@@ -34,6 +34,7 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
 
     mutation.mutate({
       id: exerciseData.id,

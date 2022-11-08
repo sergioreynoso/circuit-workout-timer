@@ -33,7 +33,7 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    e.stopPropagation();
     mutation.mutate({
       exercise_name: name,
       type: "EXERCISE",

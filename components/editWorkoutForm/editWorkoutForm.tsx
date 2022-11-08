@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
@@ -10,22 +10,22 @@ import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
-type Props = {
-  workoutData: WorkoutWithExercises;
+type EditWorkoutFormProps = {
+  initialData: WorkoutWithExercises;
   children?: JSX.Element;
 };
 
-const EditWorkoutForm = ({ workoutData, children }: Props) => {
+const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
   const router = useRouter();
+  const [isDone, setIsDone] = useState<boolean>(false);
+  const [{ name, set, rest }, setInputValue] = useState({
+    name: "",
+    set: 0,
+    rest: 0,
+  });
 
   const mutation = useMutation((workout: WorkoutUpdate) => {
     return axios.post("/api/updateWorkout", workout);
-  });
-
-  const [{ name, set, rest }, setInputValue] = useState({
-    name: workoutData.workout_name,
-    set: workoutData.set_count,
-    rest: Math.round(workoutData.set_rest / 1000),
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -38,14 +38,26 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsDone(true);
     mutation.mutate({
-      id: workoutData.id,
+      id: initialData.id,
       workout_name: name,
       set_count: Number(set),
       set_rest: Number(rest * 1000),
     });
   };
+
+  useEffect(() => {
+    setInputValue({
+      name: initialData.workout_name,
+      set: initialData.set_count,
+      rest: Math.round(initialData.set_rest / 1000),
+    });
+  }, [initialData]);
+
+  if (mutation.isSuccess && isDone) {
+    router.push(`/workout/${initialData.id}`);
+  }
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
@@ -56,6 +68,7 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
         value={name}
         onChange={handleChange}
         placeholder=""
+        isRequired
       />
       <Input
         type="number"
@@ -80,13 +93,12 @@ const EditWorkoutForm = ({ workoutData, children }: Props) => {
         ) : (
           <div>
             {mutation.isError ? `An error occurred: ${mutation.error}` : null}
-            {mutation.isSuccess ? <div>Workout updated!</div> : null}
           </div>
         )}
       </div>
 
       <Button colors="primary" type="submit">
-        Update Workout
+        Done
       </Button>
     </Wrapper>
   );
