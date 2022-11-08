@@ -24,7 +24,7 @@ const Edit = ({ initialData }: EditProps) => {
           <Heading1>Edit Workout</Heading1>
         </Header>
         <EditWorkoutForm initialData={data}>
-          <ExerciseList workoutId={data.id} data={data.exercises} />
+          <ExerciseList workoutId={data.id} exerciseData={data.exercises} />
         </EditWorkoutForm>
       </Wrapper>
     );
