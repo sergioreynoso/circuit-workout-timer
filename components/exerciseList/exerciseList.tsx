@@ -4,7 +4,8 @@ import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import AddExerciseDialog from "../addExerciseDialog";
 import DeleteExerciseDialog from "../deleteExerciseDialog";
-import EditExerciseDialog from "../editExcersiseDialog";
+import EditExerciseDialog from "../editExerciseDialog";
+import ExerciseListItem from "../exerciseListItem";
 import { Flex } from "../layout";
 
 type Props = {
@@ -28,20 +29,8 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
         />
       </Flex>
       <Flex as="ul" direction="column" css={{ gap: "$sm", minWidth: "$bp-sm" }}>
-        {exerciseData.map((item) => (
-          <Item key={item.id}>
-            <ItemTitle>{item.exercise_name}</ItemTitle>
-            <Flex
-              css={{
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "$2x",
-              }}>
-              <ListItemDuration>{formatTime(item.duration)}</ListItemDuration>
-              <EditExerciseDialog exerciseData={item} />
-              <DeleteExerciseDialog exerciseId={item.id} />
-            </Flex>
-          </Item>
+        {exerciseData.map((exercise) => (
+          <ExerciseListItem key={exercise.id} exercise={exercise} />
         ))}
       </Flex>
     </Flex>
