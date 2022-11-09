@@ -16,8 +16,6 @@ const Edit = ({ initialData }: EditProps) => {
   const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
 
   if ("id" in data && "exercises" in data) {
-    console.log("parent", data.workout_name);
-
     return (
       <Wrapper>
         <Header>
