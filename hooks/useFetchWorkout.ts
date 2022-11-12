@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 type Endpoint = "getWorkout" | "getAllWorkouts";
+type QueryKey = "workout" | "workouts";
 
 export interface WorkoutWithExercises extends Workout {
   exercises: Exercise[];
@@ -20,12 +21,11 @@ const fetchWorkout = (
 const useFetchWorkout = (
   endPoint: Endpoint,
   id: string,
+  queryKey: QueryKey,
   initialData: WorkoutWithExercises | Workout[]
 ) => {
-  const uniqueKey: string = endPoint === "getWorkout" ? "workout" : "workouts";
-
   return useQuery({
-    queryKey: [uniqueKey, id, endPoint],
+    queryKey: [queryKey, id, endPoint],
     queryFn: () => fetchWorkout(id, endPoint),
     initialData: initialData,
   });
