@@ -13,7 +13,12 @@ type EditProps = {
 };
 
 const Edit = ({ initialData }: EditProps) => {
-  const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
+  const { data } = useFetchWorkout(
+    "getWorkout",
+    initialData.id,
+    "workout",
+    initialData
+  );
 
   if ("id" in data && "exercises" in data) {
     return (
@@ -22,7 +27,10 @@ const Edit = ({ initialData }: EditProps) => {
           <Heading1>Edit Workout</Heading1>
         </Header>
         <EditWorkoutForm initialData={data}>
-          <ExerciseList workoutId={data.id} exerciseData={data.exercises} />
+          <ExerciseList
+            workoutId={data.id}
+            exerciseData={[...data.exercises]}
+          />
         </EditWorkoutForm>
       </Wrapper>
     );
@@ -66,11 +74,6 @@ const Header = styled("div", {
 
 const Heading1 = styled("h1", {
   marginBottom: "$xl",
-});
-
-const NextLink = styled(Link, {
-  color: "$primary-09",
-  textDecoration: "none",
 });
 
 export default Edit;

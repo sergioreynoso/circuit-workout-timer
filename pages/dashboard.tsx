@@ -15,7 +15,12 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ id, initialData }: DashboardProps) => {
-  const { data } = useFetchWorkout("getAllWorkouts", id, initialData);
+  const { data } = useFetchWorkout(
+    "getAllWorkouts",
+    id,
+    "workouts",
+    initialData
+  );
 
   return (
     <Flex css={{ justifyContent: "center" }}>

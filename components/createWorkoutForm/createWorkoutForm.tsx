@@ -19,7 +19,7 @@ const CreateWorkoutForm = ({
   const router = useRouter();
   const [isDone, setIsDone] = useState<boolean>(false);
 
-  const updateWorkout = useWorkoutMutation("updateWorkout");
+  const updateWorkout = useWorkoutMutation("updateWorkout", "workout");
 
   const [{ name, set, rest }, setInputValue] = useState({
     name: "",

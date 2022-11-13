@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
+import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
@@ -18,15 +19,13 @@ type EditWorkoutFormProps = {
 const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
   const router = useRouter();
   const [isDone, setIsDone] = useState<boolean>(false);
-  const [{ name, set, rest }, setInputValue] = useState({
-    name: "",
-    set: 0,
-    rest: 0,
-  });
+  const [{ name, set, rest }, setInputValue] = useState(() => ({
+    name: initialData.workout_name,
+    set: initialData.set_count,
+    rest: Math.round(initialData.set_rest / 1000),
+  }));
 
-  const mutation = useMutation((workout: WorkoutUpdate) => {
-    return axios.post("/api/updateWorkout", workout);
-  });
+  const mutation = useWorkoutMutation("updateWorkout", "workout");
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -46,14 +45,6 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
       set_rest: Number(rest * 1000),
     });
   };
-
-  useEffect(() => {
-    setInputValue({
-      name: initialData.workout_name,
-      set: initialData.set_count,
-      rest: Math.round(initialData.set_rest / 1000),
-    });
-  }, [initialData]);
 
   if (mutation.isSuccess && isDone) {
     router.push(`/workout/${initialData.id}`);

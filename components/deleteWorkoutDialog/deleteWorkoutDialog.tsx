@@ -23,7 +23,7 @@ const DeleteWorkoutDialog = ({
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const mutation = useWorkoutMutation("deleteWorkout", () => {
+  const mutation = useWorkoutMutation("deleteWorkout", "workout", () => {
     setIsOpen(false);
     router.push("/dashboard");
   });

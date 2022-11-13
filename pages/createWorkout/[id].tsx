@@ -13,7 +13,12 @@ type CreateWorkoutProps = {
 };
 
 const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
-  const { data } = useFetchWorkout("getWorkout", initialData.id, initialData);
+  const { data } = useFetchWorkout(
+    "getWorkout",
+    initialData.id,
+    "workout",
+    initialData
+  );
 
   return (
     <Flex
