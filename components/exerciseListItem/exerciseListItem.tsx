@@ -4,7 +4,7 @@ import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import DeleteExerciseDialog from "../deleteExerciseDialog";
 import EditExerciseDialog from "../editExerciseDialog";
-import { Box, Flex } from "../layout";
+import { Flex } from "../layout";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CaretSortIcon } from "@radix-ui/react-icons";
@@ -69,7 +69,6 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
         <DeleteExerciseDialog exerciseId={exercise.id} />
         <DragHandle {...attributes} {...listeners}>
           <CaretSortIcon />
-          {exercise.display_seq}
         </DragHandle>
       </Flex>
     </Flex>
