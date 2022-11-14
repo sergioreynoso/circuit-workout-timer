@@ -50,7 +50,7 @@ const CreateWorkoutForm = ({
     if (updateWorkout.isSuccess && isDone) {
       router.push(`/workout/${initialData.id}`);
     }
-  }, [updateWorkout.isSuccess, isDone]);
+  }, [updateWorkout.isSuccess, isDone, initialData.id]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
