@@ -1,5 +1,4 @@
 import React from "react";
-import { Exercise, Workout } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
 import { Flex } from "../../components/layout";
