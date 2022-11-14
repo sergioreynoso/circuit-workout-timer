@@ -8,13 +8,17 @@ type Endpoint =
   | "deleteExercise"
   | "updateExerciseOrder";
 
-const useExerciseMutation = (endpoint: Endpoint, onSuccess?: () => void) => {
+const useExerciseMutation = (
+  endpoint: Endpoint,
+  onSuccess?: () => void,
+  isInvalidate: boolean = true
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (exercise: Partial<Exercise>) => axios.post(`/api/${endpoint}`, exercise),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["workout"]);
+        if (isInvalidate) queryClient.invalidateQueries(["workout"]);
         if (onSuccess) onSuccess();
       },
     }

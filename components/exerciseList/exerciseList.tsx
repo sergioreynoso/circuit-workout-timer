@@ -20,6 +20,8 @@ import {
 } from "@dnd-kit/sortable";
 import { styled } from "../../styles/stitches.congif";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
+import useExerciseMutation from "../../hooks/useExerciseMutation";
+import Preloader from "../preloader";
 
 type Props = {
   workoutId: string;
@@ -29,6 +31,7 @@ type Props = {
 const ExerciseList = ({ workoutId, exerciseData }: Props) => {
   const [activeId, setActiveId] = useState(null);
   const [exercises, setExercises] = useState(() => exerciseData);
+  const mutation = useExerciseMutation("updateExerciseOrder", undefined, false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -49,7 +52,7 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
-        return updateDisplaySeq<Exercise>(sortedArray);
+        return updateDisplaySeq<Exercise>(sortedArray, mutation);
       });
     }
     setActiveId(null);
@@ -91,10 +94,16 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
             exercisesTotalCount={exercises.length}
           />
         </Flex>
+
         <Flex
           as="ul"
           direction="column"
-          css={{ gap: "$sm", minWidth: "$bp-sm" }}>
+          css={{ gap: "$sm", minWidth: "$bp-sm", position: "relative" }}>
+          {mutation.isLoading ? (
+            <Overlay>
+              <Preloader label="Updating" />
+            </Overlay>
+          ) : null}
           <SortableContext
             items={exercises}
             strategy={verticalListSortingStrategy}>
@@ -113,6 +122,18 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
 
 const StyledDragOverLay = styled(DragOverlay, {
   boxShadow: "$high",
+});
+
+const Overlay = styled("div", {
+  position: "absolute",
+  top: "0",
+  right: "0",
+  bottom: "0",
+  left: "0",
+  color: "white",
+  fontWeight: "$700",
+  backgroundColor: "$grayA-11",
+  zIndex: "99999",
 });
 
 export default ExerciseList;
