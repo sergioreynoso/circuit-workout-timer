@@ -25,13 +25,11 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
   };
 
   useEffect(() => {
-    // console.log(exercise.exercise_name, exercise.display_seq);
-
     mutation.mutate({
       id: exercise.id,
       display_seq: exercise.display_seq,
     });
-  }, [exercise.display_seq]);
+  }, [exercise.display_seq, exercise.id]);
 
   return (
     <Flex
