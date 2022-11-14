@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
@@ -46,11 +46,15 @@ const CreateWorkoutForm = ({
     });
   };
 
+  const returnToWorkout = useCallback(() => {
+    router.push(`/workout/${initialData.id}`);
+  }, [router, initialData.id]);
+
   useEffect(() => {
     if (updateWorkout.isSuccess && isDone) {
-      router.push(`/workout/${initialData.id}`);
+      returnToWorkout();
     }
-  }, [updateWorkout.isSuccess, isDone, initialData.id]);
+  }, [updateWorkout.isSuccess, isDone, returnToWorkout]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
