@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "../../styles/stitches.congif";
 import Timer from "../../components/timer";
-import Link from "next/link";
+import { prisma } from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import { useRouter } from "next/router";

@@ -6,7 +6,7 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { Workout } from "@prisma/client";
-import prisma from "../lib/prisma";
+import { prisma } from "../lib/prisma";
 import useFetchWorkout from "../hooks/useFetchWorkout";
 
 type DashboardProps = {

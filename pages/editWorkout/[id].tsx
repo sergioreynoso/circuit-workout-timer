@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import Link from "next/link";
+import { prisma } from "../../lib/prisma";
 import React from "react";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";

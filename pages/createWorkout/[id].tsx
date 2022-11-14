@@ -2,7 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
 import { Flex } from "../../components/layout";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
