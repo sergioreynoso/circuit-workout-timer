@@ -9,12 +9,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import Button from "../button";
-import useExerciseMutation from "../../hooks/useExerciseMutation";
-import useUpdateExerciseOrder from "../../hooks/useUpdateExerciseOrder";
 
 export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
-  const mutation = useExerciseMutation("updateExerciseOrder");
-
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: exercise.id });
 
@@ -22,13 +18,6 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
-  useEffect(() => {
-    mutation.mutate({
-      id: exercise.id,
-      display_seq: exercise.display_seq,
-    });
-  }, [mutation, exercise.display_seq, exercise.id]);
 
   return (
     <Flex
