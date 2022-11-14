@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
@@ -46,9 +46,11 @@ const CreateWorkoutForm = ({
     });
   };
 
-  if (updateWorkout.isSuccess && isDone) {
-    router.push(`/workout/${initialData.id}`);
-  }
+  useEffect(() => {
+    if (updateWorkout.isSuccess && isDone) {
+      router.push(`/workout/${initialData.id}`);
+    }
+  }, [updateWorkout.isSuccess, isDone]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
