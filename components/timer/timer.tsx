@@ -9,7 +9,7 @@ import Exercise_counter from "../exerciseCounter";
 
 type TimerProps = {
   workout: Workout;
-  exercises: ExerciseWithTimestamp[] | undefined;
+  exercises: ExerciseWithTimestamp[];
 };
 
 const Timer = ({ workout, exercises }: TimerProps) => {
