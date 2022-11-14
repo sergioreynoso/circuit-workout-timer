@@ -14,7 +14,6 @@ import useUpdateExerciseOrder from "../../hooks/useUpdateExerciseOrder";
 
 export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
   const mutation = useExerciseMutation("updateExerciseOrder");
-  // useUpdateExerciseOrder(exercise);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: exercise.id });
@@ -29,14 +28,12 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
       id: exercise.id,
       display_seq: exercise.display_seq,
     });
-  }, [exercise.display_seq, exercise.id]);
+  }, [mutation, exercise.display_seq, exercise.id]);
 
   return (
     <Flex
       ref={setNodeRef}
       style={style}
-      // {...attributes}
-      // {...listeners}
       css={{
         justifyContent: "space-between",
         alignItems: "center",
