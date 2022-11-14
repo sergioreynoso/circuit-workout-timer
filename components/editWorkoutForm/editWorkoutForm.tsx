@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Input from "../input/input";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
@@ -46,9 +46,15 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
     });
   };
 
-  if (mutation.isSuccess && isDone) {
+  const exitWhenDone = useCallback(() => {
     router.push(`/workout/${initialData.id}`);
-  }
+  }, [initialData.id]);
+
+  useEffect(() => {
+    if (mutation.isSuccess && isDone) {
+      exitWhenDone();
+    }
+  }, [mutation.isSuccess, isDone, exitWhenDone]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
