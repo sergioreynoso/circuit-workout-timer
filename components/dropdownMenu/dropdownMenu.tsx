@@ -5,7 +5,7 @@ import { keyframes, styled } from "../../styles/stitches.congif";
 import { ChevronDownIcon, ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import { User } from "../../types/next-auth";
 
-export default ({ user }: { user: User }) => (
+const DropDownMenu = ({ user }: { user: User }) => (
   <DropdownMenu.Root>
     <Trigger>
       <ChevronDown />
@@ -122,3 +122,5 @@ const SettingIcon = styled(GearIcon, {
 const LogoutIcon = styled(ExitIcon, {
   color: "$gray-01",
 });
+
+export default DropDownMenu;
