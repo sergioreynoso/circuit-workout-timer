@@ -4,6 +4,22 @@ import { violet, blackA } from "@radix-ui/colors";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import abbreviateName from "../../lib/abbreviateName";
 
+interface User {
+  email: string;
+  id: string;
+  image: string;
+  name: string;
+}
+
+const Avatar = ({ user }: { user: User }) => {
+  return (
+    <StyledAvatar>
+      <StyledImage src={undefined} alt={user.name} />
+      <StyledFallback delayMs={600}>{abbreviateName(user.name)}</StyledFallback>
+    </StyledAvatar>
+  );
+};
+
 const StyledAvatar = styled(AvatarPrimitive.Root, {
   display: "inline-flex",
   alignItems: "center",
@@ -36,21 +52,5 @@ const StyledFallback = styled(AvatarPrimitive.Fallback, {
   lineHeight: 1,
   fontWeight: 500,
 });
-
-interface User {
-  email: string;
-  id: string;
-  image: string;
-  name: string;
-}
-
-const Avatar = ({ user }: { user: User }) => {
-  return (
-    <StyledAvatar>
-      <StyledImage src={undefined} alt={user.name} />
-      <StyledFallback delayMs={600}>{abbreviateName(user.name)}</StyledFallback>
-    </StyledAvatar>
-  );
-};
 
 export default Avatar;
