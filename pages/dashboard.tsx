@@ -45,15 +45,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  const id = session.user?.id;
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  const id = session?.user?.id;
   const workouts = await prisma?.workout.findMany({
     where: {
       userId: id as string,
