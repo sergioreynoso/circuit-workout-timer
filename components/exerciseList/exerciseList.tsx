@@ -19,6 +19,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { styled } from "../../styles/stitches.congif";
+import updateDisplaySeq from "../../lib/updateDisplaySeq";
 
 type Props = {
   workoutId: string;
@@ -47,12 +48,8 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
       setExercises((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
-        const sortedArray = arrayMove(items, oldIndex, newIndex).map(
-          (exercise, index) => {
-            return { ...exercise, display_seq: index };
-          }
-        );
-        return sortedArray;
+        const sortedArray = arrayMove(items, oldIndex, newIndex);
+        return updateDisplaySeq<Exercise>(sortedArray);
       });
     }
     setActiveId(null);
