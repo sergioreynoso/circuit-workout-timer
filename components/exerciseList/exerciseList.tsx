@@ -1,5 +1,5 @@
 import { Exercise } from "@prisma/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AddExerciseDialog from "../addExerciseDialog";
 import ExerciseListItem from "../exerciseListItem";
 import { Flex } from "../layout";
@@ -8,7 +8,6 @@ import {
   closestCenter,
   DragOverlay,
   KeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
   TouchSensor,
@@ -36,7 +35,6 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
   const mutation = useExerciseMutation("updateExerciseOrder", undefined, false);
 
   const sensors = useSensors(
-    // useSensor(PointerSensor),
     useSensor(MouseSensor),
     useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
@@ -56,7 +54,12 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
-        return updateDisplaySeq<Exercise>(sortedArray, mutation);
+        const updatedDisplaySeq = updateDisplaySeq<Exercise>(
+          sortedArray,
+          mutation
+        );
+        mutation.mutate(updatedDisplaySeq as Partial<Exercise>);
+        return updatedDisplaySeq;
       });
     }
     setActiveId(null);
