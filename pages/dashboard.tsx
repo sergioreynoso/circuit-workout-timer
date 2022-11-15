@@ -7,7 +7,6 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { Workout } from "@prisma/client";
 import { prisma } from "../lib/prisma";
-import useFetchWorkout from "../hooks/useFetchWorkout";
 
 type DashboardProps = {
   id: string;
@@ -15,13 +14,6 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ id, initialData }: DashboardProps) => {
-  const { data } = useFetchWorkout(
-    "getAllWorkouts",
-    id,
-    "workouts",
-    initialData
-  );
-
   return (
     <Flex css={{ justifyContent: "center" }}>
       <Flex
@@ -33,7 +25,7 @@ const Dashboard = ({ id, initialData }: DashboardProps) => {
           maxWidth: "600px",
         }}>
         <WorkoutListHeader userId={id} />
-        <WorkoutList data={data as Workout[]} />
+        <WorkoutList data={initialData as Workout[]} />
       </Flex>
     </Flex>
   );
@@ -45,14 +37,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res,
     authOptions
   );
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
   const id = session?.user?.id;
   const workouts = await prisma?.workout.findMany({
     where: {
