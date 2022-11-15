@@ -22,7 +22,6 @@ import {
 import { styled } from "../../styles/stitches.congif";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
-import Preloader from "../preloader";
 
 type Props = {
   workoutId: string;
@@ -106,11 +105,6 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
           as="ul"
           direction="column"
           css={{ gap: "$sm", minWidth: "380px", position: "relative" }}>
-          {/* {mutation.isLoading ? (
-            <Overlay>
-              <Preloader label="Updating" />
-            </Overlay>
-          ) : null} */}
           <SortableContext
             items={exercises}
             strategy={verticalListSortingStrategy}>
