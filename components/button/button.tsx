@@ -39,6 +39,14 @@ const Button = styled("button", {
           backgroundColor: "$secondary-05",
         },
       },
+      draggable: {
+        cursor: "grab",
+        color: "$secondary-12",
+        backgroundColor: "transparent",
+        "&:active": {
+          cursor: "grabbing",
+        },
+      },
     },
   },
 });

@@ -27,7 +27,7 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
         justifyContent: "space-between",
         alignItems: "center",
         gap: "$md",
-        padding: "$lg",
+        padding: "$md",
         color: "$primary-12",
         backgroundColor: "$primary-03",
       }}>
@@ -36,7 +36,6 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
           flex: "1",
           justifyContent: "space-between",
           alignItem: "center",
-          gap: "$lg",
         }}>
         <ItemTitle>{exercise.exercise_name}</ItemTitle>
         <ListItemDuration>{formatTime(exercise.duration)}</ListItemDuration>
@@ -47,13 +46,13 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
           justifyContent: "flex-end",
           alignItems: "center",
           // backgroundColor: "blue",
-          gap: "$lg",
+          gap: "$md",
         }}>
         <EditExerciseDialog exerciseData={exercise} />
         <DeleteExerciseDialog exerciseId={exercise.id} />
-        <DragHandle {...attributes} {...listeners}>
+        <Button colors="draggable" {...attributes} {...listeners}>
           <CaretSortIcon />
-        </DragHandle>
+        </Button>
       </Flex>
     </Flex>
   );
@@ -66,11 +65,6 @@ const ItemTitle = styled("p", {
 
 const ListItemDuration = styled("span", {
   userSelect: "none",
-});
-
-const DragHandle = styled(Button, {
-  backgroundColor: "transparent",
-  cursor: "grab",
 });
 
 export default ExerciseListItem;

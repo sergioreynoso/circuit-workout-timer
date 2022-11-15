@@ -11,6 +11,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  TouchSensor,
+  MouseSensor,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -34,7 +36,9 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
   const mutation = useExerciseMutation("updateExerciseOrder", undefined, false);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    // useSensor(PointerSensor),
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -86,7 +90,7 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
           css={{
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "$lg",
+            padding: "$md",
           }}>
           <h3>Add exercise</h3>
           <AddExerciseDialog
@@ -98,12 +102,12 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
         <Flex
           as="ul"
           direction="column"
-          css={{ gap: "$sm", minWidth: "$bp-sm", position: "relative" }}>
-          {mutation.isLoading ? (
+          css={{ gap: "$sm", minWidth: "380px", position: "relative" }}>
+          {/* {mutation.isLoading ? (
             <Overlay>
               <Preloader label="Updating" />
             </Overlay>
-          ) : null}
+          ) : null} */}
           <SortableContext
             items={exercises}
             strategy={verticalListSortingStrategy}>
