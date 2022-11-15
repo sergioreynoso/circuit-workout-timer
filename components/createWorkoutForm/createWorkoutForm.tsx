@@ -17,9 +17,10 @@ const CreateWorkoutForm = ({
   initialData: WorkoutWithExercises;
 }) => {
   const router = useRouter();
-  const [isDone, setIsDone] = useState<boolean>(false);
 
-  const updateWorkout = useWorkoutMutation("updateWorkout", "workout");
+  const updateWorkout = useWorkoutMutation("updateWorkout", "workout", () => {
+    router.push(`/workout/${initialData.id}`);
+  });
 
   const [{ name, set, rest }, setInputValue] = useState({
     name: "",
@@ -37,7 +38,6 @@ const CreateWorkoutForm = ({
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsDone(true);
     updateWorkout.mutate({
       id: initialData.id,
       workout_name: name,
@@ -45,16 +45,6 @@ const CreateWorkoutForm = ({
       set_rest: Number(rest * 1000),
     });
   };
-
-  const returnToWorkout = useCallback(() => {
-    router.push(`/workout/${initialData.id}`);
-  }, [router, initialData.id]);
-
-  useEffect(() => {
-    if (updateWorkout.isSuccess && isDone) {
-      returnToWorkout();
-    }
-  }, [updateWorkout.isSuccess, isDone, returnToWorkout]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>

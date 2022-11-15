@@ -25,7 +25,9 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
     rest: Math.round(initialData.set_rest / 1000),
   }));
 
-  const mutation = useWorkoutMutation("updateWorkout", "workout");
+  const mutation = useWorkoutMutation("updateWorkout", "workout", () => {
+    router.push(`/workout/${initialData.id}`);
+  });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -37,7 +39,6 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsDone(true);
     mutation.mutate({
       id: initialData.id,
       workout_name: name,
@@ -45,16 +46,6 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
       set_rest: Number(rest * 1000),
     });
   };
-
-  const exitWhenDone = useCallback(() => {
-    router.push(`/workout/${initialData.id}`);
-  }, [initialData.id]);
-
-  useEffect(() => {
-    if (mutation.isSuccess && isDone) {
-      exitWhenDone();
-    }
-  }, [mutation.isSuccess, isDone, exitWhenDone]);
 
   return (
     <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
