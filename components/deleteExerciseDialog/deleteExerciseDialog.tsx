@@ -9,6 +9,7 @@ import AlertDialog from "../alertDialog";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
   exerciseId: string;
@@ -29,7 +30,7 @@ const DeleteExerciseDialog = ({ exerciseId }: Props) => {
   };
 
   return (
-    <AlertDialog label="Delete" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog label="D" isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (

@@ -106,7 +106,7 @@ const Wrapper = styled("div", {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: "$lg",
+  padding: "$lmd",
 });
 
 export default EditWorkoutForm;
