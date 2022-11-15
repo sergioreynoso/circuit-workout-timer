@@ -45,7 +45,6 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
         css={{
           justifyContent: "flex-end",
           alignItems: "center",
-          // backgroundColor: "blue",
           gap: "$md",
         }}>
         <EditExerciseDialog exerciseData={exercise} />
