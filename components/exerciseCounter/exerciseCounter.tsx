@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
+import { Flex } from "../layout";
 
 interface ExerciseProps {
   workoutExercises: ExerciseWithTimestamp[];
@@ -41,38 +42,47 @@ const ExerciseCounter = ({
 
   if (remainingTime <= 0) {
     return (
-      <Box>
+      <Flex>
         <p>Workout Complete!</p>
-      </Box>
+      </Flex>
     );
   }
 
   return (
-    <Box>
-      <Heading2>{formatTime(exerciseDuration.current)}</Heading2>
-      <br />
-      <p>{exercise.current.exercise_name}</p>
+    <Flex
+      direction="column"
+      css={{ flexDirection: "column", alignItems: "center", gap: "$3x" }}>
+      <p>Time Remaining: {formatTime(remainingTime)}</p>
+      <TimerCounter>{formatTime(exerciseDuration.current)}</TimerCounter>
+      <CurrentExercise>{exercise.current.exercise_name}</CurrentExercise>
       {exercises.current[nextExerciseIndex.current] && (
-        <Box
-          css={{
-            marginTop: "$3x",
-          }}>
+        <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
           <h4>Up next:</h4>
-          <p>{exercises.current[nextExerciseIndex.current]?.exercise_name}</p>
-        </Box>
+          <NextExercise>
+            {exercises.current[nextExerciseIndex.current]?.exercise_name}
+          </NextExercise>
+        </Flex>
       )}
-    </Box>
+    </Flex>
   );
 };
 
-const Box = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "$sm",
+const TimerCounter = styled("h2", {
+  fontSize: "$3x",
+  lineHeight: "$150",
 });
-const Heading2 = styled("h2", {
-  fontSize: "$5x",
+
+const CurrentExercise = styled("p", {
+  fontSize: "$3x",
+  fontWeight: "$700",
+  lineHeight: "$150",
+  color: "$primary-09",
+});
+
+const NextExercise = styled("p", {
+  fontSize: "$xx",
+  fontWeight: "$700",
+  lineHeight: "$150",
 });
 
 export default ExerciseCounter;
