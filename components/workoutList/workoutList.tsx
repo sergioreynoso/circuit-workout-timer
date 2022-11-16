@@ -28,7 +28,7 @@ const WorkoutList = ({ data }: { data: Workout[] }) => {
             <NextLink href={`/workout/${workout.id}`}>
               {workout.workout_name}
             </NextLink>
-            <DeleteWorkoutDialog label="Delete" workoutId={workout.id} />
+            <DeleteWorkoutDialog label="" workoutId={workout.id} />
           </Flex>
         );
       })}

@@ -38,9 +38,7 @@ const DeleteWorkoutDialog = ({
   };
 
   const triggerButton = (
-    <Button colors="transparent">
-      <TrashIcon />
-    </Button>
+    <Button colors="transparent">{label ? label : <TrashIcon />}</Button>
   );
 
   return (
