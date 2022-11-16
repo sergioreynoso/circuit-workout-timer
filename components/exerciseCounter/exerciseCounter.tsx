@@ -3,6 +3,7 @@ import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { Flex } from "../layout";
+import SetCounter from "../setCounter";
 
 interface ExerciseProps {
   workoutExercises: ExerciseWithTimestamp[];
@@ -52,6 +53,7 @@ const ExerciseCounter = ({
     <Flex
       direction="column"
       css={{ flexDirection: "column", alignItems: "center", gap: "$3x" }}>
+      <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
       <p>Time Remaining: {formatTime(remainingTime)}</p>
       <TimerCounter>{formatTime(exerciseDuration.current)}</TimerCounter>
       <CurrentExercise>{exercise.current.exercise_name}</CurrentExercise>
