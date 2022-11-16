@@ -29,8 +29,17 @@ const DeleteExerciseDialog = ({ exerciseId }: Props) => {
     });
   };
 
+  const triggerButton = (
+    <Button colors="transparent">
+      <TrashIcon />
+    </Button>
+  );
+
   return (
-    <AlertDialog label="D" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog
+      triggerButton={triggerButton}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (

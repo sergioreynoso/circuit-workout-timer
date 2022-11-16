@@ -94,7 +94,7 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
             alignItems: "center",
             padding: "$md",
           }}>
-          <h3>Add exercise</h3>
+          <h3>Add an exercise to your workout</h3>
           <AddExerciseDialog
             workoutId={workoutId}
             exercisesTotalCount={exercises.length}

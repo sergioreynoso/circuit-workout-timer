@@ -3,17 +3,17 @@ import { keyframes, styled } from "../../styles/stitches.congif";
 import Button from "../button";
 
 type Props = {
-  label: string;
+  triggerButton: JSX.Element;
   children: JSX.Element;
   isOpen?: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const AlertDialog = ({ label, children, isOpen, setIsOpen }: Props) => {
+const AlertDialog = ({ triggerButton, children, isOpen, setIsOpen }: Props) => {
   return (
     <AlertDialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogPrimitive.Trigger asChild>
-        <Button colors="primary">{label}</Button>
+        {triggerButton}
       </AlertDialogPrimitive.Trigger>
       <AlertDialogPrimitive.Portal>
         <Overlay />

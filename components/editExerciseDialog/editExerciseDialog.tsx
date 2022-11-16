@@ -6,6 +6,8 @@ import Input from "../input";
 import Button from "../button";
 import { Flex } from "../layout";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
+import { Pencil1Icon } from "@radix-ui/react-icons";
+import { styled } from "../../styles/stitches.congif";
 
 type Props = {
   exerciseData: ExerciseWithTimestamp;
@@ -44,8 +46,17 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
     });
   };
 
+  const triggerButton = (
+    <Button colors="transparent">
+      <Pencil1Icon />
+    </Button>
+  );
+
   return (
-    <AlertDialog label="Edit" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog
+      triggerButton={triggerButton}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}>
       <Flex direction="column">
         <Title>Edit Exercise</Title>
         <Flex
@@ -93,4 +104,5 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
     </AlertDialog>
   );
 };
+
 export default EditExerciseDialog;

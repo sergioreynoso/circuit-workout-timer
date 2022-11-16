@@ -31,25 +31,27 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
         color: "$primary-12",
         backgroundColor: "$primary-03",
       }}>
-      <Flex
-        css={{
-          flex: "1",
-          justifyContent: "space-between",
-          alignItem: "center",
-        }}>
-        <ItemTitle>{exercise.exercise_name}</ItemTitle>
-        <ListItemDuration>{formatTime(exercise.duration)}</ListItemDuration>
-      </Flex>
+      <ItemTitle>{exercise.exercise_name}</ItemTitle>
 
       <Flex
         css={{
           justifyContent: "flex-end",
           alignItems: "center",
-          gap: "$md",
+          gap: "$sm",
         }}>
+        <ListItemDuration>{formatTime(exercise.duration)}</ListItemDuration>
         <EditExerciseDialog exerciseData={exercise} />
         <DeleteExerciseDialog exerciseId={exercise.id} />
-        <Button colors="draggable" {...attributes} {...listeners}>
+        <Button
+          colors="transparent"
+          {...attributes}
+          {...listeners}
+          css={{
+            cursor: "grab",
+            "&:active": {
+              cursor: "grabbing",
+            },
+          }}>
           <CaretSortIcon />
         </Button>
       </Flex>
@@ -59,6 +61,7 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
 
 const ItemTitle = styled("p", {
   fontWeight: "$700",
+  lineHeight: "$150",
   userSelect: "none",
 });
 

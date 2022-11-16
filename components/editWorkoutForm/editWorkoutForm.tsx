@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { Flex } from "../layout";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
 
@@ -48,7 +49,21 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
   };
 
   return (
-    <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
+    <Flex
+      direction="column"
+      as="form"
+      css={{
+        position: "relative",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "$lmd",
+        gap: "$xl",
+
+        "@less-sm": {
+          paddingBottom: "40px",
+        },
+      }}
+      onSubmit={onFormSubmit}>
       <Input
         type="text"
         label="Workout Name"
@@ -84,20 +99,29 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
           </div>
         )}
       </div>
-
-      <Button colors="primary" type="submit">
-        Done
-      </Button>
-    </Wrapper>
+      <Footer>
+        <Button
+          colors="primary"
+          type="submit"
+          css={{ flex: 1, maxWidth: "200px" }}>
+          Done
+        </Button>
+      </Footer>
+    </Flex>
   );
 };
 
-const Wrapper = styled("div", {
+const Footer = styled("div", {
   display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
   justifyContent: "center",
-  padding: "$lmd",
+  alignItems: "center",
+  width: "100%",
+  height: "80px",
+  backgroundColor: "$primary-02",
+  "@less-sm": {
+    position: "fixed",
+    bottom: "0",
+  },
 });
 
 export default EditWorkoutForm;

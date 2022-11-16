@@ -1,6 +1,10 @@
 import { styled } from "../../styles/stitches.congif";
 
 const Button = styled("button", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  minWidth: "45px",
   border: "none",
   borderRadius: "$md",
   padding: "$md $xl",
@@ -18,14 +22,14 @@ const Button = styled("button", {
   variants: {
     colors: {
       primary: {
-        color: "$primary-12",
-        backgroundColor: "$primary-03",
+        color: "$primary-01",
+        backgroundColor: "$primary-09",
 
         "&:hover": {
-          backgroundColor: "$primary-04",
+          backgroundColor: "$primary-10",
         },
         "&:active": {
-          backgroundColor: "$primary-05",
+          backgroundColor: "$primary-11",
         },
       },
       secondary: {
@@ -39,13 +43,10 @@ const Button = styled("button", {
           backgroundColor: "$secondary-05",
         },
       },
-      draggable: {
-        cursor: "grab",
+      transparent: {
         color: "$secondary-12",
         backgroundColor: "transparent",
-        "&:active": {
-          cursor: "grabbing",
-        },
+        padding: "$xs",
       },
     },
   },

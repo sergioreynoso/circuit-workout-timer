@@ -10,6 +10,8 @@ import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 import { useRouter } from "next/router";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { Flex } from "../layout";
 
 type DeleteWorkoutDialogProps = {
   label: string;
@@ -35,33 +37,38 @@ const DeleteWorkoutDialog = ({
     });
   };
 
+  const triggerButton = (
+    <Button colors="transparent">
+      <TrashIcon />
+    </Button>
+  );
+
   return (
-    <AlertDialog label={label} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog
+      triggerButton={triggerButton}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <Wrapper css={{ flexDirection: "column", gap: "$lg" }}>
+        <Flex css={{ flexDirection: "column", gap: "$lg" }}>
           <Title>Delete</Title>
           <Description>
             This action cannot be undone. This will permanently delete your
             workout and remove your data from our servers.
           </Description>
-          <Wrapper css={{ justifyContent: "flex-end", gap: "$lg" }}>
+          <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>
               <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
             <Button onClick={onClickHandler}>Delete</Button>
             {/* </Action> */}
-          </Wrapper>
-        </Wrapper>
+          </Flex>
+        </Flex>
       )}
     </AlertDialog>
   );
 };
-
-const Wrapper = styled("div", {
-  display: "flex",
-});
 
 export default DeleteWorkoutDialog;

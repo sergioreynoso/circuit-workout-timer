@@ -47,7 +47,16 @@ const CreateWorkoutForm = ({
   };
 
   return (
-    <Wrapper as="form" css={{ gap: "$xl" }} onSubmit={onFormSubmit}>
+    <Flex
+      as="form"
+      css={{
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "$lg",
+        gap: "$xl",
+      }}
+      onSubmit={onFormSubmit}>
       <Input
         type="text"
         label="Workout Name"
@@ -91,30 +100,27 @@ const CreateWorkoutForm = ({
         )}
       </div>
 
-      <Flex css={{ gap: "$lg" }}>
+      <Footer css={{ gap: "$lg" }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={initialData.id} />
         <Button colors="primary" type="submit">
           Done
         </Button>
-      </Flex>
-    </Wrapper>
+      </Footer>
+    </Flex>
   );
 };
 
-const Wrapper = styled("div", {
+const Footer = styled("div", {
   display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
   justifyContent: "center",
-  padding: "$lg",
-});
-
-const NextLink = styled(Link, {
-  color: "$primary-12",
-  textDecoration: "none",
-  padding: "$md $xl",
-  ["&:hover"]: {
-    color: "$primary-11",
+  alignItems: "center",
+  gap: "$lg",
+  width: "100%",
+  height: "80px",
+  backgroundColor: "$primary-02",
+  "@less-sm": {
+    position: "fixed",
+    bottom: "0",
   },
 });
 

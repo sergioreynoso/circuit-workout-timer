@@ -6,6 +6,7 @@ import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import Timer_control from "../timerControl";
 import Exercise_counter from "../exerciseCounter";
+import { Flex } from "../layout";
 
 type TimerProps = {
   workout: Workout;
@@ -17,22 +18,33 @@ const Timer = ({ workout, exercises }: TimerProps) => {
   const [remainingTime, isTimer, startTimer] = useTimer(workoutTotalTime);
 
   return (
-    <Box as="main">
+    <Flex
+      as="main"
+      css={{ flexDirection: "column", alignItems: "center", gap: "$2x" }}>
       <p>{formatTime(remainingTime)}</p>
       <Exercise_counter
         workoutExercises={workoutExercises}
         remainingTime={remainingTime}
       />
-      <Timer_control startTimer={startTimer} isTimer={isTimer} />
-    </Box>
+      <Footer>
+        <Timer_control startTimer={startTimer} isTimer={isTimer} />
+      </Footer>
+    </Flex>
   );
 };
 
-const Box = styled("div", {
+const Footer = styled("div", {
   display: "flex",
-  flexDirection: "column",
+  justifyContent: "center",
   alignItems: "center",
-  gap: "$2x",
+  gap: "$lg",
+  width: "100%",
+  height: "80px",
+  backgroundColor: "$primary-02",
+  "@less-sm": {
+    position: "fixed",
+    bottom: "0",
+  },
 });
 
 export default Timer;

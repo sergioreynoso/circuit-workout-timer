@@ -5,6 +5,7 @@ import Input from "../input";
 import Button from "../button";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
 import { Flex } from "../layout";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 type Props = {
   workoutId: string;
@@ -47,8 +48,17 @@ const AddExerciseDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
     });
   };
 
+  const triggerButton = (
+    <Button colors="primary">
+      <PlusIcon />
+    </Button>
+  );
+
   return (
-    <AlertDialog label="Add Exercise" isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog
+      triggerButton={triggerButton}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}>
       <Flex direction="column">
         <Title>Add Exercise</Title>
         <Flex
