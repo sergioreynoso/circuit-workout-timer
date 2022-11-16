@@ -14,7 +14,7 @@ interface User {
 const Avatar = ({ user }: { user: User }) => {
   return (
     <StyledAvatar>
-      <StyledImage src={undefined} alt={user.name} />
+      <StyledImage src={user.image} alt={user.name} />
       <StyledFallback delayMs={600}>{abbreviateName(user.name)}</StyledFallback>
     </StyledAvatar>
   );
