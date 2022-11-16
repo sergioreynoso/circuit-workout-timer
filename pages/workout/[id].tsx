@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import { useRouter } from "next/router";
 import Button from "../../components/button";
+import { Flex } from "../../components/layout";
 
 type WorkoutTimerProps = {
   initialData: WorkoutWithExercises;
@@ -23,16 +24,26 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
   };
 
   return (
-    <Box>
+    <Flex
+      direction="column"
+      css={{
+        justifyContent: "space-around",
+        alignItems: "center",
+        padding: "24px",
+        height: "100%",
+        maxHeight: "700px",
+        backgroundColor: "$gray-02",
+      }}>
       <Heading1>{initialData.workout_name}</Heading1>
-      <Navigation>
+
+      <Flex css={{ flex: "1" }}>
+        <Timer workout={initialData} exercises={initialData.exercises} />
+      </Flex>
+      <Flex as="nav" css={{ justifyContent: "space-between", gap: "$3x" }}>
         <Button onClick={onCancel}>Cancel</Button>
         <Button onClick={onEdit}>Edit</Button>
-      </Navigation>
-      <Box>
-        <Timer workout={initialData} exercises={initialData.exercises} />
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };
 
@@ -55,24 +66,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-const Box = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "24px",
-});
-
 const Heading1 = styled("h1", {
+  fontSize: "$lg",
   lineHeight: "$150",
   textAlign: "center",
-  marginBottom: "$xl",
-});
-
-const Navigation = styled("nav", {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "$3x",
+  marginBottom: "$lg",
 });
 
 export default WorkoutTimer;
