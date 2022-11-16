@@ -21,7 +21,6 @@ const Timer = ({ workout, exercises }: TimerProps) => {
     <Flex
       as="main"
       css={{ flexDirection: "column", alignItems: "center", gap: "$2x" }}>
-      <p>{formatTime(remainingTime)}</p>
       <Exercise_counter
         workoutExercises={workoutExercises}
         remainingTime={remainingTime}
