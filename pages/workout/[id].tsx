@@ -20,7 +20,6 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
         justifyContent: "space-around",
         alignItems: "center",
         padding: "24px",
-        backgroundColor: "$gray-02",
       }}>
       <Heading1>{initialData.workout_name}</Heading1>
 
