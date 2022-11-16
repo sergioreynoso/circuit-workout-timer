@@ -53,10 +53,7 @@ const ExerciseList = ({ workoutId, exerciseData }: Props) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
-        const updatedDisplaySeq = updateDisplaySeq<Exercise>(
-          sortedArray,
-          mutation
-        );
+        const updatedDisplaySeq = updateDisplaySeq(sortedArray);
         mutation.mutate(updatedDisplaySeq as Partial<Exercise>);
         return updatedDisplaySeq;
       });
