@@ -1,6 +1,7 @@
 import { Exercise, Workout } from "@prisma/client";
 import React, { useMemo, useRef } from "react";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
+import { styled } from "../../styles/stitches.congif";
 import { Flex } from "../layout";
 
 const INITIAL_SET: 0 = 0;
@@ -33,8 +34,18 @@ const SetCounter = ({ exercises, remainingTime }: SetCounterProps) => {
     }
   });
 
-  return <Flex>{`Sets: ${currentSetCount.current} / ${totalSets}`}</Flex>;
-  //   return <Flex>0/0</Flex>;
+  return (
+    <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
+      <h4>Sets:</h4>
+      <Sets>{`${currentSetCount.current} / ${totalSets}`}</Sets>
+    </Flex>
+  );
 };
+
+const Sets = styled("p", {
+  fontSize: "$xx",
+  fontWeight: "$700",
+  lineHeight: "$150",
+});
 
 export default SetCounter;

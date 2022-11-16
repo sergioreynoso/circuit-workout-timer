@@ -53,9 +53,9 @@ const ExerciseCounter = ({
     <Flex
       direction="column"
       css={{ flexDirection: "column", alignItems: "center", gap: "$3x" }}>
-      <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
       <p>Time Remaining: {formatTime(remainingTime)}</p>
       <TimerCounter>{formatTime(exerciseDuration.current)}</TimerCounter>
+      <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
       <CurrentExercise>{exercise.current.exercise_name}</CurrentExercise>
       {exercises.current[nextExerciseIndex.current] && (
         <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
