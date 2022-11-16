@@ -104,24 +104,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  if (workouts.length <= 0) {
-    const workout = await prisma?.workout.create({
-      data: {
-        workout_name: "Default workout",
-        set_count: 3,
-        set_rest: 3000,
-        userId: id,
-        display_seq: 0,
-        exercises: {
-          create: exercises,
-        },
-      },
-      include: {
-        exercises: true,
-      },
-    });
-  }
-  console.log(workouts);
+  // if (workouts.length <= 0) {
+  //   const workout = await prisma?.workout.create({
+  //     data: {
+  //       workout_name: "Default workout",
+  //       set_count: 3,
+  //       set_rest: 3000,
+  //       userId: id,
+  //       display_seq: 0,
+  //       exercises: {
+  //         create: exercises,
+  //       },
+  //     },
+  //     include: {
+  //       exercises: true,
+  //     },
+  //   });
+  // }
+
   return {
     props: {
       id,
