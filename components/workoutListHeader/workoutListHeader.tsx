@@ -6,7 +6,7 @@ import React from "react";
 import Button from "../button";
 import { Flex } from "../layout";
 
-interface TransformedWorkout extends Omit<Workout, "id"> {
+export interface TransformedWorkout extends Omit<Workout, "id"> {
   exerciseList: Partial<Exercise>[];
 }
 
