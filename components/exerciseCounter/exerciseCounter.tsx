@@ -52,7 +52,7 @@ const ExerciseCounter = ({
   return (
     <Flex
       direction="column"
-      css={{ flexDirection: "column", alignItems: "center", gap: "$3x" }}>
+      css={{ flexDirection: "column", alignItems: "center", gap: "$lg" }}>
       <p>Time Remaining: {formatTime(remainingTime)}</p>
       <TimerCounter>{formatTime(exerciseDuration.current)}</TimerCounter>
       <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
