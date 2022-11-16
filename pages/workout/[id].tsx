@@ -64,6 +64,8 @@ const Box = styled("div", {
 });
 
 const Heading1 = styled("h1", {
+  lineHeight: "$150",
+  textAlign: "center",
   marginBottom: "$xl",
 });
 
