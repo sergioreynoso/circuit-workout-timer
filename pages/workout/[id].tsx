@@ -13,16 +13,6 @@ type WorkoutTimerProps = {
 };
 
 const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
-  const router = useRouter();
-
-  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/dashboard`);
-  };
-
-  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/editWorkout/${initialData.id as string}`);
-  };
-
   return (
     <Flex
       direction="column"
@@ -38,10 +28,6 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
 
       <Flex css={{ flex: "1" }}>
         <Timer workout={initialData} exercises={initialData.exercises} />
-      </Flex>
-      <Flex as="nav" css={{ justifyContent: "space-between", gap: "$3x" }}>
-        <Button onClick={onCancel}>Cancel</Button>
-        <Button onClick={onEdit}>Edit</Button>
       </Flex>
     </Flex>
   );

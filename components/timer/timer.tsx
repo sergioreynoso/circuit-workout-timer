@@ -7,6 +7,8 @@ import { styled } from "../../styles/stitches.congif";
 import Timer_control from "../timerControl";
 import Exercise_counter from "../exerciseCounter";
 import { Flex } from "../layout";
+import { useRouter } from "next/router";
+import Button from "../button";
 
 type TimerProps = {
   workout: Workout;
@@ -17,6 +19,16 @@ const Timer = ({ workout, exercises }: TimerProps) => {
   const [workoutExercises, workoutTotalTime] = useWorkout(workout, exercises);
   const [remainingTime, isTimer, startTimer] = useTimer(workoutTotalTime);
 
+  const router = useRouter();
+
+  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    router.push(`/dashboard`);
+  };
+
+  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    router.push(`/editWorkout/${workout.id as string}`);
+  };
+
   return (
     <Flex
       as="main"
@@ -25,9 +37,21 @@ const Timer = ({ workout, exercises }: TimerProps) => {
         workoutExercises={workoutExercises}
         remainingTime={remainingTime}
       />
-      <Footer>
-        <Timer_control startTimer={startTimer} isTimer={isTimer} />
-      </Footer>
+      <Flex as="nav" css={{ justifyContent: "space-between", gap: "$3x" }}>
+        {remainingTime > 0 ? (
+          <>
+            <Button onClick={onCancel}>Cancel</Button>
+            <Button onClick={onEdit}>Edit</Button>
+          </>
+        ) : (
+          <Button onClick={onCancel}>Back to Dashboard</Button>
+        )}
+      </Flex>
+      {remainingTime > 0 ? (
+        <Footer>
+          <Timer_control startTimer={startTimer} isTimer={isTimer} />
+        </Footer>
+      ) : null}
     </Flex>
   );
 };
