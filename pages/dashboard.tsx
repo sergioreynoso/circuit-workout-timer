@@ -1,16 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import WorkoutList from "../components/workoutList";
 import { Flex } from "../components/layout";
-import WorkoutListHeader, {
-  TransformedWorkout,
-} from "../components/workoutListHeader/workoutListHeader";
+import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { Exercise, Workout } from "@prisma/client";
 import { prisma } from "../lib/prisma";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
 type DashboardProps = {
   id: string;
@@ -75,23 +71,6 @@ const exercises: Partial<Exercise>[] = [
 ];
 
 const Dashboard = ({ id, initialData }: DashboardProps) => {
-  const mutation = useMutation((workout: TransformedWorkout) => {
-    return axios.post("/api/createWorkout", workout);
-  });
-
-  useEffect(() => {
-    if (initialData.length === 0) {
-      mutation.mutate({
-        workout_name: "Full Bodyweight Workout",
-        set_count: 3,
-        set_rest: 3000,
-        userId: id,
-        display_seq: 0,
-        exerciseList: exercises,
-      });
-    }
-  }, []);
-
   return (
     <Flex css={{ justifyContent: "center" }}>
       <Flex
@@ -125,6 +104,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
+  if (workouts.length <= 0) {
+    const workout = await prisma?.workout.create({
+      data: {
+        workout_name: "Default workout",
+        set_count: 3,
+        set_rest: 3000,
+        userId: id,
+        display_seq: 0,
+        exercises: {
+          create: exercises,
+        },
+      },
+      include: {
+        exercises: true,
+      },
+    });
+  }
+  console.log(workouts);
   return {
     props: {
       id,
