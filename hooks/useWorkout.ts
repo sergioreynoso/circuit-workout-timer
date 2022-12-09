@@ -41,14 +41,13 @@ export function useWorkout(
     return array;
   }, [exercises, totalSets, setRest]);
 
-  const workoutTotalTime = useMemo((): number => {
+  const workoutTotalTime = useMemo(() => {
     return workoutExercises.reduce((prev, curr) => prev + curr.duration, 0);
   }, [workout]);
 
-  workoutExercises = useMemo(
-    () => addTimestamp(workoutExercises, workoutTotalTime),
-    [workoutExercises, workoutTotalTime]
-  );
+  workoutExercises = useMemo(() => {
+    return addTimestamp(workoutExercises, workoutTotalTime);
+  }, [workoutExercises, workoutTotalTime]);
 
-  return [workoutExercises as ExerciseWithTimestamp[], workoutTotalTime];
+  return [workoutExercises, workoutTotalTime];
 }
