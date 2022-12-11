@@ -1,36 +1,31 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const INITIAL_TIME: 0 = 0;
 const INTERVAL: 1000 = 1000;
 
 export default function useTimer(workoutTotalTime: number) {
-  const [remainingTime, setRemainingTime] = useState<number>(workoutTotalTime);
-  const [isTimer, setIsTimer] = useState<boolean>(false);
+  const [remainingTime, setRemainingTime] = useState(() => workoutTotalTime);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isTimerDone, setIsTimerDone] = useState(true);
 
-  const remainingTimeRef = useRef<number>(workoutTotalTime);
+  const toggleTimer = useCallback(() => {
+    setIsTimerRunning(!isTimerRunning);
+  }, [isTimerRunning]);
 
-  const endTimer = useCallback(() => {
-    setIsTimer(false);
-  }, [setIsTimer]);
-
-  const startTimer = () => {
-    setIsTimer(!isTimer);
+  const updateTimer = () => {
+    const currentTime = remainingTime - INTERVAL;
+    setRemainingTime(currentTime);
+    if (currentTime <= 0) {
+      console.log("Workout Done");
+      setIsTimerRunning(false);
+      setIsTimerDone(false);
+    }
   };
 
-  const updateTimer = useCallback((): void => {
-    remainingTimeRef.current -= INTERVAL;
-    setRemainingTime(remainingTimeRef.current);
-    if (remainingTimeRef.current < INTERVAL) {
-      console.log("Workout Done");
-      endTimer();
-    }
-  }, [remainingTimeRef, endTimer]);
-
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    if (isTimer) interval = setInterval(updateTimer, INTERVAL);
-    return () => clearInterval(interval);
-  }, [updateTimer, isTimer]);
+    let timerInterval: ReturnType<typeof setInterval>;
+    if (isTimerRunning) timerInterval = setInterval(updateTimer, INTERVAL);
+    return () => clearInterval(timerInterval);
+  }, [updateTimer, isTimerRunning]);
 
-  return [remainingTime, isTimer, startTimer] as const;
+  return [remainingTime, isTimerRunning, isTimerDone, toggleTimer] as const;
 }
