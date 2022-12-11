@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { styled } from "../../styles/stitches.congif";
 import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
@@ -14,31 +14,32 @@ const ExerciseCounter = ({
   workoutExercises,
   remainingTime,
 }: ExerciseProps) => {
-  const exercises = useRef([...workoutExercises]);
-  const exercise = useRef(workoutExercises[0]);
-  const exerciseDuration = useRef<number>(0);
-  const nextExerciseIndex = useRef<number>(1);
+  const [exercises, setExercises] = useState(() => [...workoutExercises]);
+  const [currentExercise, setCurrentExercise] = useState(() => exercises[0]);
+  const [currentExerciseRemainingTime, setCurrentExerciseRemainingTime] =
+    useState(0);
+  const [nextExercise, setNextExercise] = useState(() => exercises[1]);
 
-  exercises.current.forEach((item, index) => {
-    if (item.timestamp) {
-      if (
-        remainingTime < item.timestamp.start &&
-        remainingTime > item.timestamp.end
-      ) {
-        exercise.current = item;
-        nextExerciseIndex.current = index;
-        /**
-         * exerciseDuration gets updated with new exercise duration minus one second
-         * so that exerciseDuration count is in sync with remainingTime count.
-         */
-        exerciseDuration.current = item.duration - 1000;
-        exercises.current.shift();
-      }
+  exercises.forEach((exercise, index) => {
+    if (!exercise.timestamp) return;
+    if (
+      remainingTime < exercise.timestamp.start &&
+      remainingTime > exercise.timestamp.end
+    ) {
+      setCurrentExercise(exercise);
+      setCurrentExerciseRemainingTime(exercise.duration);
+
+      setNextExercise(exercises[index + 1]);
+
+      setExercises((exercises) =>
+        exercises.filter((item) => item.id !== exercise.id)
+      );
     }
   });
 
   useEffect(() => {
-    if (exerciseDuration.current) exerciseDuration.current -= 1000;
+    currentExerciseRemainingTime &&
+      setCurrentExerciseRemainingTime((prev) => prev - 1000);
   }, [remainingTime]);
 
   if (remainingTime <= 0) {
@@ -54,15 +55,13 @@ const ExerciseCounter = ({
       direction="column"
       css={{ flexDirection: "column", alignItems: "center", gap: "$lg" }}>
       <p>Time Remaining: {formatTime(remainingTime)}</p>
-      <TimerCounter>{formatTime(exerciseDuration.current)}</TimerCounter>
+      <TimerCounter>{formatTime(currentExerciseRemainingTime)}</TimerCounter>
       <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
-      <CurrentExercise>{exercise.current.exercise_name}</CurrentExercise>
-      {exercises.current[nextExerciseIndex.current] && (
+      <CurrentExercise>{currentExercise.exercise_name}</CurrentExercise>
+      {nextExercise && (
         <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
           <h4>Up next:</h4>
-          <NextExercise>
-            {exercises.current[nextExerciseIndex.current]?.exercise_name}
-          </NextExercise>
+          <NextExercise>{nextExercise.exercise_name}</NextExercise>
         </Flex>
       )}
     </Flex>
