@@ -1,17 +1,35 @@
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { memo, useState } from "react";
 import Button from "../button";
+import { Flex } from "../layout";
 
 interface TimerControlProps {
-  startTimer: () => void;
-  isTimer: boolean;
+  workoutId: string;
+  toggleTimer: () => void;
+  isTimerRunning: boolean;
+  isTimerDone: boolean;
 }
 
-const TimerControl = ({ startTimer, isTimer }: TimerControlProps) => {
+const TimerControl = ({
+  workoutId,
+  toggleTimer,
+  isTimerRunning,
+  isTimerDone,
+}: TimerControlProps) => {
   const [label, setLabel] = useState<string>("start");
+  const router = useRouter();
 
-  const onClickHandler = () => {
-    startTimer();
-    if (isTimer) {
+  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    router.push(`/dashboard`);
+  };
+
+  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    router.push(`/editWorkout/${workoutId as string}`);
+  };
+
+  const onStart = () => {
+    toggleTimer();
+    if (isTimerRunning) {
       setLabel("continue");
     } else {
       setLabel("pause");
@@ -19,10 +37,20 @@ const TimerControl = ({ startTimer, isTimer }: TimerControlProps) => {
   };
 
   return (
-    <Button colors="primary" onClick={onClickHandler}>
-      {label}
-    </Button>
+    <Flex css={{ gap: "$2x" }}>
+      {isTimerDone ? (
+        <>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button colors="primary" onClick={onStart}>
+            {label}
+          </Button>
+          <Button onClick={onEdit}>Edit</Button>
+        </>
+      ) : (
+        <Button onClick={onCancel}>Back to Dashboard</Button>
+      )}
+    </Flex>
   );
 };
 
-export default TimerControl;
+export default memo(TimerControl);
