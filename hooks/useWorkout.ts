@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { addTimestamp } from "../lib/addTimestamp";
 import range from "lodash/range";
 import cuid from "cuid";
+import { WorkoutWithExercises } from "./useFetchWorkout";
 
 export interface ExerciseWithTimestamp extends Omit<Exercise, "display_seq"> {
   timestamp?: { start: number; end: number };
@@ -25,9 +26,9 @@ const SET_REST = (rest: number): ExerciseWithTimestamp => ({
 });
 
 export function useWorkout(
-  workoutDetails: Workout,
-  exercises: ExerciseWithTimestamp[]
+  workoutDetails: WorkoutWithExercises
 ): [ExerciseWithTimestamp[], number] {
+  const exercises = workoutDetails.exercises as ExerciseWithTimestamp[];
   const totalSets = workoutDetails.set_count;
   const setRest = workoutDetails.set_rest;
 
@@ -40,9 +41,10 @@ export function useWorkout(
       return arr;
     });
 
-    const workoutTotalTime = workout.reduce((prev, curr) => {
-      return prev + curr.duration;
-    }, 0);
+    const workoutTotalTime = workout.reduce(
+      (prev, curr) => prev + curr.duration,
+      0
+    );
 
     workout = addTimestamp(workout, workoutTotalTime);
 
