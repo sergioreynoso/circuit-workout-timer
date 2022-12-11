@@ -2,7 +2,6 @@ import React from "react";
 import { Workout } from "@prisma/client";
 import { ExerciseWithTimestamp, useWorkout } from "../../hooks/useWorkout";
 import useTimer from "../../hooks/useTimer";
-import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import Timer_control from "../timerControl";
 import Exercise_counter from "../exerciseCounter";
@@ -11,12 +10,15 @@ import { useRouter } from "next/router";
 import Button from "../button";
 
 type TimerProps = {
-  workout: Workout;
+  workoutDetails: Workout;
   exercises: ExerciseWithTimestamp[];
 };
 
-const Timer = ({ workout, exercises }: TimerProps) => {
-  const [workoutExercises, workoutTotalTime] = useWorkout(workout, exercises);
+const Timer = ({ workoutDetails, exercises }: TimerProps) => {
+  const [workoutExercises, workoutTotalTime] = useWorkout(
+    workoutDetails,
+    exercises
+  );
   const [remainingTime, isTimer, startTimer] = useTimer(workoutTotalTime);
 
   const router = useRouter();
@@ -26,7 +28,7 @@ const Timer = ({ workout, exercises }: TimerProps) => {
   };
 
   const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/editWorkout/${workout.id as string}`);
+    router.push(`/editWorkout/${workoutDetails.id as string}`);
   };
 
   return (

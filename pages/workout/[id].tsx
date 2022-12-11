@@ -4,8 +4,6 @@ import Timer from "../../components/timer";
 import { prisma } from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
-import { useRouter } from "next/router";
-import Button from "../../components/button";
 import { Flex } from "../../components/layout";
 
 type WorkoutTimerProps = {
@@ -24,7 +22,7 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
       <Heading1>{initialData.workout_name}</Heading1>
 
       <Flex css={{ flex: "1" }}>
-        <Timer workout={initialData} exercises={initialData.exercises} />
+        <Timer workoutDetails={initialData} exercises={initialData.exercises} />
       </Flex>
     </Flex>
   );
