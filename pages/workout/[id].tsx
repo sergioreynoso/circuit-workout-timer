@@ -27,24 +27,22 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
         padding: "24px",
       }}>
       <Heading1>{initialData.workout_name}</Heading1>
-      <Flex css={{ flex: "1" }}>
-        <Flex
-          as="main"
-          direction="column"
-          css={{ alignItems: "center", gap: "$2x" }}>
-          <Exercise_counter
-            workoutExercises={workoutExercises}
-            remainingTime={remainingTime}
+      <Flex
+        as="main"
+        direction="column"
+        css={{ alignItems: "center", gap: "$2x" }}>
+        <Exercise_counter
+          workoutExercises={workoutExercises}
+          remainingTime={remainingTime}
+        />
+        <Footer>
+          <Timer_control
+            workoutId={initialData.id}
+            toggleTimer={toggleTimer}
+            isTimerRunning={isTimerRunning}
+            isTimerDone={isTimerDone}
           />
-          <Footer>
-            <Timer_control
-              workoutId={initialData.id}
-              toggleTimer={toggleTimer}
-              isTimerRunning={isTimerRunning}
-              isTimerDone={isTimerDone}
-            />
-          </Footer>
-        </Flex>
+        </Footer>
       </Flex>
     </Flex>
   );
