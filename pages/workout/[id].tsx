@@ -30,7 +30,8 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
       <Flex css={{ flex: "1" }}>
         <Flex
           as="main"
-          css={{ flexDirection: "column", alignItems: "center", gap: "$2x" }}>
+          direction="column"
+          css={{ alignItems: "center", gap: "$2x" }}>
           <Exercise_counter
             workoutExercises={workoutExercises}
             remainingTime={remainingTime}
