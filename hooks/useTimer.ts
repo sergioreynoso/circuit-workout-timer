@@ -5,7 +5,7 @@ const INTERVAL: 1000 = 1000;
 export default function useTimer(workoutTotalTime: number) {
   const [remainingTime, setRemainingTime] = useState(() => workoutTotalTime);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [isTimerDone, setIsTimerDone] = useState(true);
+  const [isTimerDone, setIsTimerDone] = useState(false);
 
   const toggleTimer = useCallback(() => {
     setIsTimerRunning(!isTimerRunning);
@@ -17,7 +17,7 @@ export default function useTimer(workoutTotalTime: number) {
     if (currentTime <= 0) {
       console.log("Workout Done");
       setIsTimerRunning(false);
-      setIsTimerDone(false);
+      setIsTimerDone(true);
     }
   };
 

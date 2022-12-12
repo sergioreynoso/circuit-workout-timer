@@ -38,7 +38,7 @@ const TimerControl = ({
 
   return (
     <Flex css={{ gap: "$2x" }}>
-      {isTimerDone ? (
+      {!isTimerDone ? (
         <>
           <Button onClick={onCancel}>Cancel</Button>
           <Button colors="primary" onClick={onStart}>
