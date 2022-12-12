@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import useInterval from "./useInterval";
 
 const INTERVAL: 1000 = 1000;
 
@@ -6,7 +7,6 @@ export default function useTimer(workoutTotalTime: number) {
   const [remainingTime, setRemainingTime] = useState(() => workoutTotalTime);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerDone, setIsTimerDone] = useState(false);
-  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const toggleTimer = useCallback(() => {
     setIsTimerRunning(!isTimerRunning);
@@ -22,11 +22,7 @@ export default function useTimer(workoutTotalTime: number) {
     }
   };
 
-  useEffect(() => {
-    if (isTimerRunning)
-      timerIntervalRef.current = setInterval(updateTimer, INTERVAL);
-    return () => clearInterval(timerIntervalRef.current as NodeJS.Timeout);
-  }, [updateTimer]);
+  useInterval(updateTimer, isTimerRunning ? INTERVAL : null);
 
   return [remainingTime, isTimerRunning, isTimerDone, toggleTimer] as const;
 }
