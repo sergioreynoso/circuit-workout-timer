@@ -4,43 +4,28 @@ import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { Flex } from "../layout";
 import SetCounter from "../setCounter";
+import useCounter from "../../hooks/useCounter";
 
-interface ExerciseProps {
+interface Props {
   workoutExercises: ExerciseWithTimestamp[];
   remainingTime: number;
 }
 
-const ExerciseCounter = ({
-  workoutExercises,
-  remainingTime,
-}: ExerciseProps) => {
-  const [exercises, setExercises] = useState(() => [...workoutExercises]);
-  const [currentExercise, setCurrentExercise] = useState(() => exercises[0]);
-  const [currentExerciseRemainingTime, setCurrentExerciseRemainingTime] =
-    useState(0);
-  const [nextExercise, setNextExercise] = useState(() => exercises[1]);
+const ExerciseCounter = ({ workoutExercises, remainingTime }: Props) => {
+  const [exercise, exerciseRemainingTime, nextExercise] = useCounter(
+    workoutExercises,
+    remainingTime
+  );
 
-  exercises.forEach((exercise, index) => {
-    if (!exercise.timestamp) return;
-    if (
-      remainingTime < exercise.timestamp.start &&
-      remainingTime > exercise.timestamp.end
-    ) {
-      setCurrentExercise(exercise);
-      setCurrentExerciseRemainingTime(exercise.duration);
+  const formattedExerciseRemainingTime = useMemo(
+    () => formatTime(exerciseRemainingTime),
+    [exerciseRemainingTime]
+  );
 
-      setNextExercise(exercises[index + 1]);
-
-      setExercises((exercises) =>
-        exercises.filter((item) => item.id !== exercise.id)
-      );
-    }
-  });
-
-  useEffect(() => {
-    currentExerciseRemainingTime &&
-      setCurrentExerciseRemainingTime((prev) => prev - 1000);
-  }, [remainingTime]);
+  const formattedRemainingTime = useMemo(
+    () => formatTime(remainingTime),
+    [remainingTime]
+  );
 
   if (remainingTime <= 0) {
     return (
@@ -54,10 +39,12 @@ const ExerciseCounter = ({
     <Flex
       direction="column"
       css={{ flexDirection: "column", alignItems: "center", gap: "$lg" }}>
-      <p>Time Remaining: {formatTime(remainingTime)}</p>
-      <TimerCounter>{formatTime(currentExerciseRemainingTime)}</TimerCounter>
+      <p>Time Remaining: {formattedRemainingTime}</p>
+      <ExerciseRemainingTime>
+        {formattedExerciseRemainingTime}
+      </ExerciseRemainingTime>
       <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
-      <CurrentExercise>{currentExercise.exercise_name}</CurrentExercise>
+      <Exercise>{exercise.exercise_name}</Exercise>
       {nextExercise && (
         <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
           <h4>Up next:</h4>
@@ -68,12 +55,12 @@ const ExerciseCounter = ({
   );
 };
 
-const TimerCounter = styled("h2", {
+const ExerciseRemainingTime = styled("h2", {
   fontSize: "$3x",
   lineHeight: "$150",
 });
 
-const CurrentExercise = styled("p", {
+const Exercise = styled("p", {
   fontSize: "$3x",
   fontWeight: "$700",
   lineHeight: "$150",
