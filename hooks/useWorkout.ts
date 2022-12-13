@@ -13,7 +13,7 @@ const WARMUP: ExerciseWithTimestamp = {
   id: cuid(),
   exercise_name: "Warm up",
   type: "REST",
-  duration: 10000,
+  duration: 5000,
   workoutId: "",
 };
 
