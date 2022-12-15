@@ -7,7 +7,7 @@ import { Flex } from "../../components/layout";
 import { useWorkout } from "../../hooks/useWorkout";
 import useTimer from "../../hooks/useTimer";
 import Timer_control from "../../components/timerControl";
-import Exercise_counter from "../../components/exerciseCounter";
+import ExerciseCounter from "../../components/exerciseCounter";
 
 type WorkoutTimerProps = {
   initialData: WorkoutWithExercises;
@@ -31,7 +31,7 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
         as="main"
         direction="column"
         css={{ alignItems: "center", gap: "$2x" }}>
-        <Exercise_counter
+        <ExerciseCounter
           workoutExercises={workoutExercises}
           remainingTime={remainingTime}
         />
