@@ -6,7 +6,7 @@ import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import { Flex } from "../../components/layout";
 import { useWorkout } from "../../hooks/useWorkout";
 import useTimer from "../../hooks/useTimer";
-import Timer_control from "../../components/timerControl";
+import TimeControls from "../../components/timerControl";
 import ExerciseCounter from "../../components/exerciseCounter";
 
 type WorkoutTimerProps = {
@@ -14,9 +14,7 @@ type WorkoutTimerProps = {
 };
 
 const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
-  const [workoutExercises, workoutTotalTime] = useWorkout(initialData);
-  const [remainingTime, isTimerRunning, isTimerDone, toggleTimer] =
-    useTimer(workoutTotalTime);
+  const formattedWorkout = useWorkout(initialData);
 
   return (
     <Flex
@@ -31,18 +29,7 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
         as="main"
         direction="column"
         css={{ alignItems: "center", gap: "$2x" }}>
-        <ExerciseCounter
-          workoutExercises={workoutExercises}
-          remainingTime={remainingTime}
-        />
-        <Footer>
-          <Timer_control
-            workoutId={initialData.id}
-            toggleTimer={toggleTimer}
-            isTimerRunning={isTimerRunning}
-            isTimerDone={isTimerDone}
-          />
-        </Footer>
+        <ExerciseCounter workoutData={formattedWorkout} />
       </Flex>
     </Flex>
   );
