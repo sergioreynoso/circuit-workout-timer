@@ -4,15 +4,23 @@ import { addTimestamp } from "../lib/addTimestamp";
 import range from "lodash/range";
 import cuid from "cuid";
 import { WorkoutWithExercises } from "./useFetchWorkout";
+import { StringifyOptions } from "querystring";
 
 export interface ExerciseWithTimestamp extends Omit<Exercise, "display_seq"> {
   timestamp?: { start: number; end: number };
 }
 
+export type FormattedWorkout = {
+  id: string;
+  formattedWorkout: ExerciseWithTimestamp[];
+  totalTime: number;
+  totalSets: number;
+};
+
 const WARMUP: ExerciseWithTimestamp = {
   id: cuid(),
   exercise_name: "Warm up",
-  type: "REST",
+  type: "WARMUP",
   duration: 5000,
   workoutId: "",
 };
@@ -20,19 +28,18 @@ const WARMUP: ExerciseWithTimestamp = {
 const SET_REST = (rest: number): ExerciseWithTimestamp => ({
   id: cuid(),
   exercise_name: "Set Rest",
-  type: "REST",
+  type: "SET_REST",
   duration: rest,
   workoutId: "",
 });
 
-export function useWorkout(
-  workoutDetails: WorkoutWithExercises
-): [ExerciseWithTimestamp[], number] {
-  const exercises = workoutDetails.exercises as ExerciseWithTimestamp[];
-  const totalSets = workoutDetails.set_count;
-  const setRest = workoutDetails.set_rest;
+export function useWorkout(workoutDetails: WorkoutWithExercises) {
+  return useMemo((): FormattedWorkout => {
+    const id = workoutDetails.id;
+    const exercises = workoutDetails.exercises as ExerciseWithTimestamp[];
+    const totalSets = workoutDetails.set_count;
+    const setRest = workoutDetails.set_rest;
 
-  return useMemo(() => {
     //Formats workout of sets and exercises
     let workout = range(totalSets).flatMap((_, index) => {
       let arr = [...exercises];
@@ -41,13 +48,10 @@ export function useWorkout(
       return arr;
     });
 
-    const workoutTotalTime = workout.reduce(
-      (prev, curr) => prev + curr.duration,
-      0
-    );
+    const totalTime = workout.reduce((prev, curr) => prev + curr.duration, 0);
 
-    workout = addTimestamp(workout, workoutTotalTime);
+    const formattedWorkout = addTimestamp(workout, totalTime);
 
-    return [workout, workoutTotalTime];
-  }, [exercises, totalSets, setRest]);
+    return { id, formattedWorkout, totalTime, totalSets };
+  }, [workoutDetails]);
 }
