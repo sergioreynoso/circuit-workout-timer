@@ -1,56 +1,127 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useReducer } from "react";
 import { styled } from "../../styles/stitches.congif";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
+import {
+  ExerciseWithTimestamp,
+  FormattedWorkout,
+} from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { Flex } from "../layout";
-import SetCounter from "../setCounter";
-import useCounter from "../../hooks/useCounter";
+import useTimer, { TIMER_INTERVAL } from "../../hooks/useTimer";
+import TimerControls from "../../components/timerControl";
 
-interface Props {
-  workoutExercises: ExerciseWithTimestamp[];
-  remainingTime: number;
-}
+type CounterState = {
+  exercises: ExerciseWithTimestamp[];
+  setCount: number;
+  runningExercise: ExerciseWithTimestamp;
+  runningExerciseTimer: number;
+  nextExercise: ExerciseWithTimestamp;
+};
 
-const ExerciseCounter = ({ workoutExercises, remainingTime }: Props) => {
-  const [exercise, exerciseRemainingTime, nextExercise] = useCounter(
-    workoutExercises,
-    remainingTime
-  );
+type CounterActions = {
+  type: "UPDATE" | "UPDATE_RUNNING_EXERCISE_TIMER";
+  payload?: any;
+};
 
-  const formattedExerciseRemainingTime = useMemo(
-    () => formatTime(exerciseRemainingTime),
-    [exerciseRemainingTime]
-  );
+type Props = { workoutData: FormattedWorkout };
 
-  const formattedRemainingTime = useMemo(
-    () => formatTime(remainingTime),
-    [remainingTime]
-  );
-
-  if (remainingTime <= 0) {
-    return (
-      <Flex>
-        <p>Workout Complete!</p>
-      </Flex>
-    );
+const counterReducer = (state: CounterState, action: CounterActions) => {
+  switch (action.type) {
+    case "UPDATE":
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case "UPDATE_RUNNING_EXERCISE_TIMER":
+      return {
+        ...state,
+        runningExerciseTimer: state.runningExerciseTimer - TIMER_INTERVAL,
+      };
+    default:
+      return state;
   }
+};
+
+const ExerciseCounter = ({ workoutData }: Props) => {
+  const [state, dispatch] = useReducer(counterReducer, {
+    exercises: workoutData.formattedWorkout,
+    setCount: 1,
+    runningExercise: workoutData.formattedWorkout[0],
+    runningExerciseTimer: workoutData.formattedWorkout[0].duration,
+    nextExercise: workoutData.formattedWorkout[1],
+  });
+
+  const [remainingTime, isTimerRunning, isTimerDone, toggleTimer] = useTimer(
+    workoutData.totalTime,
+    timerCallBack
+  );
+
+  function timerCallBack() {
+    for (let exercise of state.exercises) {
+      if (!exercise.timestamp) return;
+      if (
+        remainingTime <= exercise.timestamp.start &&
+        remainingTime >= exercise.timestamp.end
+      ) {
+        if (state.runningExercise !== exercise) {
+          dispatch({
+            type: "UPDATE",
+            payload: {
+              setCount:
+                exercise.type === "SET_REST"
+                  ? state.setCount + 1
+                  : state.setCount,
+              runningExercise: exercise,
+              runningExerciseTimer: exercise.duration,
+              nextExercise:
+                state.exercises[state.exercises.indexOf(exercise) + 1],
+            },
+          });
+        }
+      }
+    }
+    dispatch({ type: "UPDATE_RUNNING_EXERCISE_TIMER" });
+  }
+
+  const NextExercise = () => {
+    return (
+      state.nextExercise && (
+        <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
+          <h4>Up next:</h4>
+          <NextExerciseName>
+            {state.nextExercise.exercise_name}
+          </NextExerciseName>
+        </Flex>
+      )
+    );
+  };
 
   return (
     <Flex
       direction="column"
       css={{ flexDirection: "column", alignItems: "center", gap: "$lg" }}>
-      <p>Time Remaining: {formattedRemainingTime}</p>
-      <ExerciseRemainingTime>
-        {formattedExerciseRemainingTime}
-      </ExerciseRemainingTime>
-      <SetCounter exercises={workoutExercises} remainingTime={remainingTime} />
-      <Exercise>{exercise.exercise_name}</Exercise>
-      {nextExercise && (
-        <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
-          <h4>Up next:</h4>
-          <NextExercise>{nextExercise.exercise_name}</NextExercise>
+      {isTimerDone ? (
+        <Flex>
+          <p>Workout Complete!</p>
         </Flex>
+      ) : (
+        <>
+          <p>Time Remaining: {formatTime(remainingTime)}</p>
+          <ExerciseRemainingTime>
+            {formatTime(state.runningExerciseTimer)}
+          </ExerciseRemainingTime>
+          <Sets>
+            {state.setCount} / {workoutData.totalSets}
+          </Sets>
+          <Exercise>{state.runningExercise.exercise_name}</Exercise>
+          <NextExercise />
+        </>
       )}
+      <TimerControls
+        workoutId={workoutData.id}
+        toggleTimer={toggleTimer}
+        isTimerRunning={isTimerRunning}
+        isTimerDone={isTimerDone}
+      />
     </Flex>
   );
 };
@@ -67,7 +138,13 @@ const Exercise = styled("p", {
   color: "$primary-09",
 });
 
-const NextExercise = styled("p", {
+const NextExerciseName = styled("p", {
+  fontSize: "$xx",
+  fontWeight: "$700",
+  lineHeight: "$150",
+});
+
+const Sets = styled("p", {
   fontSize: "$xx",
   fontWeight: "$700",
   lineHeight: "$150",
