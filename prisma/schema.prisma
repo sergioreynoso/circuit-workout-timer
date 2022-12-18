@@ -81,4 +81,5 @@ enum Type {
   EXERCISE
   REST
   WARMUP
+  SET_REST
 }
