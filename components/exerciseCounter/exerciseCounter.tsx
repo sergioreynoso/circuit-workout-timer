@@ -5,7 +5,7 @@ import {
   FormattedWorkout,
 } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
-import { Flex } from "../layout";
+import { Box, Flex } from "../layout";
 import useTimer, { TIMER_INTERVAL } from "../../hooks/useTimer";
 import TimerControls from "../../components/timerControl";
 
@@ -50,7 +50,7 @@ const ExerciseCounter = ({ workoutData }: Props) => {
     nextExercise: workoutData.formattedWorkout[1],
   });
 
-  const [remainingTime, isTimerRunning, isTimerDone, toggleTimer] = useTimer(
+  const [remainingTime, isTimerRunning, isTimerDone] = useTimer(
     workoutData.totalTime,
     timerCallBack
   );
@@ -98,7 +98,7 @@ const ExerciseCounter = ({ workoutData }: Props) => {
   return (
     <Flex
       direction="column"
-      css={{ flexDirection: "column", alignItems: "center", gap: "$lg" }}>
+      css={{ alignItems: "center", backgroundColor: "$gray-05" }}>
       {isTimerDone ? (
         <Flex>
           <p>Workout Complete!</p>
@@ -116,12 +116,6 @@ const ExerciseCounter = ({ workoutData }: Props) => {
           <NextExercise />
         </>
       )}
-      <TimerControls
-        workoutId={workoutData.id}
-        toggleTimer={toggleTimer}
-        isTimerRunning={isTimerRunning}
-        isTimerDone={isTimerDone}
-      />
     </Flex>
   );
 };
@@ -129,6 +123,7 @@ const ExerciseCounter = ({ workoutData }: Props) => {
 const ExerciseRemainingTime = styled("h2", {
   fontSize: "$3x",
   lineHeight: "$150",
+  padding: "$lg",
 });
 
 const Exercise = styled("p", {
