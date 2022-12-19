@@ -1,63 +1,96 @@
 import { useCallback, useContext, useReducer, useState } from "react";
 import useInterval from "./useInterval";
 import { CounterContext } from "../components/counterProvider/counterProvider";
+import { ExerciseWithTimestamp, FormattedWorkout } from "./useWorkout";
 
 export const TIMER_INTERVAL: 1000 = 1000;
 
-type TimerState = {
+type CounterState = {
   runningTime: number;
-  isTicking: boolean;
-  isDone: boolean;
+  exercises: ExerciseWithTimestamp[];
+  setCount: number;
+  runningExercise: ExerciseWithTimestamp;
+  runningExerciseTimer: number;
+  nextExercise: ExerciseWithTimestamp;
 };
 
-type TimerAction = {
-  type: "SET_DURATION" | "SET_IS_RUNNING" | "SET_IS_DONE";
+type CounterActions = {
+  type:
+    | "UPDATE_RUNNING_TIMER"
+    | "UPDATE_EXERCISE"
+    | "UPDATE_RUNNING_EXERCISE_TIMER";
+  payload?: any;
 };
 
-const timerReducer = (state: TimerState, action: TimerAction) => {
+const counterReducer = (state: CounterState, action: CounterActions) => {
   switch (action.type) {
-    case "SET_DURATION":
+    case "UPDATE_RUNNING_TIMER":
       return {
         ...state,
         runningTime: state.runningTime - TIMER_INTERVAL,
       };
-    case "SET_IS_RUNNING":
+    case "UPDATE_EXERCISE":
       return {
         ...state,
-        isTicking: !state.isTicking,
+        ...action.payload,
       };
-    case "SET_IS_DONE":
+    case "UPDATE_RUNNING_EXERCISE_TIMER":
       return {
         ...state,
-        isTicking: false,
-        isDone: true,
+        runningExerciseTimer: state.runningExerciseTimer - TIMER_INTERVAL,
       };
     default:
       return state;
   }
 };
 
-export default function useTimer(
-  workoutTotalTime: number,
-  callback: () => void
-) {
-  const { isTimer } = useContext(CounterContext);
+export default function useTimer(workoutData: FormattedWorkout) {
+  const { isTimer, setIsTimer, setIsTimerDone } = useContext(CounterContext);
 
-  const [state, dispatch] = useReducer(timerReducer, {
-    runningTime: workoutTotalTime,
-    isTicking: false,
-    isDone: false,
+  const [state, dispatch] = useReducer(counterReducer, {
+    runningTime: workoutData.totalTime,
+    exercises: workoutData.formattedWorkout,
+    setCount: 1,
+    runningExercise: workoutData.formattedWorkout[0],
+    runningExerciseTimer: workoutData.formattedWorkout[0].duration,
+    nextExercise: workoutData.formattedWorkout[1],
   });
 
-  const updateTimer = () => {
-    dispatch({ type: "SET_DURATION" });
+  function updateTimer() {
+    dispatch({ type: "UPDATE_RUNNING_TIMER" });
+
+    for (let exercise of state.exercises) {
+      if (!exercise.timestamp) return;
+      if (
+        state.runningTime <= exercise.timestamp.start &&
+        state.runningTime >= exercise.timestamp.end
+      ) {
+        if (state.runningExercise !== exercise) {
+          dispatch({
+            type: "UPDATE_EXERCISE",
+            payload: {
+              setCount:
+                exercise.type === "SET_REST"
+                  ? state.setCount + 1
+                  : state.setCount,
+              runningExercise: exercise,
+              runningExerciseTimer: exercise.duration,
+              nextExercise:
+                state.exercises[state.exercises.indexOf(exercise) + 1],
+            },
+          });
+        }
+      }
+    }
+    dispatch({ type: "UPDATE_RUNNING_EXERCISE_TIMER" });
+
     if (state.runningTime <= 1000) {
       console.log("Workout Done");
-      dispatch({ type: "SET_IS_DONE" });
+      setIsTimer(false);
+      setIsTimerDone(true);
     }
-    callback();
-  };
+  }
 
   useInterval(updateTimer, isTimer ? TIMER_INTERVAL : null);
-  return [state.runningTime, state.isTicking, state.isDone] as const;
+  return [state];
 }

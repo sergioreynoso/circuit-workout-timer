@@ -8,9 +8,11 @@ type Props = {
 
 const CounterProvider = ({ children }: Props) => {
   const [isTimer, setIsTimer] = useState(false);
+  const [isTimerDone, setIsTimerDone] = useState(false);
 
   return (
-    <CounterContext.Provider value={{ isTimer, setIsTimer }}>
+    <CounterContext.Provider
+      value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone }}>
       {children}
     </CounterContext.Provider>
   );

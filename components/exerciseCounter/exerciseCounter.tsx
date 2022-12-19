@@ -1,86 +1,17 @@
-import React, { useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 import { styled } from "../../styles/stitches.congif";
-import {
-  ExerciseWithTimestamp,
-  FormattedWorkout,
-} from "../../hooks/useWorkout";
+import { FormattedWorkout } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { Box, Flex } from "../layout";
-import useTimer, { TIMER_INTERVAL } from "../../hooks/useTimer";
-import TimerControls from "../../components/timerControl";
-
-type CounterState = {
-  exercises: ExerciseWithTimestamp[];
-  setCount: number;
-  runningExercise: ExerciseWithTimestamp;
-  runningExerciseTimer: number;
-  nextExercise: ExerciseWithTimestamp;
-};
-
-type CounterActions = {
-  type: "UPDATE" | "UPDATE_RUNNING_EXERCISE_TIMER";
-  payload?: any;
-};
+import useTimer from "../../hooks/useTimer";
+import { CounterContext } from "../counterProvider/counterProvider";
 
 type Props = { workoutData: FormattedWorkout };
 
-const counterReducer = (state: CounterState, action: CounterActions) => {
-  switch (action.type) {
-    case "UPDATE":
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case "UPDATE_RUNNING_EXERCISE_TIMER":
-      return {
-        ...state,
-        runningExerciseTimer: state.runningExerciseTimer - TIMER_INTERVAL,
-      };
-    default:
-      return state;
-  }
-};
-
 const ExerciseCounter = ({ workoutData }: Props) => {
-  const [state, dispatch] = useReducer(counterReducer, {
-    exercises: workoutData.formattedWorkout,
-    setCount: 1,
-    runningExercise: workoutData.formattedWorkout[0],
-    runningExerciseTimer: workoutData.formattedWorkout[0].duration,
-    nextExercise: workoutData.formattedWorkout[1],
-  });
+  const { isTimerDone } = useContext(CounterContext);
 
-  const [remainingTime, isTimerRunning, isTimerDone] = useTimer(
-    workoutData.totalTime,
-    timerCallBack
-  );
-
-  function timerCallBack() {
-    for (let exercise of state.exercises) {
-      if (!exercise.timestamp) return;
-      if (
-        remainingTime <= exercise.timestamp.start &&
-        remainingTime >= exercise.timestamp.end
-      ) {
-        if (state.runningExercise !== exercise) {
-          dispatch({
-            type: "UPDATE",
-            payload: {
-              setCount:
-                exercise.type === "SET_REST"
-                  ? state.setCount + 1
-                  : state.setCount,
-              runningExercise: exercise,
-              runningExerciseTimer: exercise.duration,
-              nextExercise:
-                state.exercises[state.exercises.indexOf(exercise) + 1],
-            },
-          });
-        }
-      }
-    }
-    dispatch({ type: "UPDATE_RUNNING_EXERCISE_TIMER" });
-  }
+  const [state] = useTimer(workoutData);
 
   const NextExercise = () => {
     return (
@@ -95,17 +26,23 @@ const ExerciseCounter = ({ workoutData }: Props) => {
     );
   };
 
+  const WorkoutComplete = () => {
+    return (
+      <Flex css={{ padding: "$2x" }}>
+        <p>Workout Complete!</p>
+      </Flex>
+    );
+  };
+
   return (
     <Flex
       direction="column"
       css={{ alignItems: "center", backgroundColor: "$gray-05" }}>
       {isTimerDone ? (
-        <Flex>
-          <p>Workout Complete!</p>
-        </Flex>
+        <WorkoutComplete />
       ) : (
         <>
-          <p>Time Remaining: {formatTime(remainingTime)}</p>
+          <p>Time Remaining: {formatTime(state.runningTime)}</p>
           <ExerciseRemainingTime>
             {formatTime(state.runningExerciseTimer)}
           </ExerciseRemainingTime>
