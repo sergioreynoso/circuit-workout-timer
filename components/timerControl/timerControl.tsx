@@ -16,7 +16,6 @@ const TimerControl = () => {
     <Flex
       css={{
         justifyContent: "center",
-        maxWidth: "$bp-md",
         margin: "auto",
         backgroundColor: "$gray-03",
         padding: "$2x",
