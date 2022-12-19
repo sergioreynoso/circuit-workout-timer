@@ -61,19 +61,4 @@ const Heading1 = styled("h1", {
   marginBottom: "$lg",
 });
 
-const Footer = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "$lg",
-  width: "100%",
-  height: "80px",
-  paddingInline: "$2x",
-  backgroundColor: "$primary-02",
-  "@less-sm": {
-    position: "fixed",
-    bottom: "0",
-  },
-});
-
 export default WorkoutTimer;
