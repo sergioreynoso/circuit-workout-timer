@@ -1,56 +1,31 @@
-import { useRouter } from "next/router";
-import React, { memo, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../button";
-import { Flex } from "../layout";
+import { CounterContext } from "../counterProvider/counterProvider";
+import { Box, Flex } from "../layout";
 
-interface TimerControlProps {
-  workoutId: string;
-  toggleTimer: () => void;
-  isTimerRunning: boolean;
-  isTimerDone: boolean;
-}
-
-const TimerControl = ({
-  workoutId,
-  toggleTimer,
-  isTimerRunning,
-  isTimerDone,
-}: TimerControlProps) => {
+const TimerControl = () => {
+  const { isTimer, setIsTimer } = useContext(CounterContext);
   const [label, setLabel] = useState<string>("start");
-  const router = useRouter();
-
-  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/dashboard`);
-  };
-
-  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/editWorkout/${workoutId as string}`);
-  };
 
   const onStart = () => {
-    toggleTimer();
-    if (isTimerRunning) {
-      setLabel("continue");
-    } else {
-      setLabel("pause");
-    }
+    isTimer ? setLabel("continue") : setLabel("pause");
+    setIsTimer(!isTimer);
   };
 
   return (
-    <Flex css={{ gap: "$2x" }}>
-      {!isTimerDone ? (
-        <>
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button colors="primary" onClick={onStart}>
-            {label}
-          </Button>
-          <Button onClick={onEdit}>Edit</Button>
-        </>
-      ) : (
-        <Button onClick={onCancel}>Back to Dashboard</Button>
-      )}
+    <Flex
+      css={{
+        justifyContent: "center",
+        maxWidth: "$bp-md",
+        margin: "auto",
+        backgroundColor: "$gray-03",
+        padding: "$2x",
+      }}>
+      <Button colors="primary" onClick={onStart}>
+        {label}
+      </Button>
     </Flex>
   );
 };
 
-export default memo(TimerControl);
+export default TimerControl;
