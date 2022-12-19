@@ -1,5 +1,6 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useContext, useReducer, useState } from "react";
 import useInterval from "./useInterval";
+import { CounterContext } from "../components/counterProvider/counterProvider";
 
 export const TIMER_INTERVAL: 1000 = 1000;
 
@@ -40,15 +41,13 @@ export default function useTimer(
   workoutTotalTime: number,
   callback: () => void
 ) {
+  const { isTimer } = useContext(CounterContext);
+
   const [state, dispatch] = useReducer(timerReducer, {
     runningTime: workoutTotalTime,
     isTicking: false,
     isDone: false,
   });
-
-  const toggleTimer = useCallback(() => {
-    dispatch({ type: "SET_IS_RUNNING" });
-  }, []);
 
   const updateTimer = () => {
     dispatch({ type: "SET_DURATION" });
@@ -59,11 +58,6 @@ export default function useTimer(
     callback();
   };
 
-  useInterval(updateTimer, state.isTicking ? TIMER_INTERVAL : null);
-  return [
-    state.runningTime,
-    state.isTicking,
-    state.isDone,
-    toggleTimer,
-  ] as const;
+  useInterval(updateTimer, isTimer ? TIMER_INTERVAL : null);
+  return [state.runningTime, state.isTicking, state.isDone] as const;
 }

@@ -1,13 +1,13 @@
 import React from "react";
-import { styled } from "../../styles/stitches.congif";
 import { prisma } from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
-import { Flex } from "../../components/layout";
 import { useWorkout } from "../../hooks/useWorkout";
-import useTimer from "../../hooks/useTimer";
-import TimeControls from "../../components/timerControl";
 import ExerciseCounter from "../../components/exerciseCounter";
+import { Box, Flex } from "../../components/layout";
+import CounterProvider from "../../components/counterProvider/counterProvider";
+import CounterHeader from "../../components/counterHeader";
+import TimerControl from "../../components/timerControl/timerControl";
 
 type WorkoutTimerProps = {
   initialData: WorkoutWithExercises;
@@ -17,21 +17,20 @@ const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
   const formattedWorkout = useWorkout(initialData);
 
   return (
-    <Flex
-      direction="column"
-      css={{
-        justifyContent: "space-around",
-        alignItems: "center",
-        padding: "24px",
-      }}>
-      <Heading1>{initialData.workout_name}</Heading1>
-      <Flex
-        as="main"
-        direction="column"
-        css={{ alignItems: "center", gap: "$2x" }}>
+    <CounterProvider>
+      <Box
+        css={{
+          padding: "$xl",
+          maxWidth: "$bp-md",
+          margin: "auto",
+        }}>
+        <CounterHeader id={initialData.id}>
+          {initialData.workout_name}
+        </CounterHeader>
         <ExerciseCounter workoutData={formattedWorkout} />
-      </Flex>
-    </Flex>
+        <TimerControl />
+      </Box>
+    </CounterProvider>
   );
 };
 
@@ -53,12 +52,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: { initialData: workout },
   };
 };
-
-const Heading1 = styled("h1", {
-  fontSize: "$lg",
-  lineHeight: "$150",
-  textAlign: "center",
-  marginBottom: "$lg",
-});
 
 export default WorkoutTimer;
