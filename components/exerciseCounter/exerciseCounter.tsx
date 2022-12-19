@@ -16,7 +16,9 @@ const ExerciseCounter = ({ workoutData }: Props) => {
   const NextExercise = () => {
     return (
       state.nextExercise && (
-        <Flex direction="column" css={{ alignItems: "center", gap: "$sm" }}>
+        <Flex
+          direction="column"
+          css={{ alignItems: "center", gap: "$sm", padding: "$2x" }}>
           <h4>Up next:</h4>
           <NextExerciseName>
             {state.nextExercise.exercise_name}
@@ -35,14 +37,19 @@ const ExerciseCounter = ({ workoutData }: Props) => {
   };
 
   return (
-    <Flex
-      direction="column"
-      css={{ alignItems: "center", backgroundColor: "$gray-05" }}>
+    <Box
+      css={{
+        alignItems: "center",
+        backgroundColor: "$gray-05",
+        textAlign: "center",
+      }}>
       {isTimerDone ? (
         <WorkoutComplete />
       ) : (
         <>
-          <p>Time Remaining: {formatTime(state.runningTime)}</p>
+          <RunningTime>
+            Time Remaining: {formatTime(state.runningTime)}
+          </RunningTime>
           <ExerciseRemainingTime>
             {formatTime(state.runningExerciseTimer)}
           </ExerciseRemainingTime>
@@ -53,9 +60,14 @@ const ExerciseCounter = ({ workoutData }: Props) => {
           <NextExercise />
         </>
       )}
-    </Flex>
+    </Box>
   );
 };
+
+const RunningTime = styled("h2", {
+  lineHeight: "$100",
+  padding: "$2x",
+});
 
 const ExerciseRemainingTime = styled("h2", {
   fontSize: "$3x",
