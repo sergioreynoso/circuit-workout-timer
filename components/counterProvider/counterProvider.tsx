@@ -1,6 +1,13 @@
-import { createContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
-export const CounterContext = createContext<any | null>(null);
+export type CounterContextType = {
+  isTimer: boolean;
+  setIsTimer: Dispatch<SetStateAction<boolean>>;
+  isTimerDone: boolean;
+  setIsTimerDone: Dispatch<SetStateAction<boolean>>;
+};
+
+export const CounterContext = createContext({} as CounterContextType);
 
 type Props = {
   children: JSX.Element;
