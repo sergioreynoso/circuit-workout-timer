@@ -43,7 +43,7 @@ const Header = styled("div", {
   alignItems: "center",
   gap: "$2x",
   maxWidth: "$bp-md",
-  marginInline: "auto",
+  paddingBlock: "$lg",
 });
 
 export default CounterHeader;
