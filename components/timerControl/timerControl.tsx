@@ -1,13 +1,21 @@
+import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import Button from "../button";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { Box, Flex } from "../layout";
 
 const TimerControl = () => {
-  const { isTimer, setIsTimer } = useContext(CounterContext);
+  const { isTimer, setIsTimer, isTimerDone } = useContext(CounterContext);
   const [label, setLabel] = useState<string>("start");
 
-  const onStart = () => {
+  const router = useRouter();
+  const handleBackToDashboard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    router.push(`/dashboard`);
+  };
+
+  const handleTimerToggle = () => {
     isTimer ? setLabel("continue") : setLabel("pause");
     setIsTimer(!isTimer);
   };
@@ -16,13 +24,15 @@ const TimerControl = () => {
     <Flex
       css={{
         justifyContent: "center",
-        margin: "auto",
-        backgroundColor: "$gray-03",
         padding: "$2x",
       }}>
-      <Button colors="primary" onClick={onStart}>
-        {label}
-      </Button>
+      {!isTimerDone ? (
+        <Button colors="primary" onClick={handleTimerToggle}>
+          {label}
+        </Button>
+      ) : (
+        <Button onClick={handleBackToDashboard}>Return to Dashboard</Button>
+      )}
     </Flex>
   );
 };
