@@ -57,7 +57,10 @@ const ExerciseCounter = ({ workoutData }: Props) => {
             {formatTime(state.runningExerciseTime)}
           </ExerciseRemainingTime>
           <Exercise>{state.runningExercise.exercise_name}</Exercise>
-          <ProgressBar runningExerciseTime={state.runningExerciseTime} />
+          <ProgressBar
+            runningExercise={state.runningExercise}
+            runningExerciseTime={state.runningExerciseTime}
+          />
           <NextExercise />
         </>
       )}
