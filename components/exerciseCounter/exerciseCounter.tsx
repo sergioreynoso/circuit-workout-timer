@@ -1,10 +1,11 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext } from "react";
 import { styled } from "../../styles/stitches.congif";
 import { FormattedWorkout } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { Box, Flex } from "../layout";
 import useTimer from "../../hooks/useTimer";
 import { CounterContext } from "../counterProvider/counterProvider";
+import ProgressBar from "../progressBar";
 
 type Props = { workoutData: FormattedWorkout };
 
@@ -18,8 +19,8 @@ const ExerciseCounter = ({ workoutData }: Props) => {
       state.nextExercise && (
         <Flex
           direction="column"
-          css={{ alignItems: "center", gap: "$sm", padding: "$2x" }}>
-          <h4>Up next:</h4>
+          css={{ alignItems: "center", gap: "$sm", padding: "$sm" }}>
+          <h4>Next</h4>
           <NextExerciseName>
             {state.nextExercise.exercise_name}
           </NextExerciseName>
@@ -30,8 +31,8 @@ const ExerciseCounter = ({ workoutData }: Props) => {
 
   const WorkoutComplete = () => {
     return (
-      <Flex css={{ padding: "$2x" }}>
-        <p>Workout Complete!</p>
+      <Flex css={{ justifyContent: "center", padding: "$sm" }}>
+        <p>Complete!</p>
       </Flex>
     );
   };
@@ -40,7 +41,6 @@ const ExerciseCounter = ({ workoutData }: Props) => {
     <Box
       css={{
         alignItems: "center",
-        backgroundColor: "$gray-05",
         textAlign: "center",
       }}>
       {isTimerDone ? (
@@ -50,13 +50,14 @@ const ExerciseCounter = ({ workoutData }: Props) => {
           <RunningTime>
             Time Remaining: {formatTime(state.runningTime)}
           </RunningTime>
-          <ExerciseRemainingTime>
-            {formatTime(state.runningExerciseTimer)}
-          </ExerciseRemainingTime>
           <Sets>
             {state.setCount} / {workoutData.totalSets}
           </Sets>
+          <ExerciseRemainingTime>
+            {formatTime(state.runningExerciseTime)}
+          </ExerciseRemainingTime>
           <Exercise>{state.runningExercise.exercise_name}</Exercise>
+          <ProgressBar runningExerciseTime={state.runningExerciseTime} />
           <NextExercise />
         </>
       )}
@@ -66,13 +67,13 @@ const ExerciseCounter = ({ workoutData }: Props) => {
 
 const RunningTime = styled("h2", {
   lineHeight: "$100",
-  padding: "$2x",
+  padding: "$sm",
 });
 
 const ExerciseRemainingTime = styled("h2", {
   fontSize: "$3x",
   lineHeight: "$150",
-  padding: "$lg",
+  padding: "$sm",
 });
 
 const Exercise = styled("p", {
