@@ -1,25 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { styled } from "../../styles/stitches.congif";
 import { Box, Flex } from "../layout";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { motion, useAnimationControls } from "framer-motion";
+import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
 
 type Props = {
+  runningExercise: ExerciseWithTimestamp;
   runningExerciseTime: number;
 };
 
-const ProgressBar = ({ runningExerciseTime }: Props) => {
-  const runningExerciseControls = useAnimationControls();
+const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
+  const controls = useAnimationControls();
   const { isTimer } = useContext(CounterContext);
 
-  if (runningExerciseTime === 0) {
-    runningExerciseControls.set({
+  useEffect(() => {
+    console.log("workout change", runningExercise.exercise_name);
+    controls.set({
       width: "0%",
     });
-  } else {
+    controls.start({
+      width: "100%",
+      transition: {
+        duration: runningExercise.duration / 1000,
+        ease: [0, 0, 0, 0],
+      },
+    });
+  }, [runningExercise]);
+
+  useEffect(() => {
     if (isTimer) {
-      runningExerciseControls.start({
+      console.log("boom");
+      controls.start({
         width: "100%",
         transition: {
           duration: runningExerciseTime / 1000,
@@ -27,9 +40,9 @@ const ProgressBar = ({ runningExerciseTime }: Props) => {
         },
       });
     } else {
-      runningExerciseControls.stop();
+      controls.stop();
     }
-  }
+  }, [isTimer]);
 
   return (
     <Flex
@@ -38,7 +51,7 @@ const ProgressBar = ({ runningExerciseTime }: Props) => {
         margin: "20px auto",
         backgroundColor: "$gray-05",
       }}>
-      <Bar animate={runningExerciseControls} />
+      <Bar layout animate={controls} />
     </Flex>
   );
 };
