@@ -10,7 +10,7 @@ type CounterState = {
   exercises: ExerciseWithTimestamp[];
   setCount: number;
   runningExercise: ExerciseWithTimestamp;
-  runningExerciseTimer: number;
+  runningExerciseTime: number;
   nextExercise: ExerciseWithTimestamp;
 };
 
@@ -37,7 +37,7 @@ const counterReducer = (state: CounterState, action: CounterActions) => {
     case "UPDATE_RUNNING_EXERCISE_TIMER":
       return {
         ...state,
-        runningExerciseTimer: state.runningExerciseTimer - TIMER_INTERVAL,
+        runningExerciseTime: state.runningExerciseTime - TIMER_INTERVAL,
       };
     default:
       return state;
@@ -52,7 +52,7 @@ export default function useTimer(workoutData: FormattedWorkout) {
     exercises: workoutData.formattedWorkout,
     setCount: 1,
     runningExercise: workoutData.formattedWorkout[0],
-    runningExerciseTimer: workoutData.formattedWorkout[0].duration,
+    runningExerciseTime: workoutData.formattedWorkout[0].duration,
     nextExercise: workoutData.formattedWorkout[1],
   });
 
@@ -74,7 +74,7 @@ export default function useTimer(workoutData: FormattedWorkout) {
                   ? state.setCount + 1
                   : state.setCount,
               runningExercise: exercise,
-              runningExerciseTimer: exercise.duration,
+              runningExerciseTime: exercise.duration,
               nextExercise:
                 state.exercises[state.exercises.indexOf(exercise) + 1],
             },
@@ -92,5 +92,5 @@ export default function useTimer(workoutData: FormattedWorkout) {
   }
 
   useInterval(updateTimer, isTimer ? TIMER_INTERVAL : null);
-  return [state];
+  return [state as CounterState];
 }
