@@ -16,7 +16,6 @@ const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
   const { isTimer } = useContext(CounterContext);
 
   useEffect(() => {
-    console.log("workout change", runningExercise.exercise_name);
     controls.set({
       width: "0%",
     });
@@ -47,7 +46,6 @@ const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
   return (
     <Flex
       css={{
-        maxWidth: "$bp-sm",
         margin: "20px auto",
         backgroundColor: "$gray-05",
       }}>

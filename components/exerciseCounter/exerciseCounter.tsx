@@ -6,6 +6,7 @@ import { Box, Flex } from "../layout";
 import useTimer from "../../hooks/useTimer";
 import { CounterContext } from "../counterProvider/counterProvider";
 import ProgressBar from "../progressBar";
+import ProgressCircle from "../progressCircle";
 
 type Props = { workoutData: FormattedWorkout };
 
@@ -53,14 +54,15 @@ const ExerciseCounter = ({ workoutData }: Props) => {
           <Sets>
             {state.setCount} / {workoutData.totalSets}
           </Sets>
-          <ExerciseRemainingTime>
-            {formatTime(state.runningExerciseTime)}
-          </ExerciseRemainingTime>
-          <Exercise>{state.runningExercise.exercise_name}</Exercise>
-          <ProgressBar
+
+          <ProgressCircle
             runningExercise={state.runningExercise}
-            runningExerciseTime={state.runningExerciseTime}
-          />
+            runningExerciseTime={state.runningExerciseTime}>
+            <ExerciseRemainingTime>
+              {formatTime(state.runningExerciseTime)}
+            </ExerciseRemainingTime>
+            <Exercise>{state.runningExercise.exercise_name}</Exercise>
+          </ProgressCircle>
           <NextExercise />
         </>
       )}
