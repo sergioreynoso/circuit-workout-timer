@@ -58,6 +58,7 @@ const ExerciseCounter = ({ workoutData }: Props) => {
             <ProgressCircle
               runningActivity={workoutData}
               runningActivityTime={state.runningTime}
+              color="orange"
             />
             <Box
               css={{
@@ -88,6 +89,7 @@ const ExerciseCounter = ({ workoutData }: Props) => {
 const RunningTime = styled("h2", {
   lineHeight: "$100",
   padding: "$sm",
+  color: "orange",
 });
 
 const ExerciseRemainingTime = styled("h2", {
