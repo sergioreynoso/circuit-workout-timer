@@ -1,24 +1,30 @@
-import { animate, motion, useAnimationControls } from "framer-motion";
-import { useContext, useEffect, useRef } from "react";
-import useInterval from "../../hooks/useInterval";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
+import { motion, useAnimationControls } from "framer-motion";
+import { useContext, useEffect } from "react";
+import {
+  ExerciseWithTimestamp,
+  FormattedWorkout,
+} from "../../hooks/useWorkout";
 import { styled } from "../../styles/stitches.congif";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { Box, Flex } from "../layout";
+import { TIMER_INTERVAL } from "../../hooks/useTimer";
 
 type Props = {
-  runningExercise: ExerciseWithTimestamp;
-  runningExerciseTime: number;
-  children: JSX.Element | JSX.Element[];
+  runningActivity: ExerciseWithTimestamp | FormattedWorkout;
+  runningActivityTime: number;
+  scale?: number;
+  color?: string;
+  children?: JSX.Element | JSX.Element[];
 };
 
 const ProgressCircle = ({
-  runningExercise,
-  runningExerciseTime,
+  runningActivity,
+  runningActivityTime,
+  scale = 1,
+  color = "$primary-09",
   children,
 }: Props) => {
   const controls = useAnimationControls();
-
   const { isTimer } = useContext(CounterContext);
 
   const size = 100;
@@ -31,30 +37,29 @@ const ProgressCircle = ({
   const dashOffset = dashArray * ((100 - progress) / 100);
 
   useEffect(() => {
+    const totalDuration = runningActivity.duration;
     controls.set({
       strokeDashoffset: dashArray,
     });
     controls.start({
       strokeDashoffset: dashOffset,
       transition: {
-        duration: runningExercise.duration / 1000,
+        duration: totalDuration / TIMER_INTERVAL,
         ease: [0, 0, 0, 0],
       },
     });
-  }, [runningExercise]);
+  }, [runningActivity]);
 
   useEffect(() => {
-    if (isTimer) {
-      controls.start({
-        strokeDashoffset: dashOffset,
-        transition: {
-          duration: runningExerciseTime / 1000,
-          ease: [0, 0, 0, 0],
-        },
-      });
-    } else {
-      controls.stop();
-    }
+    isTimer
+      ? controls.start({
+          strokeDashoffset: dashOffset,
+          transition: {
+            duration: (runningActivityTime + TIMER_INTERVAL) / TIMER_INTERVAL,
+            ease: [0, 0, 0, 0],
+          },
+        })
+      : controls.stop();
   }, [isTimer]);
 
   return (
@@ -66,18 +71,26 @@ const ProgressCircle = ({
           alignItems: "center",
           maxWidth: "$bp-sm",
           margin: "auto",
-          //   border: "1px solid black",
         }}>
-        <Svg viewBox="0 0 100 100">
-          <Track
+        <Box
+          as="svg"
+          viewBox="0 0 100 100"
+          css={{ width: "100%", transform: `rotate(-90deg) scale(${scale})` }}>
+          <Box
+            as="circle"
             width={size}
             height={size}
             cx={center}
             cy={center}
             r={radius}
             strokeWidth={strokeWidth}
+            css={{
+              fill: "transparent",
+              stroke: "$gray-04",
+            }}
           />
-          <Indicator
+          <Box
+            as={motion.circle}
             width={size}
             height={size}
             cx={center}
@@ -91,12 +104,17 @@ const ProgressCircle = ({
               strokeDashoffset: dashArray,
             }}
             animate={controls}
+            css={{
+              stroke: color,
+              strokeLinecap: "round",
+            }}
           />
-        </Svg>
+        </Box>
         <Flex
           direction="column"
           css={{
             position: "absolute",
+            justifyContent: "center",
           }}>
           {children}
         </Flex>
@@ -104,21 +122,5 @@ const ProgressCircle = ({
     </>
   );
 };
-
-const Svg = styled("svg", {
-  width: "100%",
-  transform: "rotate(-90deg)",
-  //   backgroundColor: "$primary-03",
-});
-
-const Track = styled("circle", {
-  fill: "transparent",
-  stroke: "$gray-04",
-});
-
-const Indicator = styled(motion.circle, {
-  stroke: "$primary-09",
-  strokeLinecap: "round",
-});
 
 export default ProgressCircle;
