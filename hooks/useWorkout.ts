@@ -13,7 +13,7 @@ export interface ExerciseWithTimestamp extends Omit<Exercise, "display_seq"> {
 export type FormattedWorkout = {
   id: string;
   formattedWorkout: ExerciseWithTimestamp[];
-  totalTime: number;
+  duration: number;
   totalSets: number;
 };
 
@@ -48,10 +48,10 @@ export function useWorkout(workoutDetails: WorkoutWithExercises) {
       return arr;
     });
 
-    const totalTime = workout.reduce((prev, curr) => prev + curr.duration, 0);
+    const duration = workout.reduce((prev, curr) => prev + curr.duration, 0);
 
-    const formattedWorkout = addTimestamp(workout, totalTime);
+    const formattedWorkout = addTimestamp(workout, duration);
 
-    return { id, formattedWorkout, totalTime, totalSets };
+    return { id, formattedWorkout, duration, totalSets };
   }, [workoutDetails]);
 }

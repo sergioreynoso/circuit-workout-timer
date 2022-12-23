@@ -48,7 +48,7 @@ export default function useTimer(workoutData: FormattedWorkout) {
   const { isTimer, setIsTimer, setIsTimerDone } = useContext(CounterContext);
 
   const [state, dispatch] = useReducer(counterReducer, {
-    runningTime: workoutData.totalTime,
+    runningTime: workoutData.duration,
     exercises: workoutData.formattedWorkout,
     setCount: 1,
     runningExercise: workoutData.formattedWorkout[0],
@@ -84,7 +84,7 @@ export default function useTimer(workoutData: FormattedWorkout) {
     }
     dispatch({ type: "UPDATE_RUNNING_EXERCISE_TIMER" });
 
-    if (state.runningTime <= 1000) {
+    if (state.runningTime === 0) {
       console.log("Workout Done");
       setIsTimer(false);
       setIsTimerDone(true);
