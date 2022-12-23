@@ -54,15 +54,30 @@ const ExerciseCounter = ({ workoutData }: Props) => {
           <Sets>
             {state.setCount} / {workoutData.totalSets}
           </Sets>
-
-          <ProgressCircle
-            runningExercise={state.runningExercise}
-            runningExerciseTime={state.runningExerciseTime}>
-            <ExerciseRemainingTime>
-              {formatTime(state.runningExerciseTime)}
-            </ExerciseRemainingTime>
-            <Exercise>{state.runningExercise.exercise_name}</Exercise>
-          </ProgressCircle>
+          <Box css={{ position: "relative" }}>
+            <ProgressCircle
+              runningActivity={workoutData}
+              runningActivityTime={state.runningTime}
+            />
+            <Box
+              css={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}>
+              <ProgressCircle
+                runningActivity={state.runningExercise}
+                runningActivityTime={state.runningExerciseTime}
+                scale={0.95}>
+                <ExerciseRemainingTime>
+                  {formatTime(state.runningExerciseTime)}
+                </ExerciseRemainingTime>
+                <Exercise>{state.runningExercise.exercise_name}</Exercise>
+              </ProgressCircle>
+            </Box>
+          </Box>
           <NextExercise />
         </>
       )}
