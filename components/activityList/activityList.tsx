@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
 import { styled } from "../../styles/stitches.congif";
+import ActivityListItem from "../activityListItem";
 import AddExerciseDialog from "../addExerciseDialog";
-import ExerciseListItem from "../exerciseListItem";
 import { Flex } from "../layout";
 
 type Props = {
@@ -63,7 +63,7 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
 
   const DragOverlayItem = ({ activeId }: { activeId: string }) => {
     return (
-      <ExerciseListItem
+      <ActivityListItem
         exercise={
           exercises.find((exercise) =>
             exercise.id === activeId ? exercise : null
@@ -106,7 +106,7 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
             items={exercises}
             strategy={verticalListSortingStrategy}>
             {exercises.map((exercise) => (
-              <ExerciseListItem key={exercise.id} exercise={exercise} />
+              <ActivityListItem key={exercise.id} exercise={exercise} />
             ))}
           </SortableContext>
           <StyledDragOverLay>
