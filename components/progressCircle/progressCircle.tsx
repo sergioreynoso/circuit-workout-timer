@@ -1,10 +1,9 @@
 import { motion, useAnimationControls } from "framer-motion";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import {
   ExerciseWithTimestamp,
   FormattedWorkout,
 } from "../../hooks/useWorkout";
-import { styled } from "../../styles/stitches.congif";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { Box, Flex } from "../layout";
 import { TIMER_INTERVAL } from "../../hooks/useTimer";
@@ -12,6 +11,9 @@ import { TIMER_INTERVAL } from "../../hooks/useTimer";
 type Props = {
   runningActivity: ExerciseWithTimestamp | FormattedWorkout;
   runningActivityTime: number;
+  progress?: number;
+  size?: number;
+  strokeWidth?: number;
   scale?: number;
   color?: string;
   children?: JSX.Element | JSX.Element[];
@@ -20,6 +22,9 @@ type Props = {
 const ProgressCircle = ({
   runningActivity,
   runningActivityTime,
+  progress = 100,
+  size = 100,
+  strokeWidth = 2,
   scale = 1,
   color = "$primary-09",
   children,
@@ -27,14 +32,14 @@ const ProgressCircle = ({
   const controls = useAnimationControls();
   const { isTimer } = useContext(CounterContext);
 
-  const size = 100;
-  const strokeWidth = 2;
-  const center = size / 2;
-  const radius = center - strokeWidth;
+  const [center, radius, dashArray, dashOffset] = useMemo(() => {
+    const center = size / 2;
+    const radius = center - strokeWidth;
+    const dashArray = Math.ceil(2 * Math.PI * radius);
+    const dashOffset = dashArray * ((100 - progress) / 100);
 
-  const progress = 100;
-  const dashArray = Math.ceil(2 * Math.PI * radius);
-  const dashOffset = dashArray * ((100 - progress) / 100);
+    return [center, radius, dashArray, dashOffset];
+  }, [progress, size, strokeWidth]);
 
   useEffect(() => {
     const totalDuration = runningActivity.duration;
