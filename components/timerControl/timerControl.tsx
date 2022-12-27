@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import Button from "../button";
-import { CounterContext } from "../counterProvider/counterProvider";
+import { TimerContext } from "../timerContext/timerProvider";
 import { Box, Flex } from "../layout";
 
 const TimerControl = () => {
-  const { isTimer, setIsTimer, isTimerDone } = useContext(CounterContext);
+  const { isTimer, setIsTimer, isTimerDone } = useContext(TimerContext);
   const [label, setLabel] = useState<string>("start");
 
   const router = useRouter();

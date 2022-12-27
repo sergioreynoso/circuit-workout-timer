@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { styled } from "../../styles/stitches.congif";
 import { Box, Flex } from "../layout";
-import { CounterContext } from "../counterProvider/counterProvider";
+import { TimerContext } from "../timerContext/timerProvider";
 import { motion, useAnimationControls } from "framer-motion";
 import { Activity } from "../../hooks/useWorkout";
 
@@ -13,7 +13,7 @@ type Props = {
 
 const ProgressBar = ({ runningActivity, runningActivityTime }: Props) => {
   const controls = useAnimationControls();
-  const { isTimer } = useContext(CounterContext);
+  const { isTimer } = useContext(TimerContext);
 
   useEffect(() => {
     controls.set({

@@ -1,5 +1,5 @@
 import { useContext, useReducer } from "react";
-import { CounterContext } from "../components/counterProvider/counterProvider";
+import { TimerContext } from "../components/timerContext";
 import useInterval from "./useInterval";
 import { Activity, FormattedWorkout } from "./useWorkout";
 
@@ -45,7 +45,7 @@ const counterReducer = (state: CounterState, action: CounterActions) => {
 };
 
 export default function useTimer(workoutData: FormattedWorkout) {
-  const { isTimer, setIsTimer, setIsTimerDone } = useContext(CounterContext);
+  const { isTimer, setIsTimer, setIsTimerDone } = useContext(TimerContext);
 
   const [state, dispatch] = useReducer(counterReducer, {
     runningTime: workoutData.duration,

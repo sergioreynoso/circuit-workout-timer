@@ -2,7 +2,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import { useContext, useEffect, useMemo } from "react";
 import { TIMER_INTERVAL } from "../../hooks/useTimer";
 import { Activity, FormattedWorkout } from "../../hooks/useWorkout";
-import { CounterContext } from "../counterProvider/counterProvider";
+import { TimerContext } from "../timerContext/timerProvider";
 import { Box, Flex } from "../layout";
 
 type Props = {
@@ -27,7 +27,7 @@ const ProgressCircle = ({
   children,
 }: Props) => {
   const controls = useAnimationControls();
-  const { isTimer } = useContext(CounterContext);
+  const { isTimer } = useContext(TimerContext);
 
   const [center, radius, dashArray, dashOffset] = useMemo(() => {
     const center = size / 2;

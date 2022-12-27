@@ -1,28 +1,28 @@
 import { createContext, Dispatch, SetStateAction, useState } from "react";
 
-export type CounterContextType = {
+export type TimerContextType = {
   isTimer: boolean;
   setIsTimer: Dispatch<SetStateAction<boolean>>;
   isTimerDone: boolean;
   setIsTimerDone: Dispatch<SetStateAction<boolean>>;
 };
 
-export const CounterContext = createContext({} as CounterContextType);
+export const TimerContext = createContext({} as TimerContextType);
 
 type Props = {
   children: JSX.Element;
 };
 
-const CounterProvider = ({ children }: Props) => {
+const TimerProvider = ({ children }: Props) => {
   const [isTimer, setIsTimer] = useState(false);
   const [isTimerDone, setIsTimerDone] = useState(false);
 
   return (
-    <CounterContext.Provider
+    <TimerContext.Provider
       value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone }}>
       {children}
-    </CounterContext.Provider>
+    </TimerContext.Provider>
   );
 };
 
-export default CounterProvider;
+export default TimerProvider;

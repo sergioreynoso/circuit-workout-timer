@@ -3,14 +3,14 @@ import useTimer from "../../hooks/useTimer";
 import { FormattedWorkout } from "../../hooks/useWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
-import { CounterContext } from "../counterProvider/counterProvider";
+import { TimerContext } from "../timerContext";
 import { Box, Flex } from "../layout";
 import ProgressCircle from "../progressCircle";
 
 type Props = { workoutData: FormattedWorkout };
 
 const ExerciseCounter = ({ workoutData }: Props) => {
-  const { isTimerDone } = useContext(CounterContext);
+  const { isTimerDone } = useContext(TimerContext);
 
   const [state] = useTimer(workoutData);
 

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { styled } from "../../styles/stitches.congif";
 import Button from "../button";
-import { CounterContext } from "../counterProvider/counterProvider";
+import { TimerContext } from "../timerContext";
 
 type Props = {
   id: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const CounterHeader = ({ id, children }: Props) => {
-  const { isTimerDone } = useContext(CounterContext);
+  const { isTimerDone } = useContext(TimerContext);
 
   const router = useRouter();
   const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

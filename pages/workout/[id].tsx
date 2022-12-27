@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import CounterHeader from "../../components/counterHeader";
-import CounterProvider from "../../components/counterProvider/counterProvider";
+import TimerProvider from "../../components/timerContext";
 import ExerciseCounter from "../../components/exerciseCounter";
 import { Box } from "../../components/layout";
 import TimerControl from "../../components/timerControl/timerControl";
@@ -16,7 +16,7 @@ const WorkoutTimer = ({ initialData }: Props) => {
   const formattedWorkout = useWorkout(initialData);
 
   return (
-    <CounterProvider>
+    <TimerProvider>
       <Box
         css={{
           padding: "$xl",
@@ -29,7 +29,7 @@ const WorkoutTimer = ({ initialData }: Props) => {
         <ExerciseCounter workoutData={formattedWorkout} />
         <TimerControl />
       </Box>
-    </CounterProvider>
+    </TimerProvider>
   );
 };
 
