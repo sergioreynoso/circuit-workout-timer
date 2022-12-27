@@ -1,18 +1,17 @@
 import { GetServerSideProps } from "next";
-import { prisma } from "../../lib/prisma";
-import React from "react";
 import EditWorkoutForm from "../../components/editWorkoutForm";
 import ExerciseList from "../../components/exerciseList";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
+import { prisma } from "../../lib/prisma";
 import { styled } from "../../styles/stitches.congif";
 
-type EditProps = {
+type Props = {
   initialData: WorkoutWithExercises;
 };
 
-const Edit = ({ initialData }: EditProps) => {
+const Edit = ({ initialData }: Props) => {
   const { data } = useFetchWorkout(
     "getWorkout",
     initialData.id,
