@@ -1,10 +1,9 @@
-import { Exercise, Workout } from "@prisma/client";
+import { Exercise } from "@prisma/client";
+import cuid from "cuid";
+import range from "lodash/range";
 import { useMemo } from "react";
 import { addTimestamp } from "../lib/addTimestamp";
-import range from "lodash/range";
-import cuid from "cuid";
 import { WorkoutWithExercises } from "./useFetchWorkout";
-import { StringifyOptions } from "querystring";
 
 export interface ExerciseWithTimestamp extends Omit<Exercise, "display_seq"> {
   timestamp?: { start: number; end: number };
