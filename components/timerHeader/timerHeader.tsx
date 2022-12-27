@@ -9,7 +9,7 @@ type Props = {
   children: JSX.Element | string;
 };
 
-const CounterHeader = ({ id, children }: Props) => {
+const TimerHeader = ({ id, children }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
 
   const router = useRouter();
@@ -46,4 +46,4 @@ const Header = styled("div", {
   paddingBlock: "$lg",
 });
 
-export default CounterHeader;
+export default TimerHeader;

@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
-import CounterHeader from "../../components/counterHeader";
-import TimerProvider from "../../components/timerContext";
-import Timer from "../../components/timer";
 import { Box } from "../../components/layout";
+import Timer from "../../components/timer";
+import TimerProvider from "../../components/timerContext";
 import TimerControl from "../../components/timerControl/timerControl";
+import TimerHeader from "../../components/timerHeader";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import { useWorkout } from "../../hooks/useWorkout";
 import { prisma } from "../../lib/prisma";
@@ -23,9 +23,9 @@ const WorkoutTimer = ({ initialData }: Props) => {
           maxWidth: "$bp-md",
           margin: "auto",
         }}>
-        <CounterHeader id={initialData.id}>
+        <TimerHeader id={initialData.id}>
           {initialData.workout_name}
-        </CounterHeader>
+        </TimerHeader>
         <Timer workoutData={formattedWorkout} />
         <TimerControl />
       </Box>
