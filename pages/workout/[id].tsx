@@ -8,11 +8,11 @@ import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import { useWorkout } from "../../hooks/useWorkout";
 import { prisma } from "../../lib/prisma";
 
-type WorkoutTimerProps = {
+type Props = {
   initialData: WorkoutWithExercises;
 };
 
-const WorkoutTimer = ({ initialData }: WorkoutTimerProps) => {
+const WorkoutTimer = ({ initialData }: Props) => {
   const formattedWorkout = useWorkout(initialData);
 
   return (

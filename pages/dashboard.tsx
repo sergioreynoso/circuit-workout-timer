@@ -1,12 +1,11 @@
-import React from "react";
-import WorkoutList from "../components/workoutList";
-import { Flex } from "../components/layout";
-import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { GetServerSideProps } from "next";
 import { Exercise, Workout } from "@prisma/client";
+import { GetServerSideProps } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { Flex } from "../components/layout";
+import WorkoutList from "../components/workoutList";
+import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
 import { prisma } from "../lib/prisma";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 type DashboardProps = {
   id: string;
