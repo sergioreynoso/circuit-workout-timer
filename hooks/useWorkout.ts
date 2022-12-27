@@ -5,18 +5,18 @@ import { useMemo } from "react";
 import { addTimestamp } from "../lib/addTimestamp";
 import { WorkoutWithExercises } from "./useFetchWorkout";
 
-export interface ExerciseWithTimestamp extends Omit<Exercise, "display_seq"> {
+export interface Activity extends Omit<Exercise, "display_seq"> {
   timestamp?: { start: number; end: number };
 }
 
 export type FormattedWorkout = {
   id: string;
-  formattedWorkout: ExerciseWithTimestamp[];
+  formattedWorkout: Activity[];
   duration: number;
   totalSets: number;
 };
 
-const WARMUP: ExerciseWithTimestamp = {
+const WARMUP: Activity = {
   id: cuid(),
   exercise_name: "Warm up",
   type: "WARMUP",
@@ -24,7 +24,7 @@ const WARMUP: ExerciseWithTimestamp = {
   workoutId: "",
 };
 
-const SET_REST = (rest: number): ExerciseWithTimestamp => ({
+const SET_REST = (rest: number): Activity => ({
   id: cuid(),
   exercise_name: "Set Rest",
   type: "SET_REST",
@@ -35,7 +35,7 @@ const SET_REST = (rest: number): ExerciseWithTimestamp => ({
 export function useWorkout(workoutDetails: WorkoutWithExercises) {
   return useMemo((): FormattedWorkout => {
     const id = workoutDetails.id;
-    const exercises = workoutDetails.exercises as ExerciseWithTimestamp[];
+    const exercises = workoutDetails.exercises as Activity[];
     const totalSets = workoutDetails.set_count;
     const setRest = workoutDetails.set_rest;
 

@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
-import AlertDialog from "../alertDialog/alertDialog";
-import { Title, Cancel, Action } from "@radix-ui/react-alert-dialog";
-import Input from "../input";
-import Button from "../button";
-import { Flex } from "../layout";
-import useExerciseMutation from "../../hooks/useExerciseMutation";
+import { Cancel, Title } from "@radix-ui/react-alert-dialog";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { styled } from "../../styles/stitches.congif";
+import React, { useState } from "react";
+import useExerciseMutation from "../../hooks/useExerciseMutation";
+import { Activity } from "../../hooks/useWorkout";
+import AlertDialog from "../alertDialog/alertDialog";
+import Button from "../button";
+import Input from "../input";
+import { Flex } from "../layout";
 
 type Props = {
-  exerciseData: ExerciseWithTimestamp;
+  activity: Activity;
 };
 
-const EditExerciseDialog = ({ exerciseData }: Props) => {
+const EditExerciseDialog = ({ activity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const mutation = useExerciseMutation("updateExercise", () =>
@@ -21,9 +20,9 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
   );
 
   const [{ name, duration, type }, setInputValue] = useState({
-    name: exerciseData.exercise_name,
-    duration: Math.round(exerciseData.duration / 1000),
-    type: exerciseData.type,
+    name: activity.exercise_name,
+    duration: Math.round(activity.duration / 1000),
+    type: activity.type,
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -39,7 +38,7 @@ const EditExerciseDialog = ({ exerciseData }: Props) => {
     e.stopPropagation();
 
     mutation.mutate({
-      id: exerciseData.id,
+      id: activity.id,
       exercise_name: name,
       type: type,
       duration: Number(duration * 1000),

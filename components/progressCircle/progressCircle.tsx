@@ -1,15 +1,12 @@
 import { motion, useAnimationControls } from "framer-motion";
 import { useContext, useEffect, useMemo } from "react";
 import { TIMER_INTERVAL } from "../../hooks/useTimer";
-import {
-  ExerciseWithTimestamp,
-  FormattedWorkout,
-} from "../../hooks/useWorkout";
+import { Activity, FormattedWorkout } from "../../hooks/useWorkout";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { Box, Flex } from "../layout";
 
 type Props = {
-  runningActivity: ExerciseWithTimestamp | FormattedWorkout;
+  runningActivity: Activity | FormattedWorkout;
   runningActivityTime: number;
   progress?: number;
   size?: number;

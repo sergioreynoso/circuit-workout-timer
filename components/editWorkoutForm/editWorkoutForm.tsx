@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Input from "../input/input";
-import Button from "../button";
-import { styled } from "../../styles/stitches.congif";
 import { Workout } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { styled } from "../../styles/stitches.congif";
+import Button from "../button";
+import Input from "../input/input";
 import { Flex } from "../layout";
 
 type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;

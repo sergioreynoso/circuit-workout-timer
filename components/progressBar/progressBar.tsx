@@ -4,14 +4,14 @@ import { styled } from "../../styles/stitches.congif";
 import { Box, Flex } from "../layout";
 import { CounterContext } from "../counterProvider/counterProvider";
 import { motion, useAnimationControls } from "framer-motion";
-import { ExerciseWithTimestamp } from "../../hooks/useWorkout";
+import { Activity } from "../../hooks/useWorkout";
 
 type Props = {
-  runningExercise: ExerciseWithTimestamp;
-  runningExerciseTime: number;
+  runningActivity: Activity;
+  runningActivityTime: number;
 };
 
-const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
+const ProgressBar = ({ runningActivity, runningActivityTime }: Props) => {
   const controls = useAnimationControls();
   const { isTimer } = useContext(CounterContext);
 
@@ -22,11 +22,11 @@ const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
     controls.start({
       width: "100%",
       transition: {
-        duration: runningExercise.duration / 1000,
+        duration: runningActivity.duration / 1000,
         ease: [0, 0, 0, 0],
       },
     });
-  }, [runningExercise]);
+  }, [runningActivity]);
 
   useEffect(() => {
     if (isTimer) {
@@ -34,7 +34,7 @@ const ProgressBar = ({ runningExercise, runningExerciseTime }: Props) => {
       controls.start({
         width: "100%",
         transition: {
-          duration: runningExerciseTime / 1000,
+          duration: runningActivityTime / 1000,
           ease: [0, 0, 0, 0],
         },
       });

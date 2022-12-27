@@ -1,14 +1,13 @@
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Exercise } from "@prisma/client";
-import React, { useEffect } from "react";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
+import Button from "../button";
 import DeleteExerciseDialog from "../deleteExerciseDialog";
 import EditExerciseDialog from "../editExerciseDialog";
 import { Flex } from "../layout";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import Button from "../button";
 
 export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -40,8 +39,8 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
           gap: "$sm",
         }}>
         <ListItemDuration>{formatTime(exercise.duration)}</ListItemDuration>
-        <EditExerciseDialog exerciseData={exercise} />
-        <DeleteExerciseDialog exerciseId={exercise.id} />
+        <EditExerciseDialog activity={exercise} />
+        <DeleteExerciseDialog activityId={exercise.id} />
         <Button
           colors="transparent"
           {...attributes}

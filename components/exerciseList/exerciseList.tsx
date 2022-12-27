@@ -1,17 +1,12 @@
-import { Exercise } from "@prisma/client";
-import React, { useEffect, useMemo, useState } from "react";
-import AddExerciseDialog from "../addExerciseDialog";
-import ExerciseListItem from "../exerciseListItem";
-import { Flex } from "../layout";
 import {
-  DndContext,
   closestCenter,
+  DndContext,
   DragOverlay,
   KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
-  TouchSensor,
-  MouseSensor,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -19,9 +14,14 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { styled } from "../../styles/stitches.congif";
-import updateDisplaySeq from "../../lib/updateDisplaySeq";
+import { Exercise } from "@prisma/client";
+import { useEffect, useState } from "react";
 import useExerciseMutation from "../../hooks/useExerciseMutation";
+import updateDisplaySeq from "../../lib/updateDisplaySeq";
+import { styled } from "../../styles/stitches.congif";
+import AddExerciseDialog from "../addExerciseDialog";
+import ExerciseListItem from "../exerciseListItem";
+import { Flex } from "../layout";
 
 type Props = {
   workoutId: string;

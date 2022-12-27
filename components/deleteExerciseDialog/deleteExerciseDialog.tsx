@@ -12,10 +12,10 @@ import useExerciseMutation from "../../hooks/useExerciseMutation";
 import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
-  exerciseId: string;
+  activityId: string;
 };
 
-const DeleteExerciseDialog = ({ exerciseId }: Props) => {
+const DeleteExerciseDialog = ({ activityId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const mutation = useExerciseMutation("deleteExercise", () =>
@@ -25,7 +25,7 @@ const DeleteExerciseDialog = ({ exerciseId }: Props) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     mutation.mutate({
-      id: exerciseId,
+      id: activityId,
     });
   };
 

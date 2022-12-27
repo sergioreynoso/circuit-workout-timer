@@ -1,9 +1,6 @@
-import { ExerciseWithTimestamp } from "../hooks/useWorkout";
+import { Activity } from "../hooks/useWorkout";
 
-export function addTimestamp(
-  array: ExerciseWithTimestamp[],
-  totalTime: number
-) {
+export function addTimestamp(array: Activity[], totalTime: number) {
   return array.map((item, index) => {
     let start = array
       .slice(0, index)

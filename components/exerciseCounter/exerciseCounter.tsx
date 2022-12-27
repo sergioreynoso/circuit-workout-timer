@@ -16,13 +16,13 @@ const ExerciseCounter = ({ workoutData }: Props) => {
 
   const NextExercise = () => {
     return (
-      state.nextExercise && (
+      state.nextActivity && (
         <Flex
           direction="column"
           css={{ alignItems: "center", gap: "$sm", padding: "$sm" }}>
           <h4>Next</h4>
           <NextExerciseName>
-            {state.nextExercise.exercise_name}
+            {state.nextActivity.exercise_name}
           </NextExerciseName>
         </Flex>
       )
@@ -68,13 +68,13 @@ const ExerciseCounter = ({ workoutData }: Props) => {
                 left: 0,
               }}>
               <ProgressCircle
-                runningActivity={state.runningExercise}
-                runningActivityTime={state.runningExerciseTime}
+                runningActivity={state.runningActivity}
+                runningActivityTime={state.runningActivityTime}
                 scale={0.95}>
                 <ExerciseRemainingTime>
-                  {formatTime(state.runningExerciseTime)}
+                  {formatTime(state.runningActivityTime)}
                 </ExerciseRemainingTime>
-                <Exercise>{state.runningExercise.exercise_name}</Exercise>
+                <Exercise>{state.runningActivity.exercise_name}</Exercise>
               </ProgressCircle>
             </Box>
           </Box>
