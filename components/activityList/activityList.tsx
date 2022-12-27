@@ -16,22 +16,22 @@ import {
 } from "@dnd-kit/sortable";
 import { Exercise } from "@prisma/client";
 import { useEffect, useState } from "react";
-import useExerciseMutation from "../../hooks/useExerciseMutation";
+import useMutateActivity from "../../hooks/useMutateActivity";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
 import { styled } from "../../styles/stitches.congif";
 import ActivityListItem from "../activityListItem";
-import AddExerciseDialog from "../addExerciseDialog";
+import AddActivityDialog from "../addActivityDialog";
 import { Flex } from "../layout";
 
 type Props = {
   workoutId: string;
-  exerciseData: Exercise[];
+  activitiesData: Exercise[];
 };
 
-const ActivityList = ({ workoutId, exerciseData }: Props) => {
+const ActivityList = ({ workoutId, activitiesData }: Props) => {
   const [activeId, setActiveId] = useState(null);
-  const [exercises, setExercises] = useState(() => exerciseData);
-  const mutation = useExerciseMutation("updateExerciseOrder", undefined, false);
+  const [exercises, setActivities] = useState(() => activitiesData);
+  const mutation = useMutateActivity("updateExerciseOrder", undefined, false);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -49,7 +49,7 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
   function handleDragEnd(event: any) {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setExercises((items) => {
+      setActivities((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
@@ -64,7 +64,7 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
   const DragOverlayItem = ({ activeId }: { activeId: string }) => {
     return (
       <ActivityListItem
-        exercise={
+        activity={
           exercises.find((exercise) =>
             exercise.id === activeId ? exercise : null
           ) as Exercise
@@ -74,8 +74,8 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
   };
 
   useEffect(() => {
-    setExercises(exerciseData);
-  }, [exerciseData]);
+    setActivities(activitiesData);
+  }, [activitiesData]);
 
   return (
     <DndContext
@@ -92,7 +92,7 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
             padding: "$md",
           }}>
           <h3>Add an exercise to your workout</h3>
-          <AddExerciseDialog
+          <AddActivityDialog
             workoutId={workoutId}
             exercisesTotalCount={exercises.length}
           />
@@ -105,8 +105,8 @@ const ActivityList = ({ workoutId, exerciseData }: Props) => {
           <SortableContext
             items={exercises}
             strategy={verticalListSortingStrategy}>
-            {exercises.map((exercise) => (
-              <ActivityListItem key={exercise.id} exercise={exercise} />
+            {exercises.map((activity) => (
+              <ActivityListItem key={activity.id} activity={activity} />
             ))}
           </SortableContext>
           <StyledDragOverLay>

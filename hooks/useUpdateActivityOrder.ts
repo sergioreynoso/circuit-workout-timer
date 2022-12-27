@@ -1,9 +1,9 @@
 import { Exercise } from "@prisma/client";
 import { useEffect } from "react";
-import useExerciseMutation from "./useExerciseMutation";
+import useMutateActivity from "./useMutateActivity";
 
-const useUpdateExerciseOrder = (exercise: Exercise) => {
-  const mutation = useExerciseMutation("updateExerciseOrder");
+const useUpdateActivityOrder = (exercise: Exercise) => {
+  const mutation = useMutateActivity("updateExerciseOrder");
   function update() {
     mutation.mutate({
       id: exercise.id,
@@ -16,4 +16,4 @@ const useUpdateExerciseOrder = (exercise: Exercise) => {
   }, [exercise]);
 };
 
-export default useUpdateExerciseOrder;
+export default useUpdateActivityOrder;

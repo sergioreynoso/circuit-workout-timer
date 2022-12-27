@@ -8,19 +8,17 @@ import {
 import AlertDialog from "../alertDialog";
 import Button from "../button";
 import { styled } from "../../styles/stitches.congif";
-import useExerciseMutation from "../../hooks/useExerciseMutation";
+import useMutateActivity from "../../hooks/useMutateActivity";
 import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
   activityId: string;
 };
 
-const DeleteExerciseDialog = ({ activityId }: Props) => {
+const DeleteActivityDialog = ({ activityId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const mutation = useExerciseMutation("deleteExercise", () =>
-    setIsOpen(false)
-  );
+  const mutation = useMutateActivity("deleteExercise", () => setIsOpen(false));
   const onClickHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -67,4 +65,4 @@ const Wrapper = styled("div", {
   display: "flex",
 });
 
-export default DeleteExerciseDialog;
+export default DeleteActivityDialog;

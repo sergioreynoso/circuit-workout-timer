@@ -8,7 +8,7 @@ type Endpoint =
   | "deleteExercise"
   | "updateExerciseOrder";
 
-const useExerciseMutation = (
+const useMutateActivity = (
   endpoint: Endpoint,
   onSuccess?: () => void,
   isInvalidate: boolean = true
@@ -25,4 +25,4 @@ const useExerciseMutation = (
   );
 };
 
-export default useExerciseMutation;
+export default useMutateActivity;

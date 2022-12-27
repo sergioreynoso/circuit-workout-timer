@@ -84,7 +84,7 @@ const CreateWorkoutForm = ({
 
       <ActivityList
         workoutId={initialData.id}
-        exerciseData={initialData.exercises as Exercise[]}
+        activitiesData={initialData.exercises as Exercise[]}
       />
 
       <div>

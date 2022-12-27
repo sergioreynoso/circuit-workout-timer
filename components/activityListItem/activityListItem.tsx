@@ -5,13 +5,17 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import Button from "../button";
-import DeleteExerciseDialog from "../deleteExerciseDialog";
-import EditExerciseDialog from "../editExerciseDialog";
+import DeleteActivityDialog from "../deleteActivityDialog";
+import EditActivityDialog from "../editActivityDialog";
 import { Flex } from "../layout";
 
-export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
+type Props = {
+  activity: Exercise;
+};
+
+export const ActivityListItem = ({ activity }: Props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: exercise.id });
+    useSortable({ id: activity.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -30,7 +34,7 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
         color: "$primary-12",
         backgroundColor: "$primary-03",
       }}>
-      <ItemTitle>{exercise.exercise_name}</ItemTitle>
+      <ItemTitle>{activity.exercise_name}</ItemTitle>
 
       <Flex
         css={{
@@ -38,9 +42,9 @@ export const ExerciseListItem = ({ exercise }: { exercise: Exercise }) => {
           alignItems: "center",
           gap: "$sm",
         }}>
-        <ListItemDuration>{formatTime(exercise.duration)}</ListItemDuration>
-        <EditExerciseDialog activity={exercise} />
-        <DeleteExerciseDialog activityId={exercise.id} />
+        <ListItemDuration>{formatTime(activity.duration)}</ListItemDuration>
+        <EditActivityDialog activity={activity} />
+        <DeleteActivityDialog activityId={activity.id} />
         <Button
           colors="transparent"
           {...attributes}
@@ -68,4 +72,4 @@ const ListItemDuration = styled("span", {
   userSelect: "none",
 });
 
-export default ExerciseListItem;
+export default ActivityListItem;

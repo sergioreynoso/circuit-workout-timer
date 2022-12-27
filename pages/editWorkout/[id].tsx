@@ -28,7 +28,7 @@ const Edit = ({ initialData }: Props) => {
         <EditWorkoutForm initialData={data}>
           <ActivityList
             workoutId={data.id}
-            exerciseData={[...data.exercises]}
+            activitiesData={[...data.exercises]}
           />
         </EditWorkoutForm>
       </Wrapper>
