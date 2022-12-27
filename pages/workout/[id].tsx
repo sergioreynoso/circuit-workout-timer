@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import CounterHeader from "../../components/counterHeader";
 import TimerProvider from "../../components/timerContext";
-import ExerciseCounter from "../../components/exerciseCounter";
+import Timer from "../../components/timer";
 import { Box } from "../../components/layout";
 import TimerControl from "../../components/timerControl/timerControl";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
@@ -26,7 +26,7 @@ const WorkoutTimer = ({ initialData }: Props) => {
         <CounterHeader id={initialData.id}>
           {initialData.workout_name}
         </CounterHeader>
-        <ExerciseCounter workoutData={formattedWorkout} />
+        <Timer workoutData={formattedWorkout} />
         <TimerControl />
       </Box>
     </TimerProvider>

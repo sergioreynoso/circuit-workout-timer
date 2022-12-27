@@ -9,7 +9,7 @@ import ProgressCircle from "../progressCircle";
 
 type Props = { workoutData: FormattedWorkout };
 
-const ExerciseCounter = ({ workoutData }: Props) => {
+const Timer = ({ workoutData }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
 
   const [state] = useTimer(workoutData);
@@ -116,4 +116,4 @@ const Sets = styled("p", {
   lineHeight: "$150",
 });
 
-export default ExerciseCounter;
+export default Timer;
