@@ -28,7 +28,7 @@ type Props = {
   exerciseData: Exercise[];
 };
 
-const ExerciseList = ({ workoutId, exerciseData }: Props) => {
+const ActivityList = ({ workoutId, exerciseData }: Props) => {
   const [activeId, setActiveId] = useState(null);
   const [exercises, setExercises] = useState(() => exerciseData);
   const mutation = useExerciseMutation("updateExerciseOrder", undefined, false);
@@ -122,16 +122,4 @@ const StyledDragOverLay = styled(DragOverlay, {
   boxShadow: "$high",
 });
 
-const Overlay = styled("div", {
-  position: "absolute",
-  top: "0",
-  right: "0",
-  bottom: "0",
-  left: "0",
-  color: "white",
-  fontWeight: "$700",
-  backgroundColor: "$grayA-11",
-  zIndex: "99999",
-});
-
-export default ExerciseList;
+export default ActivityList;

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import EditWorkoutForm from "../../components/editWorkoutForm";
-import ExerciseList from "../../components/exerciseList";
+import ActivityList from "../../components/activityList";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
@@ -26,7 +26,7 @@ const Edit = ({ initialData }: Props) => {
           <Heading1>Edit Workout</Heading1>
         </Header>
         <EditWorkoutForm initialData={data}>
-          <ExerciseList
+          <ActivityList
             workoutId={data.id}
             exerciseData={[...data.exercises]}
           />

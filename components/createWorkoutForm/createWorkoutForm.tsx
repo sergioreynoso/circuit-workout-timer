@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Input from "../input/input";
-import Button from "../button";
-import { styled } from "../../styles/stitches.congif";
 import { Exercise } from "@prisma/client";
-import Link from "next/link";
-import { Flex } from "../layout";
-import ExerciseList from "../exerciseList";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { styled } from "../../styles/stitches.congif";
+import ActivityList from "../activityList";
+import Button from "../button";
 import DeleteWorkoutDialog from "../deleteWorkoutDialog";
+import Input from "../input/input";
+import { Flex } from "../layout";
 
 const CreateWorkoutForm = ({
   initialData,
@@ -83,7 +82,7 @@ const CreateWorkoutForm = ({
         placeholder=""
       />
 
-      <ExerciseList
+      <ActivityList
         workoutId={initialData.id}
         exerciseData={initialData.exercises as Exercise[]}
       />
