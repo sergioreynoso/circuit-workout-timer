@@ -15,7 +15,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Exercise } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useMutateActivity from "../../hooks/useMutateActivity";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
 import { styled } from "../../styles/stitches.congif";
@@ -72,10 +72,6 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
       />
     );
   };
-
-  useEffect(() => {
-    setActivities(activitiesData);
-  }, [activitiesData]);
 
   return (
     <DndContext
