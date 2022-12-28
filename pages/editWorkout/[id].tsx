@@ -6,6 +6,7 @@ import useFetchWorkout, {
 } from "../../hooks/useFetchWorkout";
 import { prisma } from "../../lib/prisma";
 import { styled } from "../../styles/stitches.congif";
+import cuid from "cuid";
 
 type Props = {
   initialData: WorkoutWithExercises;
@@ -19,6 +20,8 @@ const Edit = ({ initialData }: Props) => {
     initialData
   );
 
+  console.log("Edit");
+
   if ("id" in data && "exercises" in data) {
     return (
       <Wrapper>
@@ -27,6 +30,7 @@ const Edit = ({ initialData }: Props) => {
         </Header>
         <EditWorkoutForm initialData={data}>
           <ActivityList
+            key={cuid()}
             workoutId={data.id}
             activitiesData={[...data.exercises]}
           />
