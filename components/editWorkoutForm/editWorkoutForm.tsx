@@ -1,6 +1,5 @@
-import { Workout } from "@prisma/client";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 import { styled } from "../../styles/stitches.congif";
@@ -8,12 +7,12 @@ import Button from "../button";
 import Input from "../input/input";
 import { Flex } from "../layout";
 
-type EditWorkoutFormProps = {
+type Props = {
   initialData: WorkoutWithExercises;
-  children?: JSX.Element;
+  children?: ReactNode;
 };
 
-const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
+const EditWorkoutForm = ({ initialData, children }: Props) => {
   const router = useRouter();
   const [{ name, set, rest }, setInputValue] = useState(() => ({
     name: initialData.workout_name,
