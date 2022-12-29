@@ -1,5 +1,5 @@
 import { motion, useAnimationControls } from "framer-motion";
-import { useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { TIMER_INTERVAL } from "../../hooks/useTimer";
 import { Activity, FormattedWorkout } from "../../hooks/useWorkout";
 import { TimerContext } from "../timerContext/timerProvider";
@@ -38,21 +38,24 @@ const ProgressCircle = ({
     return [center, radius, dashArray, dashOffset];
   }, [progress, size, strokeWidth]);
 
-  useEffect(() => {
-    const totalDuration = runningActivity.duration;
-    controls.set({
-      strokeDashoffset: dashArray,
-    });
-    controls.start({
-      strokeDashoffset: dashOffset,
-      transition: {
-        duration: totalDuration / TIMER_INTERVAL,
-        ease: [0, 0, 0, 0],
-      },
-    });
-  }, [runningActivity]);
+  const updateRunningActivityProgress = useCallback(
+    (activity: Activity | FormattedWorkout) => {
+      const totalDuration = activity.duration;
+      controls.set({
+        strokeDashoffset: dashArray,
+      });
+      controls.start({
+        strokeDashoffset: dashOffset,
+        transition: {
+          duration: totalDuration / TIMER_INTERVAL,
+          ease: [0, 0, 0, 0],
+        },
+      });
+    },
+    [controls, dashArray, dashOffset]
+  );
 
-  useEffect(() => {
+  const toggleProgress = useCallback(() => {
     isTimer
       ? controls.start({
           strokeDashoffset: dashOffset,
@@ -62,7 +65,15 @@ const ProgressCircle = ({
           },
         })
       : controls.stop();
-  }, [isTimer]);
+  }, [controls, dashOffset, isTimer, runningActivityTime]);
+
+  useEffect(() => {
+    updateRunningActivityProgress(runningActivity);
+  }, [runningActivity, updateRunningActivityProgress]);
+
+  useEffect(() => {
+    toggleProgress();
+  }, [toggleProgress]);
 
   return (
     <>
