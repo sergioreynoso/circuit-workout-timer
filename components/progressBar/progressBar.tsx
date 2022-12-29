@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
-import { styled } from "../../styles/stitches.congif";
-import { Box, Flex } from "../layout";
-import { TimerContext } from "../timerContext/timerProvider";
 import { motion, useAnimationControls } from "framer-motion";
 import { Activity } from "../../hooks/useWorkout";
+import { styled } from "../../styles/stitches.congif";
+import { Flex } from "../layout";
+import { TimerContext } from "../timerContext/timerProvider";
 
 type Props = {
   runningActivity: Activity;
@@ -26,11 +26,10 @@ const ProgressBar = ({ runningActivity, runningActivityTime }: Props) => {
         ease: [0, 0, 0, 0],
       },
     });
-  }, [runningActivity]);
+  }, [runningActivity, controls]);
 
   useEffect(() => {
     if (isTimer) {
-      console.log("boom");
       controls.start({
         width: "100%",
         transition: {
@@ -41,7 +40,7 @@ const ProgressBar = ({ runningActivity, runningActivityTime }: Props) => {
     } else {
       controls.stop();
     }
-  }, [isTimer]);
+  }, [isTimer, controls, runningActivityTime]);
 
   return (
     <Flex
