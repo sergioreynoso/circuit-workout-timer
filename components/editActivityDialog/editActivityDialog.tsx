@@ -73,7 +73,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             value={name}
             onChange={handleChange}
             placeholder=""
-            isRequired={true}
+            required={true}
           />
           <Input
             type="number"
@@ -82,7 +82,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             value={duration}
             onChange={handleChange}
             placeholder=""
-            isRequired={true}
+            required={true}
           />
           <div>{mutation.isLoading && "Updating exercise..."}</div>
 

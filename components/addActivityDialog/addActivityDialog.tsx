@@ -78,7 +78,7 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
             value={name}
             onChange={handleChange}
             placeholder=""
-            isRequired={true}
+            required={true}
           />
           <Input
             type="number"
@@ -87,7 +87,7 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
             value={duration}
             onChange={handleChange}
             placeholder=""
-            isRequired={true}
+            required={true}
           />
           <div>{mutation.isLoading && "Updating exercise..."}</div>
           <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>

@@ -63,7 +63,7 @@ const CreateWorkoutForm = ({
         value={name}
         onChange={handleChange}
         placeholder=""
-        isRequired={true}
+        required={true}
       />
       <Input
         type="number"
