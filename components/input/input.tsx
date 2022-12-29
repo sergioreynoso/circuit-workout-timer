@@ -1,41 +1,21 @@
-import React from "react";
-import { styled } from "../../styles/stitches.congif";
 import * as LabelPrimitive from "@radix-ui/react-label";
+import React, { useId } from "react";
+import { styled } from "../../styles/stitches.congif";
 import { Flex } from "../layout";
 
-interface InputProps {
-  value: string | number;
+interface Props extends React.ComponentPropsWithoutRef<"input"> {
   label: string;
-  name: string;
-  placeholder: string;
-  type: string;
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void;
-  isRequired?: boolean;
 }
 
-const Input = ({
-  value,
-  label,
-  name,
-  placeholder,
-  type = "text",
-  isRequired = false,
-  onChange,
-}: InputProps) => {
+const Input = ({ label, ...delegated }: Props) => {
+  const id = useId();
+
   return (
     <Flex direction="column" css={{ gap: "$sm" }}>
-      <Label htmlFor={name} css={{ lineHeight: "$100" }}>
+      <Label htmlFor={id} css={{ lineHeight: "$100" }}>
         {label}
       </Label>
-      <InputField
-        type={type}
-        id={name}
-        name={name}
-        defaultValue={value}
-        onChange={onChange}
-        required={isRequired}
-        autoComplete="off"
-      />
+      <InputField id={id} {...delegated} />
     </Flex>
   );
 };

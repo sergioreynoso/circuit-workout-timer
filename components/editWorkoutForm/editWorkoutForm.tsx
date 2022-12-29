@@ -8,8 +8,6 @@ import Button from "../button";
 import Input from "../input/input";
 import { Flex } from "../layout";
 
-type WorkoutUpdate = Omit<Workout, "userId" | "display_seq">;
-
 type EditWorkoutFormProps = {
   initialData: WorkoutWithExercises;
   children?: JSX.Element;
@@ -17,7 +15,6 @@ type EditWorkoutFormProps = {
 
 const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
   const router = useRouter();
-  const [isDone, setIsDone] = useState<boolean>(false);
   const [{ name, set, rest }, setInputValue] = useState(() => ({
     name: initialData.workout_name,
     set: initialData.set_count,
@@ -28,7 +25,7 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
     router.push(`/workout/${initialData.id}`);
   });
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setInputValue((prev) => ({
       ...prev,
@@ -56,41 +53,41 @@ const EditWorkoutForm = ({ initialData, children }: EditWorkoutFormProps) => {
         justifyContent: "center",
         padding: "$lmd",
         gap: "$xl",
-
         "@less-sm": {
           paddingBottom: "40px",
         },
       }}
       onSubmit={onFormSubmit}>
       <Input
-        type="text"
         label="Workout Name"
+        type="text"
         name="name"
         value={name}
-        onChange={handleChange}
+        onChange={handleOnChange}
         placeholder=""
-        isRequired
+        required={true}
+        autoComplete="off"
       />
       <Input
-        type="number"
         label="Sets"
+        type="number"
         name="set"
         value={set}
-        onChange={handleChange}
+        onChange={handleOnChange}
         placeholder=""
       />
       <Input
-        type="number"
         label="Set rest in seconds"
+        type="number"
         name="rest"
         value={rest}
-        onChange={handleChange}
+        onChange={handleOnChange}
         placeholder=""
       />
       {children}
       <div>
         {mutation.isLoading ? (
-          "Adding todo..."
+          "Updating workout..."
         ) : (
           <div>
             {mutation.isError ? `An error occurred: ${mutation.error}` : null}
