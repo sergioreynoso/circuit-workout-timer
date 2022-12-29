@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import EditWorkoutForm from "../../components/editWorkoutForm";
+import WorkoutForm from "../../components/workoutForm";
 import ActivityList from "../../components/activityList";
 import useFetchWorkout, {
   WorkoutWithExercises,
@@ -7,12 +7,19 @@ import useFetchWorkout, {
 import { prisma } from "../../lib/prisma";
 import { styled } from "../../styles/stitches.congif";
 import cuid from "cuid";
+import Button from "../../components/button";
+import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { useRouter } from "next/router";
+import { useId } from "react";
 
 type Props = {
   initialData: WorkoutWithExercises;
 };
 
 const Edit = ({ initialData }: Props) => {
+  const formId = useId();
+  const router = useRouter();
+
   const { data } = useFetchWorkout(
     "getWorkout",
     initialData.id,
@@ -20,7 +27,18 @@ const Edit = ({ initialData }: Props) => {
     initialData
   );
 
-  console.log("Edit");
+  const mutation = useWorkoutMutation("updateWorkout", "workout", () => {
+    router.push(`/workout/${initialData.id}`);
+  });
+
+  const mutateWorkout = (name: string, set: number, rest: number) => {
+    mutation.mutate({
+      id: initialData.id,
+      workout_name: name,
+      set_count: Number(set),
+      set_rest: Number(rest * 1000),
+    });
+  };
 
   if ("id" in data && "exercises" in data) {
     return (
@@ -28,17 +46,44 @@ const Edit = ({ initialData }: Props) => {
         <Header>
           <Heading1>Edit Workout</Heading1>
         </Header>
-        <EditWorkoutForm initialData={data}>
-          <ActivityList
-            key={cuid()}
-            workoutId={data.id}
-            activitiesData={[...data.exercises]}
-          />
-        </EditWorkoutForm>
+        <WorkoutForm
+          name={initialData.workout_name}
+          set={initialData.set_count}
+          rest={initialData.set_rest}
+          onSubmitCallback={mutateWorkout}
+          id={formId}
+        />
+        <ActivityList
+          key={cuid()}
+          workoutId={data.id}
+          activitiesData={[...data.exercises]}
+        />
+        <Footer>
+          <Button
+            colors="primary"
+            type="submit"
+            form={formId}
+            css={{ flex: 1, maxWidth: "200px" }}>
+            Done
+          </Button>
+        </Footer>
       </Wrapper>
     );
   }
 };
+
+const Footer = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+  height: "80px",
+  backgroundColor: "$primary-02",
+  "@less-sm": {
+    position: "fixed",
+    bottom: "0",
+  },
+});
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const workout = await prisma?.workout.findUnique({
