@@ -68,6 +68,8 @@ const WorkoutForm = ({
         value={formValues.set}
         onChange={handleOnChange}
         placeholder=""
+        min={1}
+        max={100}
       />
       <Input
         label="Set rest in seconds"
