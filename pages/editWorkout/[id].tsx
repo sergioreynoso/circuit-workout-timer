@@ -1,16 +1,17 @@
+import cuid from "cuid";
 import { GetServerSideProps } from "next";
-import WorkoutForm from "../../components/workoutForm";
+import { useRouter } from "next/router";
+import { useId } from "react";
 import ActivityList from "../../components/activityList";
+import Button from "../../components/button";
+import { Box } from "../../components/layout";
+import WorkoutForm from "../../components/workoutForm";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
+import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 import { prisma } from "../../lib/prisma";
 import { styled } from "../../styles/stitches.congif";
-import cuid from "cuid";
-import Button from "../../components/button";
-import useWorkoutMutation from "../../hooks/useWorkoutMutation";
-import { useRouter } from "next/router";
-import { useId } from "react";
 
 type Props = {
   initialData: WorkoutWithExercises;
@@ -36,20 +37,28 @@ const Edit = ({ initialData }: Props) => {
       id: initialData.id,
       workout_name: name,
       set_count: Number(set),
-      set_rest: Number(rest * 1000),
+      set_rest: Number(rest), //Number(rest * 1000),
     });
   };
 
   if ("id" in data && "exercises" in data) {
     return (
-      <Wrapper>
+      <Box
+        css={{
+          padding: "$xl",
+          maxWidth: "$bp-sm",
+          margin: "auto",
+          "@less-sm": {
+            padding: "$sm",
+          },
+        }}>
         <Header>
           <Heading1>Edit Workout</Heading1>
         </Header>
         <WorkoutForm
           name={initialData.workout_name}
-          set={initialData.set_count}
-          rest={initialData.set_rest}
+          setCount={initialData.set_count}
+          setRest={initialData.set_rest}
           onSubmitCallback={mutateWorkout}
           id={formId}
         />
@@ -58,6 +67,7 @@ const Edit = ({ initialData }: Props) => {
           workoutId={data.id}
           activitiesData={[...data.exercises]}
         />
+        <br />
         <Footer>
           <Button
             colors="primary"
@@ -67,7 +77,7 @@ const Edit = ({ initialData }: Props) => {
             Done
           </Button>
         </Footer>
-      </Wrapper>
+      </Box>
     );
   }
 };
@@ -103,14 +113,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: { initialData: workout },
   };
 };
-
-const Wrapper = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "24px",
-});
 
 const Header = styled("div", {
   display: "flex",
