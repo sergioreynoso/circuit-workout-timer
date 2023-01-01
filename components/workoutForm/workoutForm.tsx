@@ -1,38 +1,111 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
+import { styled } from "../../styles/stitches.congif";
 import Input from "../input/input";
 import { Flex } from "../layout";
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
   name: string;
-  set: number;
-  rest: number;
-  onSubmitCallback: (name: string, set: number, rest: number) => void;
+  setCount: number;
+  setRest: number;
+  onSubmitCallback: (name: string, setCount: number, setRest: number) => void;
+}
+
+type FormReducer = {
+  name: string;
+  setCount: number;
+  setRestMin: number;
+  setRestSec: number;
+};
+// make each action it's own type
+// type Action<T> = {type: 'ACTION_TYPE', payload: T} | {type: 'ACTION_B, payload: T}
+
+// type FormActions = {
+//   type: "NAME" | "SET_COUNT" | "SET_REST_MIN" | "SET_REST_SEC";
+//   payload: string | number;
+// };
+
+type FormActions =
+  | {
+      type: "NAME";
+      payload: string;
+    }
+  | {
+      type: "SET_COUNT";
+      payload: number;
+    }
+  | {
+      type: "SET_REST_MIN";
+      payload: number;
+    }
+  | {
+      type: "SET_REST_SEC";
+      payload: number;
+    };
+
+function formReducer(state: FormReducer, action: FormActions) {
+  switch (action.type) {
+    case "NAME":
+      return {
+        ...state,
+        name: action.payload,
+      };
+    case "SET_COUNT":
+      return {
+        ...state,
+        setCount: action.payload,
+      };
+    case "SET_REST_MIN":
+      return {
+        ...state,
+        setRestMin: action.payload,
+      };
+    case "SET_REST_SEC":
+      return {
+        ...state,
+        setRestSec: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+export function getMin(millSec: number) {
+  return Math.floor(millSec / 60000);
+}
+
+export function getSeconds(millSec: number) {
+  return (millSec % 60000) / 1000;
+}
+
+export function getMillSeconds(min: number, sec: number) {
+  const minToMill = min > 0 ? 60000 * min : 0;
+  const secToMill = sec > 0 ? sec * 1000 : 0;
+  return minToMill + secToMill;
 }
 
 const WorkoutForm = ({
   name,
-  set,
-  rest,
+  setCount,
+  setRest,
   onSubmitCallback,
   ...delegated
 }: Props) => {
-  const [formValues, setFormValues] = useState(() => ({
+  const [state, dispatch] = useReducer(formReducer, {
     name: name,
-    set: set,
-    rest: Math.round(rest / 1000),
-  }));
+    setCount: setCount,
+    setRestMin: getMin(setRest),
+    setRestSec: getSeconds(setRest),
+  });
 
-  const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmitCallback(formValues.name, formValues.set, formValues.rest);
+    onSubmitCallback(
+      state.name,
+      state.setCount,
+      getMillSeconds(state.setRestMin, state.setRestSec)
+    );
   };
 
   return (
@@ -42,7 +115,7 @@ const WorkoutForm = ({
       {...delegated}
       css={{
         position: "relative",
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "center",
         padding: "$lmd",
         gap: "$xl",
@@ -55,8 +128,10 @@ const WorkoutForm = ({
         label="Workout Name"
         type="text"
         name="name"
-        value={formValues.name}
-        onChange={handleOnChange}
+        value={state.name}
+        onChange={(e) =>
+          dispatch({ type: "NAME", payload: e.currentTarget.value })
+        }
         placeholder=""
         required={true}
         autoComplete="off"
@@ -65,22 +140,62 @@ const WorkoutForm = ({
         label="Sets"
         type="number"
         name="set"
-        value={formValues.set}
-        onChange={handleOnChange}
+        value={state.setCount}
+        onChange={(e) =>
+          dispatch({
+            type: "SET_COUNT",
+            payload: Number(e.currentTarget.value),
+          })
+        }
         placeholder=""
         min={1}
         max={100}
       />
-      <Input
-        label="Set rest in seconds"
-        type="number"
-        name="rest"
-        value={formValues.rest}
-        onChange={handleOnChange}
-        placeholder=""
-      />
+      <FieldSet>
+        <Legend>Rest between sets</Legend>
+        <Input
+          label="Min"
+          type="number"
+          name="rest"
+          min={0}
+          max={5}
+          value={state.setRestMin}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_REST_MIN",
+              payload: Number(e.currentTarget.value),
+            })
+          }
+        />
+        <Input
+          label="sec"
+          type="number"
+          name="rest"
+          min={secondsInputMinValue}
+          max={60}
+          value={state.setRestSec}
+          onChange={(e) =>
+            dispatch({
+              type: "SET_REST_SEC",
+              payload: Number(e.currentTarget.value),
+            })
+          }
+        />
+      </FieldSet>
     </Flex>
   );
 };
+
+const FieldSet = styled("fieldset", {
+  border: "none",
+  display: "flex",
+  gap: "$2x",
+});
+
+const Legend = styled("legend", {
+  fontSize: "$lg",
+  fontWeight: "$700",
+  padding: "$lg",
+});
 
 export default WorkoutForm;
