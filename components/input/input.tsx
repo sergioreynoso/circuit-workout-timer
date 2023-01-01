@@ -22,12 +22,12 @@ const Input = ({ label, ...delegated }: Props) => {
 
 const InputField = styled("input", {
   all: "unset",
-  width: 200,
+  // width: 200,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   borderRadius: 4,
-  padding: "0 10px",
+  padding: "0 $sm",
   height: 35,
   fontSize: 15,
   lineHeight: 1,
