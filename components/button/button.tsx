@@ -48,6 +48,12 @@ const Button = styled("button", {
         backgroundColor: "transparent",
         padding: "$xs",
       },
+      ellipse: {
+        padding: "0",
+        width: "45px",
+        height: "45px",
+        borderRadius: "50%",
+      },
     },
   },
 });
