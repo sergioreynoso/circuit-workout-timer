@@ -1,11 +1,10 @@
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import * as LabelPrimitive from "@radix-ui/react-label";
-
-import React, { useId, useState } from "react";
-import Button from "../button";
-import { PlusIcon, MinusIcon } from "@radix-ui/react-icons";
-import { Box, Flex } from "../layout";
-import { styled } from "../../styles/stitches.congif";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import React, { useId, useState } from "react";
+import { styled } from "../../styles/stitches.congif";
+import Button from "../button";
+import { Flex } from "../layout";
 
 interface Props {
   label: string;
@@ -50,8 +49,12 @@ const StepperInput = ({
       css={{ gap: "$sm", paddingBlock: "$xl", maxWidth: "200px", flex: "1" }}>
       <Label htmlFor={id}>{label}</Label>
       <Flex css={{ gap: "$lg" }}>
-        <Button type="button" name="decrement" onClick={onClickHandler}>
-          <MinusIcon />
+        <Button
+          colors="ellipse"
+          type="button"
+          name="decrement"
+          onClick={onClickHandler}>
+          <DecrementIcon />
           <VisuallyHidden.Root>Decrease number of sets</VisuallyHidden.Root>
         </Button>
         <Input
@@ -62,8 +65,12 @@ const StepperInput = ({
           max={max}
           onChange={onChangeHandler}
         />
-        <Button type="button" name="increment" onClick={onClickHandler}>
-          <PlusIcon />
+        <Button
+          colors="ellipse"
+          type="button"
+          name="increment"
+          onClick={onClickHandler}>
+          <IncrementIcon />
           <VisuallyHidden.Root>Increase number of sets</VisuallyHidden.Root>
         </Button>
       </Flex>
@@ -82,11 +89,8 @@ const Input = styled("input", {
   flex: "1",
   width: "40px",
   textAlign: "center",
-  "&::-webkit-outer-spin-button": {
-    "-webkit-appearance": "none",
-    margin: 0,
-  },
-  "&::-webkit-inner-spin-button": {
+  border: "1px solid $gray-04",
+  "&::-webkit-outer-spin-button,&::-webkit-inner-spin-button": {
     "-webkit-appearance": "none",
     margin: 0,
   },
@@ -94,5 +98,12 @@ const Input = styled("input", {
     "-moz-appearance": "textfield",
   },
 });
+
+const IncrementIcon = styled(PlusIcon, {
+  width: "20px",
+  height: "20px",
+});
+
+const DecrementIcon = styled(MinusIcon, { width: "20px", height: "20px" });
 
 export default StepperInput;
