@@ -28,12 +28,6 @@ type FormActions =
       payload: number;
     }
   | {
-      type: "ADD_ONE_TO_SET_COUNT";
-    }
-  | {
-      type: "REMOVE_ONE_TO_SET_COUNT";
-    }
-  | {
       type: "SET_REST_MIN";
       payload: number;
     }
@@ -53,18 +47,6 @@ function formReducer(state: FormReducer, action: FormActions) {
       return {
         ...state,
         setCount: action.payload,
-      };
-    case "ADD_ONE_TO_SET_COUNT":
-      return {
-        ...state,
-        setCount:
-          state.setCount < 100 ? state.setCount + 1 : (state.setCount = 100),
-      };
-    case "REMOVE_ONE_TO_SET_COUNT":
-      return {
-        ...state,
-        setCount:
-          state.setCount > 1 ? state.setCount - 1 : (state.setCount = 1),
       };
     case "SET_REST_MIN":
       return {
@@ -136,54 +118,40 @@ const WorkoutForm = ({
 
       <StepperInput
         label="Sets"
-        onIncrease={() =>
-          dispatch({
-            type: "ADD_ONE_TO_SET_COUNT",
-          })
-        }
-        onDecrease={() =>
-          dispatch({
-            type: "REMOVE_ONE_TO_SET_COUNT",
-          })
-        }
         min={1}
         max={100}
-        value={state.setCount}
-        onChange={(e) =>
+        initialValue={state.setCount}
+        handleChange={(value) =>
           dispatch({
             type: "SET_COUNT",
-            payload: Number(e.currentTarget.value),
+            payload: value,
           })
         }
       />
 
       <FieldSet>
-        <Legend>Rest between sets</Legend>
-        <Input
-          label="Min"
-          type="number"
-          name="rest"
+        <Legend>How long would you like to rest between sets?</Legend>
+        <StepperInput
+          label="Minutes"
           min={0}
           max={5}
-          value={state.setRestMin}
-          onChange={(e) =>
+          initialValue={state.setRestMin}
+          handleChange={(value) =>
             dispatch({
               type: "SET_REST_MIN",
-              payload: Number(e.currentTarget.value),
+              payload: value,
             })
           }
         />
-        <Input
-          label="sec"
-          type="number"
-          name="rest"
+        <StepperInput
+          label="Seconds"
           min={secondsInputMinValue}
           max={60}
-          value={state.setRestSec}
-          onChange={(e) =>
+          initialValue={state.setRestSec}
+          handleChange={(value) =>
             dispatch({
               type: "SET_REST_SEC",
-              payload: Number(e.currentTarget.value),
+              payload: value,
             })
           }
         />
@@ -193,15 +161,17 @@ const WorkoutForm = ({
 };
 
 const FieldSet = styled("fieldset", {
-  border: "none",
   display: "flex",
+  justifyContent: "space-between",
+  border: "none",
   gap: "$2x",
 });
 
 const Legend = styled("legend", {
   fontSize: "$lg",
   fontWeight: "$700",
-  padding: "$lg",
+  lineHeight: "$150",
+  padding: "$lg 0 $xs",
 });
 
 export default WorkoutForm;
