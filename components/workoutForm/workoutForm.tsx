@@ -1,7 +1,8 @@
 import React, { useReducer } from "react";
 import { styled } from "../../styles/stitches.congif";
 import Input from "../input/input";
-import { Flex } from "../layout";
+import { Box, Flex } from "../layout";
+import StepperInput from "../stepperInput/stepperInput";
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
   name: string;
@@ -16,13 +17,6 @@ type FormReducer = {
   setRestMin: number;
   setRestSec: number;
 };
-// make each action it's own type
-// type Action<T> = {type: 'ACTION_TYPE', payload: T} | {type: 'ACTION_B, payload: T}
-
-// type FormActions = {
-//   type: "NAME" | "SET_COUNT" | "SET_REST_MIN" | "SET_REST_SEC";
-//   payload: string | number;
-// };
 
 type FormActions =
   | {
@@ -32,6 +26,12 @@ type FormActions =
   | {
       type: "SET_COUNT";
       payload: number;
+    }
+  | {
+      type: "ADD_ONE_TO_SET_COUNT";
+    }
+  | {
+      type: "REMOVE_ONE_TO_SET_COUNT";
     }
   | {
       type: "SET_REST_MIN";
@@ -53,6 +53,18 @@ function formReducer(state: FormReducer, action: FormActions) {
       return {
         ...state,
         setCount: action.payload,
+      };
+    case "ADD_ONE_TO_SET_COUNT":
+      return {
+        ...state,
+        setCount:
+          state.setCount < 100 ? state.setCount + 1 : (state.setCount = 100),
+      };
+    case "REMOVE_ONE_TO_SET_COUNT":
+      return {
+        ...state,
+        setCount:
+          state.setCount > 1 ? state.setCount - 1 : (state.setCount = 1),
       };
     case "SET_REST_MIN":
       return {
@@ -109,21 +121,7 @@ const WorkoutForm = ({
   };
 
   return (
-    <Flex
-      as="form"
-      direction="column"
-      {...delegated}
-      css={{
-        position: "relative",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        padding: "$lmd",
-        gap: "$xl",
-        "@less-sm": {
-          paddingBottom: "$lg",
-        },
-      }}
-      onSubmit={onFormSubmit}>
+    <Box as="form" {...delegated} onSubmit={onFormSubmit}>
       <Input
         label="Workout Name"
         type="text"
@@ -132,14 +130,24 @@ const WorkoutForm = ({
         onChange={(e) =>
           dispatch({ type: "NAME", payload: e.currentTarget.value })
         }
-        placeholder=""
         required={true}
         autoComplete="off"
       />
-      <Input
+
+      <StepperInput
         label="Sets"
-        type="number"
-        name="set"
+        onIncrease={() =>
+          dispatch({
+            type: "ADD_ONE_TO_SET_COUNT",
+          })
+        }
+        onDecrease={() =>
+          dispatch({
+            type: "REMOVE_ONE_TO_SET_COUNT",
+          })
+        }
+        min={1}
+        max={100}
         value={state.setCount}
         onChange={(e) =>
           dispatch({
@@ -147,10 +155,8 @@ const WorkoutForm = ({
             payload: Number(e.currentTarget.value),
           })
         }
-        placeholder=""
-        min={1}
-        max={100}
       />
+
       <FieldSet>
         <Legend>Rest between sets</Legend>
         <Input
@@ -182,7 +188,7 @@ const WorkoutForm = ({
           }
         />
       </FieldSet>
-    </Flex>
+    </Box>
   );
 };
 
