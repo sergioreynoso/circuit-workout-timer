@@ -22,24 +22,26 @@ const StepperInput = ({
   handleChange,
 }: Props) => {
   const id = useId();
-  const [value, setValue] = useState(() => initialValue);
+  const [value, setValue] = useState(() => initialValue.toString());
 
   function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = Number(e.currentTarget.value);
+    const inputValue = e.target.valueAsNumber.toString();
+    if (inputValue === "NaN") return;
+
     setValue(inputValue);
-    handleChange(inputValue);
+    handleChange(Number(inputValue));
   }
 
   function onClickHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const inputName = e.currentTarget.name;
-    let newValue = value;
+    let newValue = Number(value);
 
     if (inputName === "increment")
       newValue = newValue < max ? newValue + 1 : max;
     if (inputName === "decrement")
       newValue = newValue > min ? newValue - 1 : min;
 
-    setValue(newValue);
+    setValue(newValue.toString());
     handleChange(newValue);
   }
 
@@ -64,6 +66,7 @@ const StepperInput = ({
           min={min}
           max={max}
           onChange={onChangeHandler}
+          inputMode="decimal"
         />
         <Button
           colors="ellipse"
