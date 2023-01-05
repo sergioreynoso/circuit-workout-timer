@@ -25,8 +25,8 @@ const StepperInput = ({
   const [value, setValue] = useState(() => initialValue.toString());
 
   function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.target.valueAsNumber.toString();
-    if (inputValue === "NaN") return;
+    let inputValue = e.target.valueAsNumber.toString();
+    if (inputValue === "NaN") inputValue = "0";
 
     setValue(inputValue);
     handleChange(Number(inputValue));
