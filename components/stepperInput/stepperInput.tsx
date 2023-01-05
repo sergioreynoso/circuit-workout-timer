@@ -66,6 +66,7 @@ const StepperInput = ({
           min={min}
           max={max}
           onChange={onChangeHandler}
+          inputMode="decimal"
         />
         <Button
           colors="ellipse"
