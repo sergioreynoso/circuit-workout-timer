@@ -97,7 +97,14 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
         <Flex
           as="ul"
           direction="column"
-          css={{ gap: "$sm", minWidth: "350px", position: "relative" }}>
+          css={{
+            gap: "$sm",
+            minWidth: "350px",
+            position: "relative",
+            "@less-sm": {
+              paddingBottom: "64px",
+            },
+          }}>
           <SortableContext
             items={exercises}
             strategy={verticalListSortingStrategy}>
