@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import Button from "../button";
 import { TimerContext } from "../timerContext/timerProvider";
-import { Box, Flex } from "../layout";
+import { Box, Flex, FooterContainer } from "../layout";
 
 const TimerControl = () => {
   const { isTimer, setIsTimer, isTimerDone } = useContext(TimerContext);
@@ -21,11 +21,7 @@ const TimerControl = () => {
   };
 
   return (
-    <Flex
-      css={{
-        justifyContent: "center",
-        padding: "$2x",
-      }}>
+    <FooterContainer>
       {!isTimerDone ? (
         <Button colors="primary" onClick={handleTimerToggle}>
           {label}
@@ -33,7 +29,7 @@ const TimerControl = () => {
       ) : (
         <Button onClick={handleBackToDashboard}>Return to Dashboard</Button>
       )}
-    </Flex>
+    </FooterContainer>
   );
 };
 
