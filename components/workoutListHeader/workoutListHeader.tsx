@@ -50,9 +50,9 @@ const WorkoutListHeader = ({ userId }: Props) => {
   return (
     <Flex
       css={{
-        flexShrink: 0,
         justifyContent: "space-between",
         gap: "$lg",
+        paddingBlock: "$2x",
       }}>
       <Flex direction="column" css={{ gap: "$sm" }}>
         <h2>Build Workout</h2>
