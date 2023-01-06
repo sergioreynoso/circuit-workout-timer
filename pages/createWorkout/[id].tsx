@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import CreateWorkoutForm from "../../components/createWorkoutForm";
-import { Flex } from "../../components/layout";
+import { Box, Container, Flex } from "../../components/layout";
 import { prisma } from "../../lib/prisma";
 import useFetchWorkout, {
   WorkoutWithExercises,
@@ -20,17 +20,12 @@ const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
   );
 
   return (
-    <Flex
-      direction="column"
-      css={{
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "$3x",
-        gap: "$3x",
-      }}>
-      <h1>Create Workout</h1>
+    <Container>
+      <Box as="h1" css={{ paddingBlock: "$2x" }}>
+        Create your workout
+      </Box>
       <CreateWorkoutForm initialData={data as WorkoutWithExercises} />
-    </Flex>
+    </Container>
   );
 };
 

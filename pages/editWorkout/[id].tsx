@@ -4,14 +4,13 @@ import { useRouter } from "next/router";
 import { useId } from "react";
 import ActivityList from "../../components/activityList";
 import Button from "../../components/button";
-import { Box } from "../../components/layout";
+import { Box, Container, Flex, FooterContainer } from "../../components/layout";
 import WorkoutForm from "../../components/workoutForm";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
 import useWorkoutMutation from "../../hooks/useWorkoutMutation";
 import { prisma } from "../../lib/prisma";
-import { styled } from "../../styles/stitches.congif";
 
 type Props = {
   initialData: WorkoutWithExercises;
@@ -43,18 +42,10 @@ const Edit = ({ initialData }: Props) => {
 
   if ("id" in data && "exercises" in data) {
     return (
-      <Box
-        css={{
-          padding: "$xl",
-          maxWidth: "$bp-sm",
-          margin: "auto",
-          "@less-sm": {
-            padding: "$sm",
-          },
-        }}>
-        <Header>
-          <Heading1>Edit Workout</Heading1>
-        </Header>
+      <Container>
+        <Box as="h1" css={{ paddingBlock: "$2x" }}>
+          Edit Workout
+        </Box>
         <WorkoutForm
           name={initialData.workout_name}
           setCount={initialData.set_count}
@@ -67,8 +58,7 @@ const Edit = ({ initialData }: Props) => {
           workoutId={data.id}
           activitiesData={[...data.exercises]}
         />
-        <br />
-        <Footer>
+        <FooterContainer>
           <Button
             colors="primary"
             type="submit"
@@ -76,24 +66,11 @@ const Edit = ({ initialData }: Props) => {
             css={{ flex: 1, maxWidth: "200px" }}>
             Done
           </Button>
-        </Footer>
-      </Box>
+        </FooterContainer>
+      </Container>
     );
   }
 };
-
-const Footer = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  width: "100%",
-  height: "80px",
-  backgroundColor: "$primary-02",
-  "@less-sm": {
-    position: "fixed",
-    bottom: "0",
-  },
-});
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const workout = await prisma?.workout.findUnique({
@@ -113,17 +90,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: { initialData: workout },
   };
 };
-
-const Header = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "$lg",
-  padding: "$2x",
-});
-
-const Heading1 = styled("h1", {
-  marginBottom: "$xl",
-});
 
 export default Edit;

@@ -1,7 +1,7 @@
 import { Exercise, Workout } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { Flex } from "../components/layout";
+import { Container, Flex } from "../components/layout";
 import WorkoutList from "../components/workoutList";
 import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
 import { prisma } from "../lib/prisma";
@@ -62,7 +62,7 @@ const exercises: Partial<Exercise>[] = [
     type: "EXERCISE",
   },
   {
-    exercise_name: "Burpees",
+    exercise_name: "Burpee",
     display_seq: 8,
     duration: 30000,
     type: "EXERCISE",
@@ -71,19 +71,10 @@ const exercises: Partial<Exercise>[] = [
 
 const Dashboard = ({ id, initialData }: DashboardProps) => {
   return (
-    <Flex css={{ justifyContent: "center" }}>
-      <Flex
-        direction="column"
-        css={{
-          flex: 1,
-          gap: "$2x",
-          padding: "$2x $lg",
-          maxWidth: "600px",
-        }}>
-        <WorkoutListHeader userId={id} />
-        <WorkoutList data={initialData as Workout[]} />
-      </Flex>
-    </Flex>
+    <Container>
+      <WorkoutListHeader userId={id} />
+      <WorkoutList data={initialData as Workout[]} />
+    </Container>
   );
 };
 

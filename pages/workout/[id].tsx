@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { Box } from "../../components/layout";
+import { Container } from "../../components/layout";
 import Timer from "../../components/timer";
 import TimerProvider from "../../components/timerContext";
 import TimerControl from "../../components/timerControl/timerControl";
@@ -17,18 +17,13 @@ const WorkoutTimer = ({ initialData }: Props) => {
 
   return (
     <TimerProvider>
-      <Box
-        css={{
-          padding: "$xl",
-          maxWidth: "$bp-md",
-          margin: "auto",
-        }}>
+      <Container>
         <TimerHeader id={initialData.id}>
           {initialData.workout_name}
         </TimerHeader>
         <Timer workoutData={formattedWorkout} />
         <TimerControl />
-      </Box>
+      </Container>
     </TimerProvider>
   );
 };
