@@ -1,17 +1,26 @@
-import React from "react";
+import cuid from "cuid";
 import { GetServerSideProps } from "next";
-import CreateWorkoutForm from "../../components/createWorkoutForm";
-import { Box, Container, Flex } from "../../components/layout";
-import { prisma } from "../../lib/prisma";
+import { useRouter } from "next/router";
+import { useId } from "react";
+import ActivityList from "../../components/activityList/activityList";
+import Button from "../../components/button";
+import DeleteWorkoutDialog from "../../components/deleteWorkoutDialog";
+import { Box, Container, FooterContainer } from "../../components/layout";
+import WorkoutForm from "../../components/workoutForm";
 import useFetchWorkout, {
   WorkoutWithExercises,
 } from "../../hooks/useFetchWorkout";
+import useWorkoutMutation from "../../hooks/useWorkoutMutation";
+import { prisma } from "../../lib/prisma";
 
 type CreateWorkoutProps = {
   initialData: WorkoutWithExercises;
 };
 
 const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
+  const formId = useId();
+  const router = useRouter();
+
   const { data } = useFetchWorkout(
     "getWorkout",
     initialData.id,
@@ -19,14 +28,46 @@ const CreateWorkout = ({ initialData }: CreateWorkoutProps) => {
     initialData
   );
 
-  return (
-    <Container>
-      <Box as="h1" css={{ paddingBlock: "$2x" }}>
-        Create your workout
-      </Box>
-      <CreateWorkoutForm initialData={data as WorkoutWithExercises} />
-    </Container>
-  );
+  const mutation = useWorkoutMutation("updateWorkout", "workout", () => {
+    router.push(`/workout/${initialData.id}`);
+  });
+
+  const mutateWorkout = (name: string, set: number, rest: number) => {
+    mutation.mutate({
+      id: initialData.id,
+      workout_name: name,
+      set_count: Number(set),
+      set_rest: Number(rest), //Number(rest * 1000),
+    });
+  };
+
+  if ("id" in data && "exercises" in data) {
+    return (
+      <Container>
+        <Box as="h1" css={{ paddingBlock: "$2x" }}>
+          Create your workout
+        </Box>
+        <WorkoutForm
+          name={data.workout_name}
+          setCount={data.set_count}
+          setRest={data.set_rest}
+          onSubmitCallback={mutateWorkout}
+          id={formId}
+        />
+        <ActivityList
+          key={cuid()}
+          workoutId={data.id}
+          activitiesData={[...data.exercises]}
+        />
+        <FooterContainer css={{ gap: "$3x" }}>
+          <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
+          <Button colors="primary" type="submit" form={formId}>
+            Done
+          </Button>
+        </FooterContainer>
+      </Container>
+    );
+  }
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {

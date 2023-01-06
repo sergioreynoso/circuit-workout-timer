@@ -47,9 +47,9 @@ const Edit = ({ initialData }: Props) => {
           Edit Workout
         </Box>
         <WorkoutForm
-          name={initialData.workout_name}
-          setCount={initialData.set_count}
-          setRest={initialData.set_rest}
+          name={data.workout_name}
+          setCount={data.set_count}
+          setRest={data.set_rest}
           onSubmitCallback={mutateWorkout}
           id={formId}
         />
