@@ -35,8 +35,8 @@ const WorkoutListHeader = ({ userId }: Props) => {
   ) => {
     mutation.mutate({
       workout_name: "Untitled Workout",
-      set_count: 3,
-      set_rest: 3000,
+      set_count: 1,
+      set_rest: 10000,
       userId: userId,
       display_seq: 0,
       exerciseList: exercises,
