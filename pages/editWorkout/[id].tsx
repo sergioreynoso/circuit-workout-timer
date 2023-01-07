@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useId } from "react";
 import ActivityList from "../../components/activityList";
 import Button from "../../components/button";
-import { Box, Container, Flex, FooterContainer } from "../../components/layout";
+import { Box, Container, FooterContainer } from "../../components/layout";
 import WorkoutForm from "../../components/workoutForm";
 import useFetchWorkout, {
   WorkoutWithExercises,

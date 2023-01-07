@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import { styled } from "../../styles/stitches.congif";
 import Input from "../input/input";
-import { Box, Flex } from "../layout";
+import { Box } from "../layout";
 import StepperInput from "../stepperInput/stepperInput";
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
@@ -115,7 +115,6 @@ const WorkoutForm = ({
         required={true}
         autoComplete="off"
       />
-
       <StepperInput
         label="Sets"
         min={1}
@@ -128,7 +127,6 @@ const WorkoutForm = ({
           })
         }
       />
-
       <FieldSet>
         <Legend>How long would you like to rest between sets?</Legend>
         <StepperInput
