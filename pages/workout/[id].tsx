@@ -5,7 +5,7 @@ import TimerProvider from "../../components/timerContext";
 import TimerControl from "../../components/timerControl/timerControl";
 import TimerHeader from "../../components/timerHeader";
 import { WorkoutWithExercises } from "../../hooks/useFetchWorkout";
-import { useWorkout } from "../../hooks/useWorkout";
+import { useFormatWorkout } from "../../hooks/useFormatWorkout";
 import { prisma } from "../../lib/prisma";
 
 type Props = {
@@ -13,14 +13,12 @@ type Props = {
 };
 
 const WorkoutTimer = ({ initialData }: Props) => {
-  const formattedWorkout = useWorkout(initialData);
+  const formattedWorkout = useFormatWorkout(initialData);
 
   return (
     <TimerProvider>
       <Container>
-        <TimerHeader id={initialData.id}>
-          {initialData.workout_name}
-        </TimerHeader>
+        <TimerHeader id={initialData.id}>{initialData.workout_name}</TimerHeader>
         <Timer workoutData={formattedWorkout} />
         <TimerControl />
       </Container>

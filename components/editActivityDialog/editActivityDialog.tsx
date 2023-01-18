@@ -2,7 +2,7 @@ import { Cancel, Title } from "@radix-ui/react-alert-dialog";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import useMutateActivity from "../../hooks/useMutateActivity";
-import { Activity } from "../../hooks/useWorkout";
+import { Activity } from "../../hooks/useFormatWorkout";
 import AlertDialog from "../alertDialog/alertDialog";
 import Button from "../button";
 import Input from "../input";
@@ -25,7 +25,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    setInputValue((prev) => ({
+    setInputValue(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -50,10 +50,7 @@ const EditActivityDialog = ({ activity }: Props) => {
   );
 
   return (
-    <AlertDialog
-      triggerButton={triggerButton}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}>
+    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       <Flex direction="column">
         <Title>Edit Exercise</Title>
         <Flex
@@ -65,7 +62,8 @@ const EditActivityDialog = ({ activity }: Props) => {
             padding: "$lg",
             gap: "$xl",
           }}
-          onSubmit={onFormSubmit}>
+          onSubmit={onFormSubmit}
+        >
           <Input
             type="text"
             label="Exercise Name"

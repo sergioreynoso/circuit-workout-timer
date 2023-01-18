@@ -32,7 +32,7 @@ const SET_REST = (rest: number): Activity => ({
   workoutId: "",
 });
 
-export function useWorkout(workoutDetails: WorkoutWithExercises) {
+export function useFormatWorkout(workoutDetails: WorkoutWithExercises) {
   return useMemo((): FormattedWorkout => {
     const id = workoutDetails.id;
     const exercises = workoutDetails.exercises as Activity[];

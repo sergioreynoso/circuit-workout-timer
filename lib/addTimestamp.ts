@@ -1,10 +1,8 @@
-import { Activity } from "../hooks/useWorkout";
+import { Activity } from "../hooks/useFormatWorkout";
 
 export function addTimestamp(array: Activity[], totalTime: number) {
   return array.map((item, index) => {
-    let start = array
-      .slice(0, index)
-      .reduce((prev, curr) => prev + curr.duration, 0);
+    let start = array.slice(0, index).reduce((prev, curr) => prev + curr.duration, 0);
 
     const end = array[index].duration + start;
     return {

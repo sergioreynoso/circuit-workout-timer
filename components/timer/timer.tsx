@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import useTimer from "../../hooks/useTimer";
-import { FormattedWorkout } from "../../hooks/useWorkout";
+import { FormattedWorkout } from "../../hooks/useFormatWorkout";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
 import { TimerContext } from "../timerContext";
@@ -17,13 +17,9 @@ const Timer = ({ workoutData }: Props) => {
   const NextExercise = () => {
     return (
       state.nextActivity && (
-        <Flex
-          direction="column"
-          css={{ alignItems: "center", gap: "$sm", padding: "$sm" }}>
+        <Flex direction="column" css={{ alignItems: "center", gap: "$sm", padding: "$sm" }}>
           <h4>Next</h4>
-          <NextExerciseName>
-            {state.nextActivity.exercise_name}
-          </NextExerciseName>
+          <NextExerciseName>{state.nextActivity.exercise_name}</NextExerciseName>
         </Flex>
       )
     );
@@ -42,23 +38,18 @@ const Timer = ({ workoutData }: Props) => {
       css={{
         alignItems: "center",
         textAlign: "center",
-      }}>
+      }}
+    >
       {isTimerDone ? (
         <WorkoutComplete />
       ) : (
         <>
-          <RunningTime>
-            Time Remaining: {formatTime(state.runningTime)}
-          </RunningTime>
+          <RunningTime>Time Remaining: {formatTime(state.runningTime)}</RunningTime>
           <Sets>
             {state.setCount} / {workoutData.totalSets}
           </Sets>
           <Box css={{ position: "relative" }}>
-            <ProgressCircle
-              runningActivity={workoutData}
-              runningActivityTime={state.runningTime}
-              color="orange"
-            />
+            <ProgressCircle runningActivity={workoutData} runningActivityTime={state.runningTime} color="orange" />
             <Box
               css={{
                 position: "absolute",
@@ -66,14 +57,14 @@ const Timer = ({ workoutData }: Props) => {
                 right: 0,
                 bottom: 0,
                 left: 0,
-              }}>
+              }}
+            >
               <ProgressCircle
                 runningActivity={state.runningActivity}
                 runningActivityTime={state.runningActivityTime}
-                scale={0.95}>
-                <ExerciseRemainingTime>
-                  {formatTime(state.runningActivityTime)}
-                </ExerciseRemainingTime>
+                scale={0.95}
+              >
+                <ExerciseRemainingTime>{formatTime(state.runningActivityTime)}</ExerciseRemainingTime>
                 <Exercise>{state.runningActivity.exercise_name}</Exercise>
               </ProgressCircle>
             </Box>
