@@ -14,8 +14,7 @@ type Props = {
 };
 
 export const ActivityListItem = ({ activity }: Props) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: activity.id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: activity.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -33,7 +32,8 @@ export const ActivityListItem = ({ activity }: Props) => {
         padding: "$md",
         color: "$primary-12",
         backgroundColor: "$primary-03",
-      }}>
+      }}
+    >
       <ItemTitle>{activity.exercise_name}</ItemTitle>
 
       <Flex
@@ -41,7 +41,8 @@ export const ActivityListItem = ({ activity }: Props) => {
           justifyContent: "flex-end",
           alignItems: "center",
           gap: "$sm",
-        }}>
+        }}
+      >
         <ListItemDuration>{formatTime(activity.duration)}</ListItemDuration>
         <EditActivityDialog activity={activity} />
         <DeleteActivityDialog activityId={activity.id} />
@@ -54,7 +55,8 @@ export const ActivityListItem = ({ activity }: Props) => {
             "&:active": {
               cursor: "grabbing",
             },
-          }}>
+          }}
+        >
           <CaretSortIcon />
         </Button>
       </Flex>
