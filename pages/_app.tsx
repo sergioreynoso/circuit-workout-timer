@@ -14,15 +14,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: Infinity,
     },
   },
 });
 
-function MyApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<SessionProviderProps>) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<SessionProviderProps>) {
   globalStyles();
   return (
     <SessionProvider session={session}>
@@ -34,7 +30,8 @@ function MyApp({
           value={{
             light: theme.light,
             dark: theme.dark,
-          }}>
+          }}
+        >
           <Header />
           <Component {...pageProps} />
         </ThemeProvider>
