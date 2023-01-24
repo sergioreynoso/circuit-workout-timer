@@ -1,94 +1,68 @@
+import { Workout } from "@prisma/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import cuid from "cuid";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useId } from "react";
 import ActivityList from "../../components/activityList";
 import Button from "../../components/button";
 import { Box, Container, FooterContainer } from "../../components/layout";
+import Preloader from "../../components/preloader";
 import WorkoutForm from "../../components/workoutForm";
-import useFetchWorkout, {
-  WorkoutWithExercises,
-} from "../../hooks/useFetchWorkout";
-import useWorkoutMutation from "../../hooks/useWorkoutMutation";
-import { prisma } from "../../lib/prisma";
+import { WorkoutWithExercises } from "../../hooks/useWorkouts";
+import fetcher from "../../lib/fetcher";
 
-type Props = {
-  initialData: WorkoutWithExercises;
-};
-
-const Edit = ({ initialData }: Props) => {
+const Edit = () => {
   const formId = useId();
   const router = useRouter();
+  const workoutId = router.query.id as string;
 
-  const { data } = useFetchWorkout(
-    "getWorkout",
-    initialData.id,
-    "workout",
-    initialData
-  );
-
-  const mutation = useWorkoutMutation("updateWorkout", "workout", () => {
-    router.push(`/workout/${initialData.id}`);
+  const queryClient = useQueryClient();
+  const { data, error } = useQuery({
+    queryKey: ["workouts", workoutId],
+    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, "v1/workout") : null),
   });
+
+  const mutation = useMutation({
+    mutationFn: (workout: Partial<Workout>) => axios.put("/api/v1/workout", workout),
+    onSuccess: ({ data: newData }) => {
+      // queryClient.invalidateQueries(["workouts", workoutId]);
+      router.push(`/workout/${newData.id}`);
+    },
+  });
+
+  if (!data) return <Preloader label="Loading workout..." />;
+  if (error) return <Preloader label="Error loading page" />;
 
   const mutateWorkout = (name: string, set: number, rest: number) => {
     mutation.mutate({
-      id: initialData.id,
+      id: data.id,
       workout_name: name,
       set_count: Number(set),
-      set_rest: Number(rest), //Number(rest * 1000),
+      set_rest: Number(rest),
     });
   };
 
-  if ("id" in data && "exercises" in data) {
-    return (
-      <Container>
-        <Box as="h1" css={{ paddingBlock: "$2x" }}>
-          Edit Workout
-        </Box>
-        <WorkoutForm
-          name={data.workout_name}
-          setCount={data.set_count}
-          setRest={data.set_rest}
-          onSubmitCallback={mutateWorkout}
-          id={formId}
-        />
-        <ActivityList
-          key={cuid()}
-          workoutId={data.id}
-          activitiesData={[...data.exercises]}
-        />
-        <FooterContainer>
-          <Button
-            colors="primary"
-            type="submit"
-            form={formId}
-            css={{ flex: 1, maxWidth: "200px" }}>
-            Done
-          </Button>
-        </FooterContainer>
-      </Container>
-    );
-  }
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const workout = await prisma?.workout.findUnique({
-    where: {
-      id: params?.id as string,
-    },
-    include: {
-      exercises: {
-        orderBy: {
-          display_seq: "asc",
-        },
-      },
-    },
-  });
-
-  return {
-    props: { initialData: workout },
-  };
+  return (
+    <Container>
+      <Box as="h1" css={{ paddingBlock: "$2x" }}>
+        Edit Workout
+      </Box>
+      <WorkoutForm
+        name={data.workout_name}
+        setCount={data.set_count}
+        setRest={data.set_rest}
+        onSubmitCallback={mutateWorkout}
+        id={formId}
+      />
+      <ActivityList key={cuid()} workoutId={data.id} />
+      <FooterContainer>
+        <Button colors="primary" type="submit" form={formId} css={{ flex: 1, maxWidth: "200px" }}>
+          Done
+        </Button>
+      </FooterContainer>
+    </Container>
+  );
 };
 
 export default Edit;
