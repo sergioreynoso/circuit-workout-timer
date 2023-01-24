@@ -1,30 +1,33 @@
+import { Cancel, Description, Title } from "@radix-ui/react-alert-dialog";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import React, { useState } from "react";
-import {
-  Title,
-  Description,
-  Cancel,
-  Action,
-} from "@radix-ui/react-alert-dialog";
+import { styled } from "../../styles/stitches.congif";
 import AlertDialog from "../alertDialog";
 import Button from "../button";
-import { styled } from "../../styles/stitches.congif";
-import useMutateActivity from "../../hooks/useMutateActivity";
-import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
   activityId: string;
 };
 
+type ResponseId = {
+  id: string;
+};
+
 const DeleteActivityDialog = ({ activityId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const mutation = useMutateActivity("deleteExercise", () => setIsOpen(false));
-  const onClickHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    mutation.mutate({
-      id: activityId,
-    });
+  const queryClient = useQueryClient();
+  const mutation = useMutation((id: string) => axios.delete(`/api/v1/activity`, { data: { id: id } }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      setIsOpen(false);
+    },
+  });
+
+  const onClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    mutation.mutate(activityId);
   };
 
   const triggerButton = (
@@ -34,18 +37,15 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   );
 
   return (
-    <AlertDialog
-      triggerButton={triggerButton}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}>
+    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
         <Wrapper css={{ flexDirection: "column", gap: "$lg" }}>
           <Title>Delete Exercise</Title>
           <Description>
-            This action cannot be undone. This will permanently delete your
-            exercise and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your exercise and remove your data from our
+            servers.
           </Description>
           <Wrapper css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>

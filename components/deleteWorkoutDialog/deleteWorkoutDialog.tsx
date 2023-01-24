@@ -1,16 +1,11 @@
+import { Cancel, Description, Title } from "@radix-ui/react-alert-dialog";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import {
-  Title,
-  Description,
-  Cancel,
-  Action,
-} from "@radix-ui/react-alert-dialog";
 import AlertDialog from "../alertDialog";
 import Button from "../button";
-import { styled } from "../../styles/stitches.congif";
-import useWorkoutMutation from "../../hooks/useWorkoutMutation";
-import { useRouter } from "next/router";
-import { TrashIcon } from "@radix-ui/react-icons";
 import { Flex } from "../layout";
 
 type DeleteWorkoutDialogProps = {
@@ -18,42 +13,34 @@ type DeleteWorkoutDialogProps = {
   workoutId: string;
 };
 
-const DeleteWorkoutDialog = ({
-  label = "Delete",
-  workoutId,
-}: DeleteWorkoutDialogProps) => {
+const DeleteWorkoutDialog = ({ label = "Delete", workoutId }: DeleteWorkoutDialogProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const mutation = useWorkoutMutation("deleteWorkout", "workouts", () => {
-    setIsOpen(false);
-    router.push("/dashboard");
+  const queryClient = useQueryClient();
+  const mutation = useMutation((id: string) => axios.delete(`/api/v1/workout`, { data: { id: id } }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      setIsOpen(false);
+    },
   });
-  const onClickHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    mutation.mutate({
-      id: workoutId,
-    });
+
+  const onClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    mutation.mutate(workoutId);
   };
 
-  const triggerButton = (
-    <Button colors="transparent">{label ? label : <TrashIcon />}</Button>
-  );
+  const triggerButton = <Button colors="transparent">{label ? label : <TrashIcon />}</Button>;
 
   return (
-    <AlertDialog
-      triggerButton={triggerButton}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}>
+    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
         <Flex css={{ flexDirection: "column", gap: "$lg" }}>
           <Title>Delete</Title>
           <Description>
-            This action cannot be undone. This will permanently delete your
-            workout and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your workout and remove your data from our
+            servers.
           </Description>
           <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
             <Cancel asChild>
