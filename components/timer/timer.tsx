@@ -1,18 +1,20 @@
 import { useContext } from "react";
+import { useFormatWorkout } from "../../hooks/useFormatWorkout";
 import useTimer from "../../hooks/useTimer";
-import { FormattedWorkout } from "../../hooks/useFormatWorkout";
+import { WorkoutWithExercises } from "../../hooks/useWorkouts";
 import { formatTime } from "../../lib/formatTime";
 import { styled } from "../../styles/stitches.congif";
-import { TimerContext } from "../timerContext";
 import { Box, Flex } from "../layout";
 import ProgressCircle from "../progressCircle";
+import { TimerContext } from "../timerContext";
 
-type Props = { workoutData: FormattedWorkout };
+type Props = { data: WorkoutWithExercises };
 
-const Timer = ({ workoutData }: Props) => {
+const Timer = ({ data }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
+  const formattedWorkout = useFormatWorkout(data);
 
-  const [state] = useTimer(workoutData);
+  const [state] = useTimer(formattedWorkout);
 
   const NextExercise = () => {
     return (
@@ -46,10 +48,10 @@ const Timer = ({ workoutData }: Props) => {
         <>
           <RunningTime>Time Remaining: {formatTime(state.runningTime)}</RunningTime>
           <Sets>
-            {state.setCount} / {workoutData.totalSets}
+            {state.setCount} / {formattedWorkout.totalSets}
           </Sets>
           <Box css={{ position: "relative" }}>
-            <ProgressCircle runningActivity={workoutData} runningActivityTime={state.runningTime} color="orange" />
+            <ProgressCircle runningActivity={formattedWorkout} runningActivityTime={state.runningTime} color="orange" />
             <Box
               css={{
                 position: "absolute",
