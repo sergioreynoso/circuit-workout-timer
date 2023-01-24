@@ -10,15 +10,15 @@ import DeleteWorkoutDialog from "../../components/deleteWorkoutDialog";
 import { Box, Container, FooterContainer } from "../../components/layout";
 import Preloader from "../../components/preloader";
 import WorkoutForm from "../../components/workoutForm";
-import { WorkoutWithExercises } from "../../hooks/useWorkouts";
 import fetcher from "../../lib/fetcher";
+import { WorkoutWithExercises } from "../../lib/types";
 
 const CreateWorkout = () => {
   const formId = useId();
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const { status, data, error } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ["workouts", workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, "v1/workout") : null),
   });
@@ -27,7 +27,7 @@ const CreateWorkout = () => {
   const mutation = useMutation({
     mutationFn: (workout: Partial<Workout>) => axios.put(`/api/v1/workout`, workout),
     onSuccess: ({ data: newData }) => {
-      queryClient.setQueryData(["workouts", newData.id], newData);
+      queryClient.setQueryData(["workout", newData.id], newData);
       router.push(`/workout/${newData.id}`);
     },
   });
@@ -56,7 +56,7 @@ const CreateWorkout = () => {
         onSubmitCallback={mutateWorkout}
         id={formId}
       />
-      <ActivityList key={cuid()} workoutId={data.id} activitiesData={[...data.exercises]} />
+      <ActivityList key={cuid()} workoutId={data.id} activities={data.exercises} />
       <FooterContainer css={{ gap: "$3x" }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
         <Button colors="primary" type="submit" form={formId}>

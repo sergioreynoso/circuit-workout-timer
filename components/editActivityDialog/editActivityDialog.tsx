@@ -1,7 +1,9 @@
+import { Exercise } from "@prisma/client";
 import { Cancel, Title } from "@radix-ui/react-alert-dialog";
 import { Pencil1Icon } from "@radix-ui/react-icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import React, { useState } from "react";
-import useMutateActivity from "../../hooks/useMutateActivity";
 import { Activity } from "../../hooks/useFormatWorkout";
 import AlertDialog from "../alertDialog/alertDialog";
 import Button from "../button";
@@ -14,13 +16,19 @@ type Props = {
 
 const EditActivityDialog = ({ activity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const mutation = useMutateActivity("updateExercise", () => setIsOpen(false));
-
   const [{ name, duration, type }, setInputValue] = useState({
     name: activity.exercise_name,
     duration: Math.round(activity.duration / 1000),
     type: activity.type,
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation((data: Partial<Exercise>) => axios.put(`/api/v1/activity`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      setIsOpen(false);
+    },
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {

@@ -9,8 +9,8 @@ import Button from "../../components/button";
 import { Box, Container, FooterContainer } from "../../components/layout";
 import Preloader from "../../components/preloader";
 import WorkoutForm from "../../components/workoutForm";
-import { WorkoutWithExercises } from "../../hooks/useWorkouts";
 import fetcher from "../../lib/fetcher";
+import { WorkoutWithExercises } from "../../lib/types";
 
 const Edit = () => {
   const formId = useId();

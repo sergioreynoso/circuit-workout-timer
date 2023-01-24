@@ -1,3 +1,4 @@
+import { Prisma, Workout } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Container } from "../../components/layout";
@@ -6,16 +7,16 @@ import Timer from "../../components/timer";
 import TimerProvider from "../../components/timerContext";
 import TimerControl from "../../components/timerControl/timerControl";
 import TimerHeader from "../../components/timerHeader";
-import { WorkoutWithExercises } from "../../hooks/useWorkouts";
 
 import fetcher from "../../lib/fetcher";
+import { WorkoutWithExercises } from "../../lib/types";
 
 const WorkoutTimer = () => {
   const router = useRouter();
   const workoutId = router.query.id as string;
 
   const { data, error } = useQuery({
-    queryKey: ["workouts", workoutId],
+    queryKey: ["workout", workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, "v1/workout") : null),
     staleTime: Infinity,
   });

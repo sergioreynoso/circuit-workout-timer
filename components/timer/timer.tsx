@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { useFormatWorkout } from "../../hooks/useFormatWorkout";
 import useTimer from "../../hooks/useTimer";
-import { WorkoutWithExercises } from "../../hooks/useWorkouts";
+
 import { formatTime } from "../../lib/formatTime";
+import { WorkoutWithExercises } from "../../lib/types";
 import { styled } from "../../styles/stitches.congif";
 import { Box, Flex } from "../layout";
 import ProgressCircle from "../progressCircle";

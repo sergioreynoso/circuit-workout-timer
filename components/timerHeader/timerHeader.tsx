@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
+import { WorkoutWithExercises } from "../../lib/types";
+
 import { styled } from "../../styles/stitches.congif";
 import Button from "../button";
 import { TimerContext } from "../timerContext";
 
 type Props = {
-  id: string;
-  children: JSX.Element | string;
+  data: WorkoutWithExercises;
 };
 
-const TimerHeader = ({ id, children }: Props) => {
+const TimerHeader = ({ data }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
 
   const router = useRouter();
@@ -18,13 +19,13 @@ const TimerHeader = ({ id, children }: Props) => {
   };
 
   const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    router.push(`/editWorkout/${id as string}`);
+    router.push(`/editWorkout/${data.id as string}`);
   };
 
   return (
     <Header>
       {!isTimerDone && <Button onClick={onCancel}>Cancel</Button>}
-      <Heading>{children}</Heading>
+      <Heading>{data.workout_name}</Heading>
       {!isTimerDone && <Button onClick={onEdit}>Edit</Button>}
     </Header>
   );

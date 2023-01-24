@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
-import { WorkoutWithExercises } from "../../hooks/useWorkouts";
 import Button from "../button";
 import { Flex } from "../layout";
 
