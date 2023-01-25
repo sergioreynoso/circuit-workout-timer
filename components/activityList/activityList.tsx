@@ -15,8 +15,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Exercise } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
-import useMutateActivity from "../../hooks/useMutateActivity";
 import updateDisplaySeq from "../../lib/updateDisplaySeq";
 import { styled } from "../../styles/stitches.congif";
 import ActivityListItem from "../activityListItem";
@@ -25,13 +26,21 @@ import { Flex } from "../layout";
 
 type Props = {
   workoutId: string;
-  activitiesData: Exercise[];
+  activities: Exercise[];
 };
 
-const ActivityList = ({ workoutId, activitiesData }: Props) => {
+const ActivityList = ({ workoutId, activities }: Props) => {
   const [activeId, setActiveId] = useState(null);
-  const [exercises, setActivities] = useState(() => activitiesData);
-  const mutation = useMutateActivity("updateExerciseOrder", undefined, false);
+  const [exercises, setActivities] = useState<Exercise[]>(() => activities);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (exercise: Exercise[]) =>
+      axios.post("/api/v1/updateExerciseOrder", { id: workoutId, exercises: exercise }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workout", workoutId], exact: true });
+    },
+  });
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -49,12 +58,12 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
   function handleDragEnd(event: any) {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setActivities((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
+      setActivities(items => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
-        const updatedDisplaySeq = updateDisplaySeq(sortedArray);
-        mutation.mutate(updatedDisplaySeq as Partial<Exercise>);
+        const updatedDisplaySeq = updateDisplaySeq<Exercise>(sortedArray);
+        mutation.mutate(updatedDisplaySeq);
         return updatedDisplaySeq;
       });
     }
@@ -64,11 +73,7 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
   const DragOverlayItem = ({ activeId }: { activeId: string }) => {
     return (
       <ActivityListItem
-        activity={
-          exercises.find((exercise) =>
-            exercise.id === activeId ? exercise : null
-          ) as Exercise
-        }
+        activity={exercises.find(exercise => (exercise.id === activeId ? exercise : null)) as Exercise}
       />
     );
   };
@@ -79,19 +84,18 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}>
+      onDragEnd={handleDragEnd}
+    >
       <Flex direction="column">
         <Flex
           css={{
             justifyContent: "space-between",
             alignItems: "center",
             padding: "$md",
-          }}>
+          }}
+        >
           <h3>Add an activity to your workout</h3>
-          <AddActivityDialog
-            workoutId={workoutId}
-            exercisesTotalCount={exercises.length}
-          />
+          <AddActivityDialog workoutId={workoutId} exercisesTotalCount={exercises.length} />
         </Flex>
 
         <Flex
@@ -104,17 +108,14 @@ const ActivityList = ({ workoutId, activitiesData }: Props) => {
             "@less-sm": {
               paddingBottom: "64px",
             },
-          }}>
-          <SortableContext
-            items={exercises}
-            strategy={verticalListSortingStrategy}>
-            {exercises.map((activity) => (
+          }}
+        >
+          <SortableContext items={exercises} strategy={verticalListSortingStrategy}>
+            {exercises.map(activity => (
               <ActivityListItem key={activity.id} activity={activity} />
             ))}
           </SortableContext>
-          <StyledDragOverLay>
-            {activeId ? <DragOverlayItem activeId={activeId} /> : null}
-          </StyledDragOverLay>
+          <StyledDragOverLay>{activeId ? <DragOverlayItem activeId={activeId} /> : null}</StyledDragOverLay>
         </Flex>
       </Flex>
     </DndContext>
