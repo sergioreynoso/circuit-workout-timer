@@ -23,7 +23,8 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
   });
 
   const queryClient = useQueryClient();
-  const mutation = useMutation((exercise: Partial<Exercise>) => axios.post(`/api/v1/activity`, exercise), {
+  const mutation = useMutation({
+    mutationFn: (exercise: Partial<Exercise>) => axios.post(`/api/v1/activity`, exercise),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workout", workoutId], exact: true });
       setIsOpen(false);
