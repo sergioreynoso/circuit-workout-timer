@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }),
         ],
         {
-          isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         }
       );
 
