@@ -1,9 +1,9 @@
-import { motion, useAnimationControls } from "framer-motion";
-import { useCallback, useContext, useEffect, useMemo } from "react";
-import { TIMER_INTERVAL } from "../../hooks/useTimer";
-import { Activity, FormattedWorkout } from "../../hooks/useWorkout";
-import { TimerContext } from "../timerContext/timerProvider";
-import { Box, Flex } from "../layout";
+import { motion, useAnimationControls } from 'framer-motion';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { TIMER_INTERVAL } from '../../hooks/useTimer';
+import { Activity, FormattedWorkout } from '../../hooks/useFormatWorkout';
+import { TimerContext } from '../timerContext/timerProvider';
+import { Box, Flex } from '../layout';
 
 type Props = {
   runningActivity: Activity | FormattedWorkout;
@@ -23,7 +23,7 @@ const ProgressCircle = ({
   size = 100,
   strokeWidth = 2,
   scale = 1,
-  color = "$primary-09",
+  color = '$primary-09',
   children,
 }: Props) => {
   const controls = useAnimationControls();
@@ -79,16 +79,14 @@ const ProgressCircle = ({
     <>
       <Flex
         css={{
-          position: "relative",
-          justifyContent: "center",
-          alignItems: "center",
-          maxWidth: "$bp-sm",
-          margin: "auto",
-        }}>
-        <Box
-          as="svg"
-          viewBox="0 0 100 100"
-          css={{ width: "100%", transform: `rotate(-90deg) scale(${scale})` }}>
+          position: 'relative',
+          justifyContent: 'center',
+          alignItems: 'center',
+          maxWidth: '$bp-sm',
+          margin: 'auto',
+        }}
+      >
+        <Box as="svg" viewBox="0 0 100 100" css={{ width: '100%', transform: `rotate(-90deg) scale(${scale})` }}>
           <Box
             as="circle"
             width={size}
@@ -98,8 +96,8 @@ const ProgressCircle = ({
             r={radius}
             strokeWidth={strokeWidth}
             css={{
-              fill: "transparent",
-              stroke: "$gray-04",
+              fill: 'transparent',
+              stroke: '$gray-04',
             }}
           />
           <Box
@@ -119,16 +117,17 @@ const ProgressCircle = ({
             animate={controls}
             css={{
               stroke: color,
-              strokeLinecap: "round",
+              strokeLinecap: 'round',
             }}
           />
         </Box>
         <Flex
           direction="column"
           css={{
-            position: "absolute",
-            justifyContent: "center",
-          }}>
+            position: 'absolute',
+            justifyContent: 'center',
+          }}
+        >
           {children}
         </Flex>
       </Flex>
