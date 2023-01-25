@@ -19,14 +19,14 @@ const Edit = () => {
 
   const queryClient = useQueryClient();
   const { data, error } = useQuery({
-    queryKey: ["workouts", workoutId],
+    queryKey: ["workout", workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, "v1/workout") : null),
   });
 
   const mutation = useMutation({
     mutationFn: (workout: Partial<Workout>) => axios.put("/api/v1/workout", workout),
     onSuccess: ({ data: newData }) => {
-      // queryClient.invalidateQueries(["workouts", workoutId]);
+      queryClient.setQueryData(["workout", workoutId], newData);
       router.push(`/workout/${newData.id}`);
     },
   });
@@ -55,7 +55,7 @@ const Edit = () => {
         onSubmitCallback={mutateWorkout}
         id={formId}
       />
-      <ActivityList key={cuid()} workoutId={data.id} />
+      <ActivityList key={cuid()} workoutId={data.id} activities={data.exercises} />
       <FooterContainer>
         <Button colors="primary" type="submit" form={formId} css={{ flex: 1, maxWidth: "200px" }}>
           Done
