@@ -25,7 +25,7 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation((exercise: Partial<Exercise>) => axios.post(`/api/v1/activity`, exercise), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workouts", workoutId], exact: true });
+      queryClient.invalidateQueries({ queryKey: ["workout", workoutId], exact: true });
       setIsOpen(false);
       setInputValue(prev => ({
         ...prev,
@@ -83,6 +83,7 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
             onChange={handleChange}
             placeholder=""
             required={true}
+            autoComplete="off"
           />
           <Input
             type="number"

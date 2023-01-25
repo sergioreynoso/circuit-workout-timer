@@ -11,17 +11,13 @@ type Props = {
   activityId: string;
 };
 
-type ResponseId = {
-  id: string;
-};
-
 const DeleteActivityDialog = ({ activityId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const mutation = useMutation((id: string) => axios.delete(`/api/v1/activity`, { data: { id: id } }), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      queryClient.invalidateQueries({ queryKey: ["workout"] });
       setIsOpen(false);
     },
   });

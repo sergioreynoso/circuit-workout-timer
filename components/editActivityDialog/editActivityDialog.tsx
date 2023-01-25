@@ -26,7 +26,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const mutation = useMutation((data: Partial<Exercise>) => axios.put(`/api/v1/activity`, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+      queryClient.invalidateQueries({ queryKey: ["workout"] });
       setIsOpen(false);
     },
   });
