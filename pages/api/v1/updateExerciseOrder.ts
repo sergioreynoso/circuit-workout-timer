@@ -1,12 +1,12 @@
-import { prisma } from "../../../lib/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
-import { Prisma } from "@prisma/client";
+import { prisma } from '../../../lib/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Prisma } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.body.id;
   const data = req.body.exercises;
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       await prisma.$transaction(
         [
@@ -26,9 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       );
 
-      res.status(200).json({ status: "success", message: "Updated activities" });
+      res.status(200).json({ status: 'success', message: 'Updated activities' });
     } catch (error) {
-      res.status(400).json({ status: "failed", message: "Something went wrong updating workout." });
+      res.status(400).json({ status: 'failed', message: 'Something went wrong updating workout.' });
     }
   }
 }

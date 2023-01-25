@@ -1,5 +1,5 @@
 function padTo2Digits(num: number): string {
-  return num.toString().padStart(2, "0");
+  return num.toString().padStart(2, '0');
 }
 
 export const formatTime = (ms: number): string => {

@@ -1,22 +1,11 @@
-import { createStitches } from "@stitches/react";
-import type * as Stitches from "@stitches/react";
+import { createStitches } from '@stitches/react';
+import type * as Stitches from '@stitches/react';
 
-import {
-  colors,
-  fonts,
-  borders,
-  sizes,
-  shadows,
-  spacings,
-  transitions,
-  zIndices,
-  utils,
-  medias,
-} from "./tokens";
+import { colors, fonts, borders, sizes, shadows, spacings, transitions, zIndices, utils, medias } from './tokens';
 
 export type StichesConfigProps = Stitches.CSS<typeof config>;
 export type ColorTokensTypes = `$${keyof typeof colors.dark}`;
-export type ThemeTypes = "dark" | "light";
+export type ThemeTypes = 'dark' | 'light';
 export type CreateThemeProps = ReturnType<typeof createTheme>;
 
 export const {

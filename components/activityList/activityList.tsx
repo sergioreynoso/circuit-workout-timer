@@ -7,22 +7,22 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
+} from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { Exercise } from "@prisma/client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useState } from "react";
-import updateDisplaySeq from "../../lib/updateDisplaySeq";
-import { styled } from "../../styles/stitches.congif";
-import ActivityListItem from "../activityListItem";
-import AddActivityDialog from "../addActivityDialog";
-import { Flex } from "../layout";
+} from '@dnd-kit/sortable';
+import { Exercise } from '@prisma/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useState } from 'react';
+import updateDisplaySeq from '../../lib/updateDisplaySeq';
+import { styled } from '../../styles/stitches.congif';
+import ActivityListItem from '../activityListItem';
+import AddActivityDialog from '../addActivityDialog';
+import { Flex } from '../layout';
 
 type Props = {
   workoutId: string;
@@ -36,9 +36,9 @@ const ActivityList = ({ workoutId, activities }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (exercise: Exercise[]) =>
-      axios.post("/api/v1/updateExerciseOrder", { id: workoutId, exercises: exercise }),
+      axios.post('/api/v1/updateExerciseOrder', { id: workoutId, exercises: exercise }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workout", workoutId], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['workout', workoutId], exact: true });
     },
   });
 
@@ -89,9 +89,9 @@ const ActivityList = ({ workoutId, activities }: Props) => {
       <Flex direction="column">
         <Flex
           css={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "$md",
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '$md',
           }}
         >
           <h3>Add an activity to your workout</h3>
@@ -102,11 +102,11 @@ const ActivityList = ({ workoutId, activities }: Props) => {
           as="ul"
           direction="column"
           css={{
-            gap: "$sm",
-            minWidth: "350px",
-            position: "relative",
-            "@less-sm": {
-              paddingBottom: "64px",
+            gap: '$sm',
+            minWidth: '350px',
+            position: 'relative',
+            '@less-sm': {
+              paddingBottom: '64px',
             },
           }}
         >
@@ -123,7 +123,7 @@ const ActivityList = ({ workoutId, activities }: Props) => {
 };
 
 const StyledDragOverLay = styled(DragOverlay, {
-  boxShadow: "$high",
+  boxShadow: '$high',
 });
 
 export default ActivityList;

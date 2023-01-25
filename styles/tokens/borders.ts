@@ -5,11 +5,11 @@ const radius = {
   lg: '1rem', // 16px
   xl: '2rem', // 32px
   pill: '50rem', // 800px
-  circular: '100rem' // 1600px
+  circular: '100rem', // 1600px
 };
 
 const borders = {
-  radius
+  radius,
 };
 
 export { borders };

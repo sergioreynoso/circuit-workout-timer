@@ -1,1 +1,1 @@
-export { default } from "./deleteWorkoutDialog";
+export { default } from './deleteWorkoutDialog';

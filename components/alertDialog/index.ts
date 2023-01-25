@@ -1,1 +1,1 @@
-export { default } from "./alertDialog";
+export { default } from './alertDialog';

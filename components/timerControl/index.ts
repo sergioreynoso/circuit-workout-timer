@@ -1,1 +1,1 @@
-export { default } from "./timerControl";
+export { default } from './timerControl';

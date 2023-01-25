@@ -1,12 +1,12 @@
 const utils = {
   mx: (value: string) => ({
     marginLeft: value,
-    marginRight: value
+    marginRight: value,
   }),
   px: (value: string) => ({
     paddingLeft: value,
-    paddingRight: value
-  })
+    paddingRight: value,
+  }),
 };
 
 export { utils };

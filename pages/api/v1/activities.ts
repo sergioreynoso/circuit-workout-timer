@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../lib/prisma";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '../../../lib/prisma';
 
 async function getActivities(req: NextApiRequest) {
   const data = await prisma?.exercise.findMany({
@@ -7,7 +7,7 @@ async function getActivities(req: NextApiRequest) {
       workoutId: req.query.id as string,
     },
     orderBy: {
-      display_seq: "asc",
+      display_seq: 'asc',
     },
   });
   return data;
@@ -15,14 +15,14 @@ async function getActivities(req: NextApiRequest) {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method === "GET") {
+    if (req.method === 'GET') {
       const data = await getActivities(req);
       res.status(200).json(data);
     }
   } catch (error) {
     res.status(400).json({
-      status: "fail",
-      message: "Failed to load activities.",
+      status: 'fail',
+      message: 'Failed to load activities.',
     });
   }
 }

@@ -1,1 +1,1 @@
-export { default } from "./editActivityDialog";
+export { default } from './editActivityDialog';

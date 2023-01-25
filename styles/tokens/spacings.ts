@@ -6,7 +6,7 @@ const spacings = {
   xl: '1.25rem', // 20px
   xx: '1.5rem', // 24px
   '2x': '2rem', // 32px
-  '3x': '3rem' // 48px
+  '3x': '3rem', // 48px
 };
 
 export { spacings };

@@ -1,5 +1,5 @@
-import { prisma } from "../../../lib/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '../../../lib/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 async function getWorkout(req: NextApiRequest) {
   const data = await prisma?.workout.findUnique({
@@ -9,7 +9,7 @@ async function getWorkout(req: NextApiRequest) {
     include: {
       exercises: {
         orderBy: {
-          display_seq: "asc",
+          display_seq: 'asc',
         },
       },
     },
@@ -64,23 +64,23 @@ async function deleteWorkout(req: NextApiRequest) {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method === "GET") {
+    if (req.method === 'GET') {
       const data = await getWorkout(req);
       res.status(200).json(data);
     }
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
       const data = await postWorkout(req);
       res.status(200).json(data);
     }
-    if (req.method === "PUT") {
+    if (req.method === 'PUT') {
       const data = await updateWorkout(req);
       res.status(200).json(data);
     }
-    if (req.method === "DELETE") {
+    if (req.method === 'DELETE') {
       const data = await deleteWorkout(req);
       res.status(200).json(data);
     }
   } catch (error) {
-    res.status(400).json({ status: "failed", message: "Failed to load or create workout" });
+    res.status(400).json({ status: 'failed', message: 'Failed to load or create workout' });
   }
 }

@@ -1,1 +1,1 @@
-export { default } from "./deleteActivityDialog";
+export { default } from './deleteActivityDialog';

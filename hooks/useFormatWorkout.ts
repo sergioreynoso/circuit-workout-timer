@@ -1,11 +1,11 @@
-import { Exercise } from "@prisma/client";
-import cuid from "cuid";
-import range from "lodash/range";
-import { useMemo } from "react";
-import { addTimestamp } from "../lib/addTimestamp";
-import { WorkoutWithExercises } from "../lib/types";
+import { Exercise } from '@prisma/client';
+import cuid from 'cuid';
+import range from 'lodash/range';
+import { useMemo } from 'react';
+import { addTimestamp } from '../lib/addTimestamp';
+import { WorkoutWithExercises } from '../lib/types';
 
-export interface Activity extends Omit<Exercise, "display_seq"> {
+export interface Activity extends Omit<Exercise, 'display_seq'> {
   timestamp?: { start: number; end: number };
 }
 
@@ -18,18 +18,18 @@ export type FormattedWorkout = {
 
 const WARMUP: Activity = {
   id: cuid(),
-  exercise_name: "Warm up",
-  type: "WARMUP",
+  exercise_name: 'Warm up',
+  type: 'WARMUP',
   duration: 5000,
-  workoutId: "",
+  workoutId: '',
 };
 
 const SET_REST = (rest: number): Activity => ({
   id: cuid(),
-  exercise_name: "Set Rest",
-  type: "SET_REST",
+  exercise_name: 'Set Rest',
+  type: 'SET_REST',
   duration: rest,
-  workoutId: "",
+  workoutId: '',
 });
 
 export function useFormatWorkout(workoutDetails: WorkoutWithExercises) {

@@ -1,6 +1,6 @@
-import { prisma } from "../../../lib/prisma";
+import { prisma } from '../../../lib/prisma';
 
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
 
 async function postActivity(req: NextApiRequest) {
   const data = await prisma?.exercise.create({
@@ -41,19 +41,19 @@ async function deleteActivity(req: NextApiRequest) {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
       const data = await postActivity(req);
       res.status(200).json(data);
     }
-    if (req.method === "PUT") {
+    if (req.method === 'PUT') {
       const data = await updateActivity(req);
       res.status(200).json(data);
     }
-    if (req.method === "DELETE") {
+    if (req.method === 'DELETE') {
       const data = await deleteActivity(req);
       res.status(200).json(data);
     }
   } catch (error) {
-    res.status(400).json({ status: "fail", message: "Failed to update activity" });
+    res.status(400).json({ status: 'fail', message: 'Failed to update activity' });
   }
 }

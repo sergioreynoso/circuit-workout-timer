@@ -1,1 +1,1 @@
-export { default } from "./progressCircle";
+export { default } from './progressCircle';

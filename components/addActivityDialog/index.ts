@@ -1,1 +1,1 @@
-export { default } from "./addActivityDialog";
+export { default } from './addActivityDialog';

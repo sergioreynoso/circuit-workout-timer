@@ -1,1 +1,1 @@
-export { default } from "./stepperInput";
+export { default } from './stepperInput';
