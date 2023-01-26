@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import { useFormatWorkout } from "../../hooks/useFormatWorkout";
-import useTimer from "../../hooks/useTimer";
+import { useContext } from 'react';
+import { useFormatWorkout } from '../../hooks/useFormatWorkout';
+import useTimer from '../../hooks/useTimer';
 
-import { formatTime } from "../../lib/formatTime";
-import { WorkoutWithExercises } from "../../lib/types";
-import { styled } from "../../styles/stitches.congif";
-import { Box, Flex } from "../layout";
-import ProgressCircle from "../progressCircle";
-import { TimerContext } from "../timerContext";
+import { formatTime } from '../../lib/formatTime';
+
+import { styled } from '../../styles/stitches.congif';
+import { WorkoutWithExercises } from '../../types/workout';
+import { Box, Flex } from '../layout';
+import ProgressCircle from '../progressCircle';
+import { TimerContext } from '../timerContext';
 
 type Props = { data: WorkoutWithExercises };
 
@@ -20,7 +21,7 @@ const Timer = ({ data }: Props) => {
   const NextExercise = () => {
     return (
       state.nextActivity && (
-        <Flex direction="column" css={{ alignItems: "center", gap: "$sm", padding: "$sm" }}>
+        <Flex direction="column" css={{ alignItems: 'center', gap: '$sm', padding: '$sm' }}>
           <h4>Next</h4>
           <NextExerciseName>{state.nextActivity.exercise_name}</NextExerciseName>
         </Flex>
@@ -30,7 +31,7 @@ const Timer = ({ data }: Props) => {
 
   const WorkoutComplete = () => {
     return (
-      <Flex css={{ justifyContent: "center", padding: "$sm" }}>
+      <Flex css={{ justifyContent: 'center', padding: '$sm' }}>
         <p>Complete!</p>
       </Flex>
     );
@@ -39,8 +40,8 @@ const Timer = ({ data }: Props) => {
   return (
     <Box
       css={{
-        alignItems: "center",
-        textAlign: "center",
+        alignItems: 'center',
+        textAlign: 'center',
       }}
     >
       {isTimerDone ? (
@@ -51,11 +52,11 @@ const Timer = ({ data }: Props) => {
           <Sets>
             {state.setCount} / {formattedWorkout.totalSets}
           </Sets>
-          <Box css={{ position: "relative" }}>
+          <Box css={{ position: 'relative' }}>
             <ProgressCircle runningActivity={formattedWorkout} runningActivityTime={state.runningTime} color="orange" />
             <Box
               css={{
-                position: "absolute",
+                position: 'absolute',
                 top: 0,
                 right: 0,
                 bottom: 0,
@@ -79,35 +80,35 @@ const Timer = ({ data }: Props) => {
   );
 };
 
-const RunningTime = styled("h2", {
-  lineHeight: "$100",
-  padding: "$sm",
-  color: "orange",
+const RunningTime = styled('h2', {
+  lineHeight: '$100',
+  padding: '$sm',
+  color: 'orange',
 });
 
-const ExerciseRemainingTime = styled("h2", {
-  fontSize: "$3x",
-  lineHeight: "$150",
-  padding: "$sm",
+const ExerciseRemainingTime = styled('h2', {
+  fontSize: '$3x',
+  lineHeight: '$150',
+  padding: '$sm',
 });
 
-const Exercise = styled("p", {
-  fontSize: "$3x",
-  fontWeight: "$700",
-  lineHeight: "$150",
-  color: "$primary-09",
+const Exercise = styled('p', {
+  fontSize: '$3x',
+  fontWeight: '$700',
+  lineHeight: '$150',
+  color: '$primary-09',
 });
 
-const NextExerciseName = styled("p", {
-  fontSize: "$xx",
-  fontWeight: "$700",
-  lineHeight: "$150",
+const NextExerciseName = styled('p', {
+  fontSize: '$xx',
+  fontWeight: '$700',
+  lineHeight: '$150',
 });
 
-const Sets = styled("p", {
-  fontSize: "$xx",
-  fontWeight: "$700",
-  lineHeight: "$150",
+const Sets = styled('p', {
+  fontSize: '$xx',
+  fontWeight: '$700',
+  lineHeight: '$150',
 });
 
 export default Timer;

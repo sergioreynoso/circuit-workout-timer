@@ -1,17 +1,17 @@
-import { Workout } from "@prisma/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import cuid from "cuid";
-import { useRouter } from "next/router";
-import { useId } from "react";
-import ActivityList from "../../components/activityList/activityList";
-import Button from "../../components/button";
-import DeleteWorkoutDialog from "../../components/deleteWorkoutDialog";
-import { Box, Container, FooterContainer } from "../../components/layout";
-import Preloader from "../../components/preloader";
-import WorkoutForm from "../../components/workoutForm";
-import fetcher from "../../lib/fetcher";
-import { WorkoutWithExercises } from "../../lib/types";
+import { Workout } from '@prisma/client';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import cuid from 'cuid';
+import { useRouter } from 'next/router';
+import { useId } from 'react';
+import ActivityList from '../../components/activityList/activityList';
+import Button from '../../components/button';
+import DeleteWorkoutDialog from '../../components/deleteWorkoutDialog';
+import { Box, Container, FooterContainer } from '../../components/layout';
+import Preloader from '../../components/preloader';
+import WorkoutForm from '../../components/workoutForm';
+import fetcher from '../../lib/fetcher';
+import { WorkoutWithExercises } from '../../types/workout';
 
 const CreateWorkout = () => {
   const formId = useId();
@@ -19,15 +19,15 @@ const CreateWorkout = () => {
   const workoutId = router.query.id as string;
 
   const { data, error } = useQuery({
-    queryKey: ["workouts", workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, "v1/workout") : null),
+    queryKey: ['workouts', workoutId],
+    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, 'v1/workout') : null),
   });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (workout: Partial<Workout>) => axios.put(`/api/v1/workout`, workout),
     onSuccess: ({ data: newData }) => {
-      queryClient.setQueryData(["workout", newData.id], newData);
+      queryClient.setQueryData(['workout', newData.id], newData);
       router.push(`/workout/${newData.id}`);
     },
   });
@@ -46,7 +46,7 @@ const CreateWorkout = () => {
 
   return (
     <Container>
-      <Box as="h1" css={{ paddingBlock: "$2x" }}>
+      <Box as="h1" css={{ paddingBlock: '$2x' }}>
         Create your workout
       </Box>
       <WorkoutForm
@@ -57,7 +57,7 @@ const CreateWorkout = () => {
         id={formId}
       />
       <ActivityList key={cuid()} workoutId={data.id} activities={data.exercises} />
-      <FooterContainer css={{ gap: "$3x" }}>
+      <FooterContainer css={{ gap: '$3x' }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
         <Button colors="primary" type="submit" form={formId}>
           Done

@@ -8,7 +8,7 @@ import TimerControl from '../../components/timerControl/timerControl';
 import TimerHeader from '../../components/timerHeader';
 
 import fetcher from '../../lib/fetcher';
-import { WorkoutWithExercises } from '../../lib/types';
+import { WorkoutWithExercises } from '../../types/workout';
 
 const WorkoutTimer = () => {
   const router = useRouter();

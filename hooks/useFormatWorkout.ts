@@ -3,7 +3,7 @@ import cuid from 'cuid';
 import range from 'lodash/range';
 import { useMemo } from 'react';
 import { addTimestamp } from '../lib/addTimestamp';
-import { WorkoutWithExercises } from '../lib/types';
+import { WorkoutWithExercises } from '../types/workout';
 
 export interface Activity extends Omit<Exercise, 'display_seq'> {
   timestamp?: { start: number; end: number };

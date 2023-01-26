@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
-import React, { useContext } from "react";
-import { WorkoutWithExercises } from "../../lib/types";
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 
-import { styled } from "../../styles/stitches.congif";
-import Button from "../button";
-import { TimerContext } from "../timerContext";
+import { styled } from '../../styles/stitches.congif';
+import { WorkoutWithExercises } from '../../types/workout';
+import Button from '../button';
+import { TimerContext } from '../timerContext';
 
 type Props = {
   data: WorkoutWithExercises;
@@ -31,20 +31,20 @@ const TimerHeader = ({ data }: Props) => {
   );
 };
 
-const Heading = styled("h1", {
+const Heading = styled('h1', {
   flex: 1,
-  fontSize: "$lg",
-  lineHeight: "$150",
-  textAlign: "center",
+  fontSize: '$lg',
+  lineHeight: '$150',
+  textAlign: 'center',
 });
 
-const Header = styled("div", {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "$2x",
-  maxWidth: "$bp-md",
-  paddingBlock: "$lg",
+const Header = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: '$2x',
+  maxWidth: '$bp-md',
+  paddingBlock: '$lg',
 });
 
 export default TimerHeader;
