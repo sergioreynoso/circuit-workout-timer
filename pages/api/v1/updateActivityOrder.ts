@@ -4,20 +4,20 @@ import { Prisma } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.body.id;
-  const data = req.body.exercises;
+  const data = req.body.activities;
 
   if (req.method === 'POST') {
     try {
       await prisma.$transaction(
         [
-          prisma.exercise.deleteMany({
+          prisma.activity.deleteMany({
             where: {
               workout: {
                 id: id,
               },
             },
           }),
-          prisma.exercise.createMany({
+          prisma.activity.createMany({
             data: data,
           }),
         ],
