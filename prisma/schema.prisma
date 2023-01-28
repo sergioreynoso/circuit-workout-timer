@@ -64,13 +64,13 @@ model Workout {
   set_rest     Int         @default(0)
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  exercises    Exercise[]
+  activities    Activity[]
 }
 
-model Exercise {
+model Activity {
   id            String   @id @default(cuid())
-  exercise_name String   @db.VarChar(50)
-  type          Type     @default(EXERCISE)
+  activity_name String   @db.VarChar(50)
+  type          Type     @default(WORK)
   duration      Int      @default(0)
   display_seq   Int      @default(autoincrement())
   workout       Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
@@ -78,8 +78,6 @@ model Exercise {
 }
 
 enum Type {
-  EXERCISE
+  WORK
   REST
-  WARMUP
-  SET_REST
 }
