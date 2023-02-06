@@ -10,11 +10,11 @@ import { Box, Flex } from '../layout';
 import ProgressCircle from '../progressCircle';
 import { TimerContext } from '../timerContext';
 
-type Props = { data: WorkoutWithActivities };
+type Props = { workoutData: WorkoutWithActivities };
 
-const Timer = ({ data }: Props) => {
+const Timer = ({ workoutData }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
-  const formattedWorkout = useFormatWorkout(data);
+  const formattedWorkout = useFormatWorkout(workoutData);
 
   const [state] = useTimer(formattedWorkout);
 
@@ -23,7 +23,7 @@ const Timer = ({ data }: Props) => {
       state.nextActivity && (
         <Flex direction="column" css={{ alignItems: 'center', gap: '$sm', padding: '$sm' }}>
           <h4>Next</h4>
-          <NextExerciseName>{state.nextActivity.exercise_name}</NextExerciseName>
+          <NextExerciseName>{state.nextActivity.activity_name}</NextExerciseName>
         </Flex>
       )
     );
@@ -69,7 +69,7 @@ const Timer = ({ data }: Props) => {
                 scale={0.95}
               >
                 <ExerciseRemainingTime>{formatTime(state.runningActivityTime)}</ExerciseRemainingTime>
-                <Exercise>{state.runningActivity.exercise_name}</Exercise>
+                <Exercise>{state.runningActivity.activity_name}</Exercise>
               </ProgressCircle>
             </Box>
           </Box>
