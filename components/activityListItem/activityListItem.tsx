@@ -2,7 +2,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Activity } from '@prisma/client';
 import { CaretSortIcon } from '@radix-ui/react-icons';
-import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { styled } from '../../styles/stitches.congif';
 import Button from '../button';
