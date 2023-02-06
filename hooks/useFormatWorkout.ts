@@ -1,6 +1,7 @@
 import { Activity } from '@prisma/client';
 import range from 'lodash/range';
 import { useMemo } from 'react';
+import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { addTimestamp } from '../lib/addTimestamp';
 import { WorkoutWithActivities } from '../types/workout';
 
@@ -13,7 +14,16 @@ export type FormattedWorkout = {
 
 type TimeStamp = { timestamp?: { start: number; end: number } };
 
-export type FormattedActivity = Pick<Activity, 'activity_name' | 'duration' | 'type'> & TimeStamp;
+export type FormattedActivity = Optional<Activity, 'id' | 'display_seq' | 'workoutId'> & TimeStamp;
+
+/*
+id: string;
+    activity_name: string;
+    type: Type;
+    duration: number;
+    display_seq: number;
+    workoutId: string;
+*/
 
 const WARMUP: FormattedActivity = {
   activity_name: 'Warm up',
