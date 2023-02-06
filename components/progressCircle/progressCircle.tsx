@@ -1,12 +1,12 @@
 import { motion, useAnimationControls } from 'framer-motion';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { TIMER_INTERVAL } from '../../hooks/useTimer';
-import { Activity, FormattedWorkout } from '../../hooks/useFormatWorkout';
+import { FormattedActivity, FormattedWorkout } from '../../hooks/useFormatWorkout';
 import { TimerContext } from '../timerContext/timerProvider';
 import { Box, Flex } from '../layout';
 
 type Props = {
-  runningActivity: Activity | FormattedWorkout;
+  runningActivity: FormattedActivity | FormattedWorkout;
   runningActivityTime: number;
   progress?: number;
   size?: number;
@@ -39,7 +39,7 @@ const ProgressCircle = ({
   }, [progress, size, strokeWidth]);
 
   const updateRunningActivityProgress = useCallback(
-    (activity: Activity | FormattedWorkout) => {
+    (activity: FormattedActivity | FormattedWorkout) => {
       const totalDuration = activity.duration;
       controls.set({
         strokeDashoffset: dashArray,
