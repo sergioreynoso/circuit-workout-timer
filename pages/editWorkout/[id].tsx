@@ -9,6 +9,7 @@ import Button from '../../components/button';
 import { Box, Container, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
+import { endPoints } from '../../lib/endPoints';
 import fetcher from '../../lib/fetcher';
 import { WorkoutWithActivities } from '../../types/workout';
 
@@ -20,11 +21,11 @@ const Edit = () => {
   const queryClient = useQueryClient();
   const { data, error } = useQuery({
     queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
   });
 
   const mutation = useMutation({
-    mutationFn: (workout: Partial<Workout>) => axios.put('/api/v1/workout', workout),
+    mutationFn: (workout: Partial<Workout>) => axios.put(endPoints.workout, workout),
     onSuccess: ({ data: newData }) => {
       queryClient.setQueryData(['workout', workoutId], newData);
       router.push(`/workout/${newData.id}`);
@@ -55,7 +56,7 @@ const Edit = () => {
         onSubmitCallback={mutateWorkout}
         id={formId}
       />
-      <ActivityList key={cuid()} workoutId={data.id} activities={data.exercises} />
+      <ActivityList key={cuid()} workout={data} />
       <FooterContainer>
         <Button colors="primary" type="submit" form={formId} css={{ flex: 1, maxWidth: '200px' }}>
           Done

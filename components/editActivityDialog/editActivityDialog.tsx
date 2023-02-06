@@ -1,32 +1,32 @@
-import { Exercise } from "@prisma/client";
-import { Cancel, Title } from "@radix-ui/react-alert-dialog";
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import React, { useState } from "react";
-import { Activity } from "../../hooks/useFormatWorkout";
-import AlertDialog from "../alertDialog/alertDialog";
-import Button from "../button";
-import Input from "../input";
-import { Flex } from "../layout";
+import { Cancel, Title } from '@radix-ui/react-alert-dialog';
+import { Pencil1Icon } from '@radix-ui/react-icons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { FormattedActivity } from '../../hooks/useFormatWorkout';
+import { endPoints } from '../../lib/endPoints';
+import AlertDialog from '../alertDialog/alertDialog';
+import Button from '../button';
+import Input from '../input';
+import { Flex } from '../layout';
 
 type Props = {
-  activity: Activity;
+  activity: FormattedActivity;
 };
 
 const EditActivityDialog = ({ activity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [{ name, duration, type }, setInputValue] = useState({
-    name: activity.exercise_name,
+    name: activity.activity_name,
     duration: Math.round(activity.duration / 1000),
     type: activity.type,
   });
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation((data: Partial<Exercise>) => axios.put(`/api/v1/activity`, data), {
+  const mutation = useMutation((data: FormattedActivity) => axios.put(endPoints.activity, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workout"] });
+      queryClient.invalidateQueries({ queryKey: ['workout'] });
       setIsOpen(false);
     },
   });
@@ -45,7 +45,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
     mutation.mutate({
       id: activity.id,
-      exercise_name: name,
+      activity_name: name,
       type: type,
       duration: Number(duration * 1000),
     });
@@ -64,11 +64,11 @@ const EditActivityDialog = ({ activity }: Props) => {
         <Flex
           as="form"
           css={{
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "$lg",
-            gap: "$xl",
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '$lg',
+            gap: '$xl',
           }}
           onSubmit={onFormSubmit}
         >
@@ -90,9 +90,9 @@ const EditActivityDialog = ({ activity }: Props) => {
             placeholder=""
             required={true}
           />
-          <div>{mutation.isLoading && "Updating exercise..."}</div>
+          <div>{mutation.isLoading && 'Updating exercise...'}</div>
 
-          <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
+          <Flex css={{ justifyContent: 'flex-end', gap: '$lg' }}>
             <Cancel asChild>
               <Button>Cancel</Button>
             </Cancel>

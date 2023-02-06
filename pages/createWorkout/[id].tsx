@@ -10,6 +10,7 @@ import DeleteWorkoutDialog from '../../components/deleteWorkoutDialog';
 import { Box, Container, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
+import { endPoints } from '../../lib/endPoints';
 import fetcher from '../../lib/fetcher';
 import { WorkoutWithActivities } from '../../types/workout';
 
@@ -20,12 +21,12 @@ const CreateWorkout = () => {
 
   const { data, error } = useQuery({
     queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
   });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (workout: Partial<Workout>) => axios.put(`/api/v1/workout`, workout),
+    mutationFn: (workout: Partial<Workout>) => axios.put(endPoints.workout, workout),
     onSuccess: ({ data: newData }) => {
       queryClient.setQueryData(['workout', newData.id], newData);
       router.push(`/workout/${newData.id}`);

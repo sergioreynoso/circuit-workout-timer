@@ -16,7 +16,7 @@ const WorkoutTimer = () => {
 
   const { data, error } = useQuery({
     queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
     staleTime: Infinity,
   });
 
@@ -27,7 +27,7 @@ const WorkoutTimer = () => {
     <TimerProvider>
       <Container>
         <TimerHeader data={data} />
-        <Timer data={data} />
+        <Timer workoutData={data} />
         <TimerControl />
       </Container>
     </TimerProvider>

@@ -1,11 +1,12 @@
-import { Cancel, Description, Title } from "@radix-ui/react-alert-dialog";
-import { TrashIcon } from "@radix-ui/react-icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import React, { useState } from "react";
-import { styled } from "../../styles/stitches.congif";
-import AlertDialog from "../alertDialog";
-import Button from "../button";
+import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
+import { TrashIcon } from '@radix-ui/react-icons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { endPoints } from '../../lib/endPoints';
+import { styled } from '../../styles/stitches.congif';
+import AlertDialog from '../alertDialog';
+import Button from '../button';
 
 type Props = {
   activityId: string;
@@ -15,9 +16,9 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const queryClient = useQueryClient();
-  const mutation = useMutation((id: string) => axios.delete(`/api/v1/activity`, { data: { id: id } }), {
+  const mutation = useMutation((id: string) => axios.delete(endPoints.activity, { data: { id: id } }), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workout"] });
+      queryClient.invalidateQueries({ queryKey: ['workout'] });
       setIsOpen(false);
     },
   });
@@ -37,13 +38,13 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <Wrapper css={{ flexDirection: "column", gap: "$lg" }}>
+        <Wrapper css={{ flexDirection: 'column', gap: '$lg' }}>
           <Title>Delete Exercise</Title>
           <Description>
             This action cannot be undone. This will permanently delete your exercise and remove your data from our
             servers.
           </Description>
-          <Wrapper css={{ justifyContent: "flex-end", gap: "$lg" }}>
+          <Wrapper css={{ justifyContent: 'flex-end', gap: '$lg' }}>
             <Cancel asChild>
               <Button>Cancel</Button>
             </Cancel>
@@ -57,8 +58,8 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   );
 };
 
-const Wrapper = styled("div", {
-  display: "flex",
+const Wrapper = styled('div', {
+  display: 'flex',
 });
 
 export default DeleteActivityDialog;

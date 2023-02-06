@@ -16,7 +16,7 @@ type Props = {
 const WorkoutList = ({ userId }: Props) => {
   const { status, data, error, isFetching } = useQuery({
     queryKey: ['workouts'],
-    queryFn: () => fetcher<WorkoutWithActivities[]>(userId, 'v1/workouts'),
+    queryFn: () => fetcher<WorkoutWithActivities[]>(userId, 'workouts'),
   });
 
   if (status !== 'success' && !data) return <Preloader label="Loading workouts..." />;
