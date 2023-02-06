@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.body.id;
-  const data = req.body.activities;
+  const data = req.body.activity;
 
   if (req.method === 'POST') {
     try {
