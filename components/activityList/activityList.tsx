@@ -36,7 +36,7 @@ const ActivityList = ({ workout }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (activity: Activity[]) =>
-      axios.post('/api/v1/updateActivityOrder', { id: workout.id, activity: activities }),
+      axios.post('/api/v1/updateActivityOrder', { id: workout.id, activity: activity }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workout', workout.id], exact: true });
     },
