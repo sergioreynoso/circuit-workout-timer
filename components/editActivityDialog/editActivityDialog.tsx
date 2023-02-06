@@ -11,7 +11,7 @@ import Input from '../input';
 import { Flex } from '../layout';
 
 type Props = {
-  activity: FormattedActivity;
+  activity: FormattedActivity & { id: string };
 };
 
 const EditActivityDialog = ({ activity }: Props) => {
@@ -24,7 +24,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation((data: FormattedActivity) => axios.put(endPoints.activity, data), {
+  const mutation = useMutation((data: FormattedActivity & { id: string }) => axios.put(endPoints.activity, data), {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workout'] });
       setIsOpen(false);
