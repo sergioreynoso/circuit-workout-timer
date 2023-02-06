@@ -1,17 +1,17 @@
 import { useContext, useReducer } from 'react';
 import { TimerContext } from '../components/timerContext';
+import { FormattedActivity, FormattedWorkout } from './useFormatWorkout';
 import useInterval from './useInterval';
-import { Activity, FormattedWorkout } from './useFormatWorkout';
 
 export const TIMER_INTERVAL: 1000 = 1000;
 
 type CounterState = {
   runningTime: number;
-  activity: Activity[];
+  activity: FormattedActivity[];
   setCount: number;
-  runningActivity: Activity;
+  runningActivity: FormattedActivity;
   runningActivityTime: number;
-  nextActivity: Activity;
+  nextActivity: FormattedActivity;
 };
 
 type CounterActions = {
@@ -46,11 +46,11 @@ export default function useTimer(workoutData: FormattedWorkout) {
 
   const [state, dispatch] = useReducer(counterReducer, {
     runningTime: workoutData.duration,
-    activities: workoutData.formattedWorkout,
+    activities: workoutData.activities,
     setCount: 1,
-    runningActivity: workoutData.formattedWorkout[0],
-    runningActivityTime: workoutData.formattedWorkout[0].duration,
-    nextActivity: workoutData.formattedWorkout[1],
+    runningActivity: workoutData.activities[0],
+    runningActivityTime: workoutData.activities[0].duration,
+    nextActivity: workoutData.activities[1],
   });
 
   function updateTimer() {
