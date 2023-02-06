@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from 'react';
 
 export type TimerContextType = {
   isTimer: boolean;
@@ -18,8 +18,7 @@ const TimerProvider = ({ children }: Props) => {
   const [isTimerDone, setIsTimerDone] = useState(false);
 
   return (
-    <TimerContext.Provider
-      value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone }}>
+    <TimerContext.Provider value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone }}>
       {children}
     </TimerContext.Provider>
   );
