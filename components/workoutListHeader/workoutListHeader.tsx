@@ -11,7 +11,7 @@ type Props = {
   userId: string;
 };
 
-const activities: (FormattedActivity & { display_seq: number })[] = [
+const activities: FormattedActivity[] = [
   {
     activity_name: 'First Exercise',
     display_seq: 1,
