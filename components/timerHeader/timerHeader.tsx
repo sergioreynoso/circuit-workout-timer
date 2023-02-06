@@ -2,12 +2,12 @@ import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 
 import { styled } from '../../styles/stitches.congif';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 import Button from '../button';
 import { TimerContext } from '../timerContext';
 
 type Props = {
-  data: WorkoutWithExercises;
+  data: WorkoutWithActivities;
 };
 
 const TimerHeader = ({ data }: Props) => {

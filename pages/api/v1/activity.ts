@@ -3,9 +3,9 @@ import { prisma } from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function postActivity(req: NextApiRequest) {
-  const data = await prisma?.exercise.create({
+  const data = await prisma?.activity.create({
     data: {
-      exercise_name: req.body.exercise_name,
+      activity_name: req.body.activity_name,
       type: req.body.type,
       duration: req.body.duration,
       display_seq: req.body.display_seq,
@@ -16,12 +16,12 @@ async function postActivity(req: NextApiRequest) {
 }
 
 async function updateActivity(req: NextApiRequest) {
-  const data = await prisma?.exercise.update({
+  const data = await prisma?.activity.update({
     where: {
       id: req.body.id,
     },
     data: {
-      exercise_name: req.body.exercise_name,
+      activity_name: req.body.activity_name,
       type: req.body.type,
       duration: req.body.duration,
       display_seq: req.body.display_seq,
@@ -31,7 +31,7 @@ async function updateActivity(req: NextApiRequest) {
 }
 
 async function deleteActivity(req: NextApiRequest) {
-  const data = await prisma?.exercise.delete({
+  const data = await prisma?.activity.delete({
     where: {
       id: req.body.id as string,
     },

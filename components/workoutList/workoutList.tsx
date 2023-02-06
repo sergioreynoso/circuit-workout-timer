@@ -4,7 +4,7 @@ import React from 'react';
 
 import fetcher from '../../lib/fetcher';
 import { styled } from '../../styles/stitches.congif';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 import DeleteWorkoutDialog from '../deleteWorkoutDialog';
 import { Flex } from '../layout';
 import Preloader from '../preloader';
@@ -16,7 +16,7 @@ type Props = {
 const WorkoutList = ({ userId }: Props) => {
   const { status, data, error, isFetching } = useQuery({
     queryKey: ['workouts'],
-    queryFn: () => fetcher<WorkoutWithExercises[]>(userId, 'v1/workouts'),
+    queryFn: () => fetcher<WorkoutWithActivities[]>(userId, 'v1/workouts'),
   });
 
   if (status !== 'success' && !data) return <Preloader label="Loading workouts..." />;

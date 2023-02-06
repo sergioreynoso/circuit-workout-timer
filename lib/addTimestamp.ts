@@ -1,6 +1,6 @@
-import { Activity } from '../hooks/useFormatWorkout';
+import { FormattedActivity } from '../hooks/useFormatWorkout';
 
-export function addTimestamp(array: Activity[], totalTime: number) {
+export function addTimestamp(array: FormattedActivity[], totalTime: number) {
   return array.map((item, index) => {
     let start = array.slice(0, index).reduce((prev, curr) => prev + curr.duration, 0);
 

@@ -1,36 +1,36 @@
-import { Exercise } from "@prisma/client";
-import { Cancel, Title } from "@radix-ui/react-alert-dialog";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import React, { useState } from "react";
-import AlertDialog from "../alertDialog/alertDialog";
-import Button from "../button";
-import Input from "../input";
-import { Flex } from "../layout";
+import { Cancel, Title } from '@radix-ui/react-alert-dialog';
+import { PlusIcon } from '@radix-ui/react-icons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { FormattedActivity } from '../../hooks/useFormatWorkout';
+import AlertDialog from '../alertDialog/alertDialog';
+import Button from '../button';
+import Input from '../input';
+import { Flex } from '../layout';
 
 type Props = {
   workoutId: string;
-  exercisesTotalCount: number;
+  activitiesTotalCount: number;
 };
 
-const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
+const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [{ name, duration, workoutId }, setInputValue] = useState({
-    name: "",
+    name: '',
     duration: 30,
     workoutId: id,
   });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (exercise: Partial<Exercise>) => axios.post(`/api/v1/activity`, exercise),
+    mutationFn: (activity: FormattedActivity) => axios.post(`/api/v1/activity`, activity),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workout", workoutId], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['workout', workoutId], exact: true });
       setIsOpen(false);
       setInputValue(prev => ({
         ...prev,
-        name: "",
+        name: '',
       }));
     },
   });
@@ -47,11 +47,11 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
     e.preventDefault();
     e.stopPropagation();
     mutation.mutate({
-      exercise_name: name,
-      type: "EXERCISE",
+      activity_name: name,
+      type: 'WORK',
       duration: Number(duration * 1000),
       workoutId: workoutId,
-      display_seq: exercisesTotalCount + 1,
+      display_seq: activitiesTotalCount + 1,
     });
   };
 
@@ -68,11 +68,11 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
         <Flex
           as="form"
           css={{
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "$lg",
-            gap: "$xl",
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '$lg',
+            gap: '$xl',
           }}
           onSubmit={onFormSubmit}
         >
@@ -95,8 +95,8 @@ const AddActivityDialog = ({ workoutId: id, exercisesTotalCount }: Props) => {
             placeholder=""
             required={true}
           />
-          <div>{mutation.isLoading && "Updating exercise..."}</div>
-          <Flex css={{ justifyContent: "flex-end", gap: "$lg" }}>
+          <div>{mutation.isLoading && 'Updating exercise...'}</div>
+          <Flex css={{ justifyContent: 'flex-end', gap: '$lg' }}>
             <Cancel asChild>
               <Button>Cancel</Button>
             </Cancel>

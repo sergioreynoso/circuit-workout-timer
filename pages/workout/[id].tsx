@@ -8,7 +8,7 @@ import TimerControl from '../../components/timerControl/timerControl';
 import TimerHeader from '../../components/timerHeader';
 
 import fetcher from '../../lib/fetcher';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 
 const WorkoutTimer = () => {
   const router = useRouter();
@@ -16,7 +16,7 @@ const WorkoutTimer = () => {
 
   const { data, error } = useQuery({
     queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, 'v1/workout') : null),
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
     staleTime: Infinity,
   });
 

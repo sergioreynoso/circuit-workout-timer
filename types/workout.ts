@@ -1,3 +1,3 @@
 import { Prisma } from '@prisma/client';
 
-export type WorkoutWithExercises = Prisma.WorkoutGetPayload<{ include: { exercises: true } }>;
+export type WorkoutWithActivities = Prisma.WorkoutGetPayload<{ include: { activities: true } }>;

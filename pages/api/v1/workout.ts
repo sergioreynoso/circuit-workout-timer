@@ -1,5 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Activity } from '@prisma/client';
 
 async function getWorkout(req: NextApiRequest) {
   const data = await prisma?.workout.findUnique({
@@ -7,7 +8,7 @@ async function getWorkout(req: NextApiRequest) {
       id: req.query.id as string,
     },
     include: {
-      exercises: {
+      activities: {
         orderBy: {
           display_seq: 'asc',
         },
@@ -25,12 +26,12 @@ async function postWorkout(req: NextApiRequest) {
       set_rest: req.body.set_rest,
       userId: req.body.userId,
       display_seq: req.body.display_seq,
-      exercises: {
-        create: req.body.exerciseList,
+      activities: {
+        create: req.body.activities,
       },
     },
     include: {
-      exercises: true,
+      activities: true,
     },
   });
   return data;
@@ -47,7 +48,7 @@ async function updateWorkout(req: NextApiRequest) {
       set_rest: req.body.set_rest,
     },
     include: {
-      exercises: true,
+      activities: true,
     },
   });
   return data;
@@ -81,6 +82,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(data);
     }
   } catch (error) {
-    res.status(400).json({ status: 'failed', message: 'Failed to load or create workout' });
+    res.status(400).json({ status: 'failed', message: error });
   }
 }

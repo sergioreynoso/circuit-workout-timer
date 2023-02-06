@@ -5,12 +5,12 @@ import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../lib/formatTime';
 
 import { styled } from '../../styles/stitches.congif';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 import { Box, Flex } from '../layout';
 import ProgressCircle from '../progressCircle';
 import { TimerContext } from '../timerContext';
 
-type Props = { data: WorkoutWithExercises };
+type Props = { data: WorkoutWithActivities };
 
 const Timer = ({ data }: Props) => {
   const { isTimerDone } = useContext(TimerContext);

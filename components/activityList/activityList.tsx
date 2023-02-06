@@ -14,31 +14,31 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Exercise } from '@prisma/client';
+import { Activity } from '@prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import updateDisplaySeq from '../../lib/updateDisplaySeq';
 import { styled } from '../../styles/stitches.congif';
+import { WorkoutWithActivities } from '../../types/workout';
 import ActivityListItem from '../activityListItem';
 import AddActivityDialog from '../addActivityDialog';
 import { Flex } from '../layout';
 
 type Props = {
-  workoutId: string;
-  activities: Exercise[];
+  workout: WorkoutWithActivities;
 };
 
-const ActivityList = ({ workoutId, activities }: Props) => {
+const ActivityList = ({ workout }: Props) => {
   const [activeId, setActiveId] = useState(null);
-  const [exercises, setActivities] = useState<Exercise[]>(() => activities);
+  const [activities, setActivities] = useState<Activity[]>(() => workout.activities);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (exercise: Exercise[]) =>
-      axios.post('/api/v1/updateExerciseOrder', { id: workoutId, exercises: exercise }),
+    mutationFn: (activity: Activity[]) =>
+      axios.post('/api/v1/updateActivityOrder', { id: workout.id, activity: activities }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout', workoutId], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['workout', workout.id], exact: true });
     },
   });
 
@@ -62,7 +62,7 @@ const ActivityList = ({ workoutId, activities }: Props) => {
         const oldIndex = items.findIndex(item => item.id === active.id);
         const newIndex = items.findIndex(item => item.id === over.id);
         const sortedArray = arrayMove(items, oldIndex, newIndex);
-        const updatedDisplaySeq = updateDisplaySeq<Exercise>(sortedArray);
+        const updatedDisplaySeq = updateDisplaySeq<Activity>(sortedArray);
         mutation.mutate(updatedDisplaySeq);
         return updatedDisplaySeq;
       });
@@ -71,11 +71,7 @@ const ActivityList = ({ workoutId, activities }: Props) => {
   }
 
   const DragOverlayItem = ({ activeId }: { activeId: string }) => {
-    return (
-      <ActivityListItem
-        activity={exercises.find(exercise => (exercise.id === activeId ? exercise : null)) as Exercise}
-      />
-    );
+    return <ActivityListItem activity={activities.find(activity => activity.id === activeId)} />;
   };
 
   return (
@@ -95,7 +91,7 @@ const ActivityList = ({ workoutId, activities }: Props) => {
           }}
         >
           <h3>Add an activity to your workout</h3>
-          <AddActivityDialog workoutId={workoutId} exercisesTotalCount={exercises.length} />
+          <AddActivityDialog workoutId={workout.id} activitiesTotalCount={activities.length} />
         </Flex>
 
         <Flex
@@ -110,8 +106,8 @@ const ActivityList = ({ workoutId, activities }: Props) => {
             },
           }}
         >
-          <SortableContext items={exercises} strategy={verticalListSortingStrategy}>
-            {exercises.map(activity => (
+          <SortableContext items={activities} strategy={verticalListSortingStrategy}>
+            {activities.map(activity => (
               <ActivityListItem key={activity.id} activity={activity} />
             ))}
           </SortableContext>

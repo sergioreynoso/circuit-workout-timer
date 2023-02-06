@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           display_seq: 'asc',
         },
         include: {
-          exercises: {
+          activities: {
             orderBy: {
               display_seq: 'asc',
             },

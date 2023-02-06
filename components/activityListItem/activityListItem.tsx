@@ -1,16 +1,17 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { Exercise } from "@prisma/client";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import { formatTime } from "../../lib/formatTime";
-import { styled } from "../../styles/stitches.congif";
-import Button from "../button";
-import DeleteActivityDialog from "../deleteActivityDialog";
-import EditActivityDialog from "../editActivityDialog";
-import { Flex } from "../layout";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { Activity } from '@prisma/client';
+import { CaretSortIcon } from '@radix-ui/react-icons';
+import { FormattedActivity } from '../../hooks/useFormatWorkout';
+import { formatTime } from '../../lib/formatTime';
+import { styled } from '../../styles/stitches.congif';
+import Button from '../button';
+import DeleteActivityDialog from '../deleteActivityDialog';
+import EditActivityDialog from '../editActivityDialog';
+import { Flex } from '../layout';
 
 type Props = {
-  activity: Exercise;
+  activity: Activity;
 };
 
 export const ActivityListItem = ({ activity }: Props) => {
@@ -26,21 +27,21 @@ export const ActivityListItem = ({ activity }: Props) => {
       ref={setNodeRef}
       style={style}
       css={{
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: "$md",
-        padding: "$md",
-        color: "$primary-12",
-        backgroundColor: "$primary-03",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: '$md',
+        padding: '$md',
+        color: '$primary-12',
+        backgroundColor: '$primary-03',
       }}
     >
-      <ItemTitle>{activity.exercise_name}</ItemTitle>
+      <ItemTitle>{activity.activity_name}</ItemTitle>
 
       <Flex
         css={{
-          justifyContent: "flex-end",
-          alignItems: "center",
-          gap: "$sm",
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '$sm',
         }}
       >
         <ListItemDuration>{formatTime(activity.duration)}</ListItemDuration>
@@ -51,9 +52,9 @@ export const ActivityListItem = ({ activity }: Props) => {
           {...attributes}
           {...listeners}
           css={{
-            cursor: "grab",
-            "&:active": {
-              cursor: "grabbing",
+            cursor: 'grab',
+            '&:active': {
+              cursor: 'grabbing',
             },
           }}
         >
@@ -64,14 +65,14 @@ export const ActivityListItem = ({ activity }: Props) => {
   );
 };
 
-const ItemTitle = styled("p", {
-  fontWeight: "$700",
-  lineHeight: "$150",
-  userSelect: "none",
+const ItemTitle = styled('p', {
+  fontWeight: '$700',
+  lineHeight: '$150',
+  userSelect: 'none',
 });
 
-const ListItemDuration = styled("span", {
-  userSelect: "none",
+const ListItemDuration = styled('span', {
+  userSelect: 'none',
 });
 
 export default ActivityListItem;

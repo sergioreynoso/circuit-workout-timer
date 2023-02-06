@@ -11,7 +11,7 @@ import { Box, Container, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import fetcher from '../../lib/fetcher';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 
 const CreateWorkout = () => {
   const formId = useId();
@@ -19,8 +19,8 @@ const CreateWorkout = () => {
   const workoutId = router.query.id as string;
 
   const { data, error } = useQuery({
-    queryKey: ['workouts', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, 'v1/workout') : null),
+    queryKey: ['workout', workoutId],
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
   });
 
   const queryClient = useQueryClient();
@@ -56,7 +56,7 @@ const CreateWorkout = () => {
         onSubmitCallback={mutateWorkout}
         id={formId}
       />
-      <ActivityList key={cuid()} workoutId={data.id} activities={data.exercises} />
+      <ActivityList key={cuid()} workout={data} />
       <FooterContainer css={{ gap: '$3x' }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
         <Button colors="primary" type="submit" form={formId}>

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
 async function getActivities(req: NextApiRequest) {
-  const data = await prisma?.exercise.findMany({
+  const data = await prisma?.activity.findMany({
     where: {
       workoutId: req.query.id as string,
     },

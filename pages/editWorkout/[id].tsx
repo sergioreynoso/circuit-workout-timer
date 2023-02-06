@@ -10,7 +10,7 @@ import { Box, Container, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import fetcher from '../../lib/fetcher';
-import { WorkoutWithExercises } from '../../types/workout';
+import { WorkoutWithActivities } from '../../types/workout';
 
 const Edit = () => {
   const formId = useId();
@@ -20,7 +20,7 @@ const Edit = () => {
   const queryClient = useQueryClient();
   const { data, error } = useQuery({
     queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithExercises>(workoutId, 'v1/workout') : null),
+    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'v1/workout') : null),
   });
 
   const mutation = useMutation({
