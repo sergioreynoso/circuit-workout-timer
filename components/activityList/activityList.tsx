@@ -71,7 +71,8 @@ const ActivityList = ({ workout }: Props) => {
   }
 
   const DragOverlayItem = ({ activeId }: { activeId: string }) => {
-    return <ActivityListItem activity={activities.find(activity => activity.id === activeId)} />;
+    const activity = activities.find(activity => activity.id === activeId);
+    return activity ? <ActivityListItem activity={activity} /> : null;
   };
 
   return (
