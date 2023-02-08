@@ -16,23 +16,14 @@ type TimeStamp = { timestamp?: { start: number; end: number } };
 
 export type FormattedActivity = Optional<Activity, 'id' | 'display_seq' | 'workoutId'> & TimeStamp;
 
-/*
-id: string;
-    activity_name: string;
-    type: Type;
-    duration: number;
-    display_seq: number;
-    workoutId: string;
-*/
-
 const WARMUP: FormattedActivity = {
-  activity_name: 'Warm up',
+  name: 'Warm up',
   type: 'WORK',
   duration: 5000,
 };
 
 const SET_REST = (rest: number): FormattedActivity => ({
-  activity_name: 'Set Rest',
+  name: 'Set Rest',
   type: 'REST',
   duration: rest,
 });

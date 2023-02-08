@@ -25,7 +25,7 @@ const TimerHeader = ({ data }: Props) => {
   return (
     <Header>
       {!isTimerDone && <Button onClick={onCancel}>Cancel</Button>}
-      <Heading>{data.workout_name}</Heading>
+      <Heading>{data.name}</Heading>
       {!isTimerDone && <Button onClick={onEdit}>Edit</Button>}
     </Header>
   );

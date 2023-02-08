@@ -23,7 +23,7 @@ const Timer = ({ workoutData }: Props) => {
       state.nextActivity && (
         <Flex direction="column" css={{ alignItems: 'center', gap: '$sm', padding: '$sm' }}>
           <h4>Next</h4>
-          <NextExerciseName>{state.nextActivity.activity_name}</NextExerciseName>
+          <NextExerciseName>{state.nextActivity.name}</NextExerciseName>
         </Flex>
       )
     );
@@ -69,7 +69,7 @@ const Timer = ({ workoutData }: Props) => {
                 scale={0.95}
               >
                 <ExerciseRemainingTime>{formatTime(state.runningActivityTime)}</ExerciseRemainingTime>
-                <Exercise>{state.runningActivity.activity_name}</Exercise>
+                <Exercise>{state.runningActivity.name}</Exercise>
               </ProgressCircle>
             </Box>
           </Box>
