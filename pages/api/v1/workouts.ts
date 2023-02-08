@@ -12,17 +12,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         orderBy: {
           display_seq: 'asc',
         },
-        include: {
-          activities: {
-            orderBy: {
-              display_seq: 'asc',
-            },
-          },
-        },
       });
       res.status(200).json(data);
     }
   } catch (error) {
-    res.status(400).json({ status: 'failed', message: 'Failed to load workouts' });
+    res.status(400).json({ status: 'failed', message: error });
   }
 }
