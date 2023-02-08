@@ -1,8 +1,8 @@
-import { useSession } from "next-auth/react";
-import { Container } from "../components/layout";
-import Preloader from "../components/preloader";
-import WorkoutList from "../components/workoutList";
-import WorkoutListHeader from "../components/workoutListHeader/workoutListHeader";
+import { useSession } from 'next-auth/react';
+import { Container } from '../components/layout';
+import Preloader from '../components/preloader';
+import WorkoutListHeader from '../components/workoutListHeader';
+import WorkoutSortableList from '../components/workoutSortableList';
 
 const Dashboard = () => {
   const session = useSession();
@@ -15,7 +15,7 @@ const Dashboard = () => {
   return (
     <Container>
       <WorkoutListHeader userId={userId} />
-      <WorkoutList userId={userId} />
+      <WorkoutSortableList userId={userId} />
     </Container>
   );
 };
