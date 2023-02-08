@@ -10,11 +10,11 @@ import Button from '../button';
 import { Flex } from '../layout';
 
 type DeleteWorkoutDialogProps = {
-  label: string;
+  label?: string;
   workoutId: string;
 };
 
-const DeleteWorkoutDialog = ({ label = 'Delete', workoutId }: DeleteWorkoutDialogProps) => {
+const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +31,11 @@ const DeleteWorkoutDialog = ({ label = 'Delete', workoutId }: DeleteWorkoutDialo
     mutation.mutate(workoutId);
   };
 
-  const triggerButton = <Button colors="transparent">{label ? label : <TrashIcon />}</Button>;
+  const triggerButton = (
+    <Button colors="transparent" css={{ padding: '$lg', borderRadius: '0' }}>
+      {label ? label : <TrashIcon />}
+    </Button>
+  );
 
   return (
     <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
