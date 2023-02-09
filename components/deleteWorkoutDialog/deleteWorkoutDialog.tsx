@@ -21,8 +21,7 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
   const queryClient = useQueryClient();
   const mutation = useMutation((id: string) => axios.delete(endPoints.workout, { data: { id: id } }), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workouts'] });
-      router.push('/dashboard');
+      queryClient.invalidateQueries({ queryKey: ['workout'] });
       setIsOpen(false);
     },
   });
