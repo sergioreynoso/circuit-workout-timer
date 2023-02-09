@@ -32,8 +32,7 @@ const WorkoutSortableList = ({ userId }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (workout: DraggableItemProps[]) =>
-      axios.post('/api/v1/updateWorkoutOrder', { id: userId, data: workout }),
+    mutationFn: (workouts: DraggableItemProps[]) => axios.patch('/api/v1/updateWorkoutOrder', workouts),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workouts'] });
     },
