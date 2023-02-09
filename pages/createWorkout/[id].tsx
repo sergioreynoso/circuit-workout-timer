@@ -26,9 +26,10 @@ const CreateWorkout = () => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (workout: Partial<Workout>) => axios.put(endPoints.workout, workout),
+    mutationFn: (workout: Partial<Workout>) => axios.patch(endPoints.workout, workout),
     onSuccess: ({ data: newData }) => {
       queryClient.setQueryData(['workout', newData.id], newData);
+      queryClient.invalidateQueries({ queryKey: ['workouts'] });
       router.push(`/workout/${newData.id}`);
     },
   });

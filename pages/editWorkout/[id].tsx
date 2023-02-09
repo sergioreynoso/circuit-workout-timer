@@ -25,9 +25,10 @@ const Edit = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: (workout: Partial<Workout>) => axios.put(endPoints.workout, workout),
+    mutationFn: (workout: Partial<Workout>) => axios.patch(endPoints.workout, workout),
     onSuccess: ({ data: newData }) => {
       queryClient.setQueryData(['workout', workoutId], newData);
+      queryClient.invalidateQueries({ queryKey: ['workouts'] });
       router.push(`/workout/${newData.id}`);
     },
   });
