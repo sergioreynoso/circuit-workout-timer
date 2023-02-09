@@ -11,15 +11,6 @@ import { Flex } from '../layout';
 import Preloader from '../preloader';
 import SortableList, { DraggableItemProps } from '../sortableList/sortableList';
 
-/**
- *
- * TODO:
- * Update display_seq in DB
- *  - Build sortable API
- * Update workout duration
- *
- */
-
 type Props = {
   userId: string;
 };
