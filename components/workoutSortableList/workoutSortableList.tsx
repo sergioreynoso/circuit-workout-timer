@@ -62,6 +62,7 @@ const NextLink = styled(Link, {
   textDecoration: 'none',
   cursor: 'pointer',
   fontWeight: '$700',
+  '-webkit-touch-callout': 'none',
 });
 
 const Item = ({ id, name, duration }: { id: string; name: string; duration: number }) => {
