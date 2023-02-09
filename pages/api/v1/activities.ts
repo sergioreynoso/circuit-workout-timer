@@ -1,28 +1,29 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-async function getActivities(req: NextApiRequest) {
-  const data = await prisma?.activity.findMany({
-    where: {
-      workoutId: req.query.id as string,
-    },
-    orderBy: {
-      display_seq: 'asc',
-    },
-  });
-  return data;
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'GET') {
+    getActivities(req, res);
+  } else {
+    res.setHeader('Allow', 'GET');
+    res.status(405).json({ status: 'error', message: `${req.method} method not allowed` });
+  }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function getActivities(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.query;
   try {
-    if (req.method === 'GET') {
-      const data = await getActivities(req);
-      res.status(200).json(data);
-    }
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: 'Failed to load activities.',
+    const data = await prisma?.activity.findMany({
+      where: {
+        workoutId: req.query.id as string,
+      },
+      orderBy: {
+        display_seq: 'asc',
+      },
     });
+    res.status(200).json(data);
+  } catch (error) {
+    console.log('ERROR:', error);
+    res.status(500).json({ status: 'error', message: 'Failed to get activities' });
   }
 }
