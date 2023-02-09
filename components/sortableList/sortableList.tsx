@@ -48,7 +48,12 @@ const SortableList = ({ Item, data, onDragEnd }: Props) => {
         tolerance: 10,
       },
     }),
-    useSensor(TouchSensor),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 10,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
