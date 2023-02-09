@@ -21,7 +21,7 @@ async function getWorkout(req: NextApiRequest) {
 async function postWorkout(req: NextApiRequest) {
   const data = await prisma?.workout.create({
     data: {
-      name: req.body.workout_name,
+      name: req.body.name,
       set_count: req.body.set_count,
       set_rest: req.body.set_rest,
       userId: req.body.userId,
@@ -43,7 +43,7 @@ async function updateWorkout(req: NextApiRequest) {
       id: req.body.id,
     },
     data: {
-      name: req.body.workout_name,
+      name: req.body.name,
       set_count: req.body.set_count,
       set_rest: req.body.set_rest,
     },

@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 async function postActivity(req: NextApiRequest) {
   const data = await prisma?.activity.create({
     data: {
-      activity_name: req.body.activity_name,
+      name: req.body.name,
       type: req.body.type,
       duration: req.body.duration,
       display_seq: req.body.display_seq,
@@ -21,7 +21,7 @@ async function updateActivity(req: NextApiRequest) {
       id: req.body.id,
     },
     data: {
-      activity_name: req.body.activity_name,
+      name: req.body.name,
       type: req.body.type,
       duration: req.body.duration,
       display_seq: req.body.display_seq,

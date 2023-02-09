@@ -47,7 +47,7 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
     e.preventDefault();
     e.stopPropagation();
     mutation.mutate({
-      activity_name: name,
+      name: name,
       type: 'WORK',
       duration: Number(duration * 1000),
       workoutId: workoutId,

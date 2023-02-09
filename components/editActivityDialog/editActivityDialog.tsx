@@ -17,7 +17,7 @@ type Props = {
 const EditActivityDialog = ({ activity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [{ name, duration, type }, setInputValue] = useState({
-    name: activity.activity_name,
+    name: activity.name,
     duration: Math.round(activity.duration / 1000),
     type: activity.type,
   });
@@ -45,7 +45,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
     mutation.mutate({
       id: activity.id,
-      activity_name: name,
+      name: name,
       type: type,
       duration: Number(duration * 1000),
     });

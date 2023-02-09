@@ -34,7 +34,7 @@ export const ActivityListItem = ({ activity }: Props) => {
         backgroundColor: '$primary-03',
       }}
     >
-      <ItemTitle>{activity.activity_name}</ItemTitle>
+      <ItemTitle>{activity.name}</ItemTitle>
 
       <Flex
         css={{

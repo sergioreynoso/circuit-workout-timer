@@ -36,7 +36,7 @@ const CreateWorkout = () => {
   const mutateWorkout = (name: string, set: number, rest: number) => {
     mutation.mutate({
       id: data?.id,
-      workout_name: name,
+      name: name,
       set_count: Number(set),
       set_rest: Number(rest),
     });
@@ -51,7 +51,7 @@ const CreateWorkout = () => {
         Create your workout
       </Box>
       <WorkoutForm
-        name={data.workout_name}
+        name={data.name}
         setCount={data.set_count}
         setRest={data.set_rest}
         onSubmitCallback={mutateWorkout}
