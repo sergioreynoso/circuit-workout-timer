@@ -5,9 +5,11 @@ import cuid from 'cuid';
 import { useRouter } from 'next/router';
 import { useId } from 'react';
 import ActivityList from '../../components/activityList/activityList';
+import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
+import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
 import Button from '../../components/button';
 import DeleteWorkoutDialog from '../../components/deleteWorkoutDialog';
-import { Box, Container, FooterContainer } from '../../components/layout';
+import { Box, Container, Flex, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import { endPoints } from '../../lib/endPoints';
@@ -58,7 +60,18 @@ const CreateWorkout = () => {
         onSubmitCallback={mutateWorkout}
         id={formId}
       />
-      <ActivityList key={cuid()} workout={data} />
+      <Flex
+        css={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '$md',
+        }}
+      >
+        <h3>Add an activity to your workout</h3>
+        <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
+      </Flex>
+      <ActivitySortableList key={cuid()} data={data} />
+
       <FooterContainer css={{ gap: '$3x' }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
         <Button colors="primary" type="submit" form={formId}>
