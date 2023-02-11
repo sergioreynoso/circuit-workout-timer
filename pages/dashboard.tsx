@@ -1,12 +1,15 @@
-import { useSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
+import { Session } from 'next-auth';
+import { getSession, useSession } from 'next-auth/react';
 import { Container } from '../components/layout';
 import Preloader from '../components/preloader';
 import WorkoutListHeader from '../components/workoutListHeader';
+import Workouts from '../components/workouts/workouts';
 import WorkoutSortableList from '../components/workoutSortableList';
 
 const Dashboard = () => {
-  const session = useSession();
-  const userId = session.data?.user?.id;
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
 
   if (!userId) {
     return <Preloader label="Loading" />;
@@ -14,8 +17,7 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <WorkoutListHeader userId={userId} />
-      <WorkoutSortableList userId={userId} />
+      <Workouts userId={userId} />
     </Container>
   );
 };
