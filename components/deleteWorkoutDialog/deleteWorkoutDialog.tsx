@@ -2,7 +2,6 @@ import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
 import { TrashIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog';
@@ -15,13 +14,13 @@ type DeleteWorkoutDialogProps = {
 };
 
 const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const mutation = useMutation((id: string) => axios.delete(endPoints.workout, { data: { id: id } }), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workouts'] });
+      queryClient.invalidateQueries({ queryKey: ['workouts'], refetchType: 'all' });
+      queryClient.refetchQueries(['workouts']);
       setIsOpen(false);
     },
   });
