@@ -1,10 +1,14 @@
 import {
+  Active,
   closestCenter,
   DndContext,
+  DragEndEvent,
   DragOverlay,
+  DragStartEvent,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
+  UniqueIdentifier,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -17,29 +21,23 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Workout } from '@prisma/client';
-import { FC, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import updateDisplaySeq from '../../lib/updateDisplaySeq';
 import { styled } from '../../styles/stitches.congif';
-
 import { Box } from '../layout';
 
-export type DraggableItemProps = {
-  id: string;
-  name: string;
-  duration: number;
-  display_seq?: number;
+type BaseItem = {
+  id: UniqueIdentifier;
 };
 
-type Props = {
-  data: Workout[];
-  Item: FC<DraggableItemProps>;
-  onDragEnd: (a: DraggableItemProps[]) => void;
+type Props<T> = {
+  items: T[];
+  onDragEnd(items: T[]): void;
+  renderItem(item: T): ReactNode;
 };
 
-const SortableList = ({ Item, data, onDragEnd }: Props) => {
-  const [itemId, setItemId] = useState(null);
-  const [items, setItems] = useState(() => data);
+const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Props<T>) => {
+  const [active, setActive] = useState<UniqueIdentifier | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -59,30 +57,27 @@ const SortableList = ({ Item, data, onDragEnd }: Props) => {
     })
   );
 
-  function handleDragStart(event: any) {
+  function handleDragStart(event: DragStartEvent) {
     const { active } = event;
-    setItemId(active.id);
+    setActive(active.id);
   }
 
-  function handleDragEnd(event: any) {
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    if (!over.id) return;
+    if (!over) return;
     if (active.id !== over.id) {
-      setItems(items => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        const sortedArray = arrayMove(items, oldIndex, newIndex);
-        const updatedDisplaySeq = updateDisplaySeq(sortedArray);
-        onDragEnd(updatedDisplaySeq);
-        return updatedDisplaySeq;
-      });
+      const oldIndex = items.findIndex(item => item.id === active.id);
+      const newIndex = items.findIndex(item => item.id === over.id);
+      const sortedArray = arrayMove(items, oldIndex, newIndex);
+      const updatedDisplaySeq = updateDisplaySeq(sortedArray);
+      onDragEnd(updatedDisplaySeq);
     }
-    setItemId(null);
+    setActive(null);
   }
 
-  const OverlayItem = ({ items, itemId }: { items: DraggableItemProps[]; itemId: string }) => {
-    const item = items.find(item => item.id === itemId);
-    return item ? <Item id={item.id} name={item.name} duration={item.duration} /> : null;
+  const overlayItem = (items: T[], id: UniqueIdentifier) => {
+    const item = items.find(item => item.id === id);
+    return item ? renderItem(item) : null;
   };
 
   return (
@@ -103,19 +98,21 @@ const SortableList = ({ Item, data, onDragEnd }: Props) => {
         modifiers={[restrictToVerticalAxis, restrictToParentElement]}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {items.map(item => (
-            <Draggable key={item.id} id={item.id}>
-              <Item id={item.id} name={item.name} duration={item.duration} />
-            </Draggable>
-          ))}
+          <ul>
+            {items.map(item => (
+              <Draggable key={item.id} id={item.id}>
+                {renderItem(item)}
+              </Draggable>
+            ))}
+          </ul>
         </SortableContext>
-        <StyledDragOverLay>{itemId && <OverlayItem itemId={itemId} items={items} />}</StyledDragOverLay>
+        <StyledDragOverLay>{active && overlayItem(items, active)}</StyledDragOverLay>
       </DndContext>
     </Box>
   );
 };
 
-function Draggable({ id, children }: { id: string | number; children: ReactNode }) {
+function Draggable({ id, children }: { id: UniqueIdentifier; children?: ReactNode }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
