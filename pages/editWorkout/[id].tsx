@@ -1,7 +1,6 @@
 import { Workout } from '@prisma/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import cuid from 'cuid';
 import { useRouter } from 'next/router';
 import { useId } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
@@ -21,9 +20,10 @@ const Edit = () => {
   const workoutId = router.query.id as string;
 
   const queryClient = useQueryClient();
-  const { data, error } = useQuery({
+  const { data, error, dataUpdatedAt } = useQuery({
     queryKey: ['workout', workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
+    refetchOnWindowFocus: false,
   });
 
   const mutation = useMutation({
@@ -70,7 +70,7 @@ const Edit = () => {
         <h3>Add an activity to your workout</h3>
         <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
       </Flex>
-      <ActivitySortableList key={cuid()} data={data} />
+      <ActivitySortableList key={dataUpdatedAt} data={data} />
       <FooterContainer>
         <Button colors="primary" type="submit" form={formId} css={{ flex: 1, maxWidth: '200px' }}>
           Done

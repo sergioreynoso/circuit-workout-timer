@@ -1,7 +1,6 @@
 import { Workout } from '@prisma/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import cuid from 'cuid';
 import { useRouter } from 'next/router';
 import { useId } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
@@ -21,9 +20,10 @@ const CreateWorkout = () => {
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const { data, error } = useQuery({
+  const { data, error, dataUpdatedAt } = useQuery({
     queryKey: ['workout', workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
+    refetchOnWindowFocus: false,
   });
 
   const queryClient = useQueryClient();
@@ -31,7 +31,7 @@ const CreateWorkout = () => {
     mutationFn: (workout: Partial<Workout>) => axios.patch(endPoints.workout, workout),
     onSuccess: ({ data: newData }) => {
       queryClient.setQueryData(['workout', newData.id], newData);
-      queryClient.invalidateQueries({ queryKey: ['workouts'] });
+      queryClient.invalidateQueries({ queryKey: ['workouts'], refetchType: 'all' });
       router.push(`/workout/${newData.id}`);
     },
   });
@@ -39,6 +39,7 @@ const CreateWorkout = () => {
   if (!data) return <Preloader label="Loading workout..." />;
   if (error) return <Preloader label="Error loading page" />;
 
+  console.log(dataUpdatedAt);
   const mutateWorkout = (name: string, set: number, rest: number) => {
     mutation.mutate({
       id: data.id,
@@ -71,7 +72,7 @@ const CreateWorkout = () => {
         <h3>Add an activity to your workout</h3>
         <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
       </Flex>
-      <ActivitySortableList key={cuid()} data={data} />
+      <ActivitySortableList key={dataUpdatedAt} data={data} />
 
       <FooterContainer css={{ gap: '$3x' }}>
         <DeleteWorkoutDialog label="Cancel" workoutId={data.id} />
