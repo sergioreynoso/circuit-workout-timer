@@ -1,44 +1,39 @@
-import { Workout } from '@prisma/client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Activity, Workout } from '@prisma/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 
-import fetcher from '../../lib/fetcher';
+import { useState } from 'react';
+import { endPoints } from '../../lib/endPoints';
+import { formatTime } from '../../lib/formatTime';
 import { styled } from '../../styles/stitches.congif';
-import { WorkoutWithActivities } from '../../types/workout';
 import DeleteWorkoutDialog from '../deleteWorkoutDialog';
 import { Flex } from '../layout';
-import Preloader from '../preloader';
-import SortableList, { DraggableItemProps } from '../sortableList/sortableList';
+import SortableList from '../sortableList/sortableList';
 
 type Props = {
-  userId: string;
+  data: Workout[];
 };
 
-const WorkoutSortableList = ({ userId }: Props) => {
-  const { status, data, error } = useQuery({
-    queryKey: ['workouts'],
-    queryFn: () => fetcher<WorkoutWithActivities[]>(userId, 'workouts'),
-  });
+const WorkoutSortableList = ({ data }: Props) => {
+  const [items, setItems] = useState(data);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (workouts: DraggableItemProps[]) => axios.patch('/api/v1/updateWorkoutOrder', workouts),
+    mutationFn: (workouts: (Workout | Activity)[]) => axios.patch(endPoints.workoutSort, workouts),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workouts'] });
     },
   });
 
-  if (status !== 'success' && !data) return <Preloader label="Loading workouts..." />;
-  if (error) return <Preloader label="Error loading page" />;
-
-  function onDragEnd(sortedList: DraggableItemProps[]) {
-    mutation.mutate(sortedList);
+  function onDragEnd(items: Workout[]) {
+    setItems(items);
+    mutation.mutate(items);
   }
 
   return (
     <Flex direction="column">
-      <SortableList Item={Item} data={data} onDragEnd={onDragEnd} />
+      <SortableList<Workout> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />
     </Flex>
   );
 };
@@ -56,7 +51,9 @@ const NextLink = styled(Link, {
   '-webkit-touch-callout': 'none',
 });
 
-const Item = ({ id, name, duration }: { id: string; name: string; duration: number }) => {
+function ListItem({ item }: { item: Workout }) {
+  const { id, name, duration } = item;
+
   return (
     <Flex
       css={{
@@ -72,11 +69,11 @@ const Item = ({ id, name, duration }: { id: string; name: string; duration: numb
     >
       <NextLink href={`/workout/${id}`}>
         <p>{name}</p>
-        <p>{duration || '00:00'}</p>
+        <p>{formatTime(duration)}</p>
       </NextLink>
       <DeleteWorkoutDialog workoutId={id} />
     </Flex>
   );
-};
+}
 
 export default WorkoutSortableList;
