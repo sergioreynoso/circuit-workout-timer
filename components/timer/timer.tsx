@@ -1,8 +1,8 @@
-import { useContext } from 'react';
-import { useFormatWorkout } from '../../hooks/useFormatWorkout';
+import { useContext, useMemo } from 'react';
 import useTimer from '../../hooks/useTimer';
 
 import { formatTime } from '../../lib/formatTime';
+import { formatWorkout } from '../../lib/formatWorkout';
 
 import { styled } from '../../styles/stitches.congif';
 import { WorkoutWithActivities } from '../../types/workout';
@@ -14,7 +14,7 @@ type Props = { workoutData: WorkoutWithActivities };
 
 const Timer = ({ workoutData }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
-  const formattedWorkout = useFormatWorkout(workoutData);
+  const formattedWorkout = useMemo(() => formatWorkout(workoutData), [workoutData]);
 
   const [state] = useTimer(formattedWorkout);
 
