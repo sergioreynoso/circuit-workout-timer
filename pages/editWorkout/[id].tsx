@@ -4,7 +4,6 @@ import axios from 'axios';
 import cuid from 'cuid';
 import { useRouter } from 'next/router';
 import { useId } from 'react';
-import ActivityList from '../../components/activityList';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
 import Button from '../../components/button';
@@ -13,6 +12,7 @@ import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import { endPoints } from '../../lib/endPoints';
 import fetcher from '../../lib/fetcher';
+import { formatWorkout } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 
 const Edit = () => {
@@ -44,6 +44,7 @@ const Edit = () => {
       name: name,
       set_count: Number(set),
       set_rest: Number(rest),
+      duration: formatWorkout(data).duration,
     });
   };
 

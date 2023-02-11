@@ -50,6 +50,7 @@ async function postWorkout(req: NextApiRequest, res: NextApiResponse) {
         name: req.body.name,
         set_count: req.body.set_count,
         set_rest: req.body.set_rest,
+        duration: req.body.duration,
         userId: req.body.userId,
         display_seq: req.body.display_seq,
         activities: {
@@ -77,6 +78,7 @@ async function updateWorkout(req: NextApiRequest, res: NextApiResponse) {
         name: req.body.name,
         set_count: req.body.set_count,
         set_rest: req.body.set_rest,
+        duration: req.body.duration,
       },
       include: {
         activities: true,
