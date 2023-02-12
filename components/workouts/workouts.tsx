@@ -17,7 +17,7 @@ const Workouts = ({ userId }: { userId: string }) => {
   return (
     <>
       <WorkoutListHeader userId={userId} />
-      <WorkoutSortableList key={query.data.length} data={query.data} />
+      <WorkoutSortableList key={query.dataUpdatedAt} data={query.data} />
     </>
   );
 };
