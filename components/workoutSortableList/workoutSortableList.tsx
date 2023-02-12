@@ -49,7 +49,7 @@ const NextLink = styled(Link, {
 });
 
 function ListItem({ item }: { item: Workout }) {
-  const { id, name, duration } = item;
+  const { id, name, duration, set_count } = item;
 
   return (
     <Flex
@@ -66,7 +66,7 @@ function ListItem({ item }: { item: Workout }) {
     >
       <NextLink href={`/workout/${id}`}>
         <p>{name}</p>
-        <p>{formatTime(duration)}</p>
+        <p>{formatTime(duration * set_count)}</p>
       </NextLink>
       <DeleteWorkoutDialog workoutId={id} />
     </Flex>
