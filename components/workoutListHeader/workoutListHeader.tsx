@@ -7,19 +7,11 @@ import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import Button from '../button';
 import { Flex } from '../layout';
+import { defaultWorkout } from '../../lib/defaultWorkout';
 
 type Props = {
   userId: string;
 };
-
-const activities: FormattedActivity[] = [
-  {
-    name: 'First Exercise',
-    display_seq: 1,
-    duration: 30000,
-    type: 'WORK',
-  },
-];
 
 const WorkoutListHeader = ({ userId }: Props) => {
   const router = useRouter();
@@ -39,7 +31,7 @@ const WorkoutListHeader = ({ userId }: Props) => {
       duration: 0,
       userId: userId,
       display_seq: 0,
-      activities: activities,
+      activities: defaultWorkout,
     });
   };
 
