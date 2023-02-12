@@ -1,5 +1,5 @@
 import { Workout } from '@prisma/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -15,6 +15,8 @@ type Props = {
 
 const WorkoutListHeader = ({ userId }: Props) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: (workout: Optional<Workout, 'id'> & { activities: FormattedActivity[] }) =>
       axios.post('/api/v1/workout', workout),
@@ -24,13 +26,14 @@ const WorkoutListHeader = ({ userId }: Props) => {
   });
 
   const onClickHandler = () => {
+    const workouts = queryClient.getQueryData<Workout[]>(['workouts']);
     mutation.mutate({
       name: 'Untitled Workout',
       set_count: 1,
       set_rest: 10000,
       duration: 0,
       userId: userId,
-      display_seq: 0,
+      display_seq: workouts?.length! + 1,
       activities: defaultWorkout,
     });
   };
