@@ -1,4 +1,4 @@
-import { Activity } from '@prisma/client';
+import { Activity, Workout } from '@prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
@@ -21,14 +21,18 @@ const ActivitySortableList = ({ data }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (activities: Activity[]) => axios.patch(endPoints.activitySort, activities),
+    onMutate: newActivities => {
+      const workout = queryClient.getQueryData<Workout>(['workout', data.id]);
+      queryClient.setQueryData(['workout', data.id], { ...workout, activities: newActivities });
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout', data.id] });
+      queryClient.invalidateQueries(['workout', data.id]);
     },
   });
 
-  function onDragEnd(items: Activity[]) {
-    setItems(items);
-    mutation.mutate(items);
+  function onDragEnd(updatedItems: Activity[]) {
+    mutation.mutate(updatedItems);
+    setItems(updatedItems);
   }
 
   return (
