@@ -2,7 +2,7 @@ import { Workout } from '@prisma/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
 import Button from '../../components/button';
@@ -11,6 +11,7 @@ import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import { endPoints } from '../../lib/endPoints';
 import fetcher from '../../lib/fetcher';
+import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 
@@ -35,6 +36,10 @@ const Edit = () => {
     },
   });
 
+  const workoutDuration = useMemo(() => {
+    if (data) return formatTime(formatWorkout(data).duration);
+  }, [data]);
+
   if (!data) return <Preloader label="Loading workout..." />;
   if (error) return <Preloader label="Error loading page" />;
 
@@ -50,9 +55,14 @@ const Edit = () => {
 
   return (
     <Container>
-      <Box as="h1" css={{ paddingBlock: '$2x' }}>
-        Edit Workout
-      </Box>
+      <Flex css={{ justifyContent: 'space-between', alignItems: 'baseline', gap: '$2x' }}>
+        <Box as="h1" css={{ lineHeight: '$100', paddingBlock: '$2x' }}>
+          Edit Workout
+        </Box>
+        <Box as="h3" css={{ lineHeight: '$100' }}>
+          Workout length: {workoutDuration}
+        </Box>
+      </Flex>
       <WorkoutForm
         name={data.name}
         setCount={data.set_count}
@@ -67,7 +77,9 @@ const Edit = () => {
           padding: '$md',
         }}
       >
-        <h3>Add an activity to your workout</h3>
+        <Flex css={{ gap: '$2x' }}>
+          <h3>Add an activity to your workout</h3>
+        </Flex>
         <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
       </Flex>
       <ActivitySortableList key={dataUpdatedAt} data={data} />
