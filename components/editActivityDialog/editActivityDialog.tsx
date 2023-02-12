@@ -26,7 +26,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const mutation = useMutation((data: FormattedActivity) => axios.patch(endPoints.activity, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout'] });
+      queryClient.invalidateQueries({ queryKey: ['workout', activity.workoutId] });
       setIsOpen(false);
     },
   });
