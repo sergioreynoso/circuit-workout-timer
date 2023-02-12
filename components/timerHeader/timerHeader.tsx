@@ -14,11 +14,11 @@ const TimerHeader = ({ data }: Props) => {
   const { isTimerDone } = useContext(TimerContext);
 
   const router = useRouter();
-  const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onCancel = () => {
     router.push(`/dashboard`);
   };
 
-  const onEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onEdit = () => {
     router.push(`/editWorkout/${data.id as string}`);
   };
 

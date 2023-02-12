@@ -93,7 +93,7 @@ async function updateWorkout(req: NextApiRequest, res: NextApiResponse) {
 
 async function deleteWorkout(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const data = await prisma.workout.delete({
+    await prisma.workout.delete({
       where: {
         id: req.body.id as string,
       },

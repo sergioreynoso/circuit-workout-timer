@@ -26,7 +26,7 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
     },
   });
 
-  const onClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onClickHandler = () => {
     mutation.mutate(activityId);
   };
 

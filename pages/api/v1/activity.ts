@@ -59,7 +59,7 @@ async function updateActivity(req: NextApiRequest, res: NextApiResponse) {
 
 async function deleteActivity(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const data = await prisma?.activity.delete({
+    await prisma?.activity.delete({
       where: {
         id: req.body.id as string,
       },

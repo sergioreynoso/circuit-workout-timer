@@ -11,7 +11,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getActivities(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
   try {
     const data = await prisma?.activity.findMany({
       where: {

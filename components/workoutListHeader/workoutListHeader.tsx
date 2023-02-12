@@ -1,5 +1,5 @@
 import { Workout } from '@prisma/client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -23,7 +23,7 @@ const WorkoutListHeader = ({ userId }: Props) => {
     },
   });
 
-  const onClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onClickHandler = () => {
     mutation.mutate({
       name: 'Untitled Workout',
       set_count: 1,

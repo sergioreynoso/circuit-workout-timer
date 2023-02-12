@@ -25,7 +25,7 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
     },
   });
 
-  const onClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onClickHandler = () => {
     mutation.mutate(workoutId);
   };
 
