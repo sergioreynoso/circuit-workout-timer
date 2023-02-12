@@ -16,14 +16,11 @@ type Props = {
 };
 
 const WorkoutSortableList = ({ data }: Props) => {
-  const [items, setItems] = useState(data);
+  const [items, setItems] = useState(() => data);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (workouts: (Workout | Activity)[]) => axios.patch(endPoints.workoutSort, workouts),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workouts'] });
-    },
   });
 
   function onDragEnd(items: Workout[]) {
