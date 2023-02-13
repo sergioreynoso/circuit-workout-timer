@@ -23,8 +23,14 @@ const WorkoutSortableList = ({ data }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (workouts: (Workout | Activity)[]) => axios.patch(endPoints.workoutSort, workouts),
-    onMutate: newWorkouts => queryClient.setQueryData(['workouts'], newWorkouts),
+    mutationFn: (workouts: Workout[]) => axios.patch(endPoints.workoutSort, workouts),
+    onMutate: newData => {
+      queryClient.setQueryData(['workouts'], newData);
+      newData.forEach(item => {
+        const oldData = queryClient.getQueryData<Workout>(['workout', item.id]);
+        queryClient.setQueryData(['workout', item.id], { ...oldData, display_seq: item.display_seq });
+      });
+    },
   });
 
   function onDragEnd(updatedItem: Workout[]) {
