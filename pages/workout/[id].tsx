@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
@@ -6,28 +5,22 @@ import Timer from '../../components/timer';
 import TimerProvider from '../../components/timerContext';
 import TimerControl from '../../components/timerControl/timerControl';
 import TimerHeader from '../../components/timerHeader';
-
-import fetcher from '../../lib/fetcher';
-import { WorkoutWithActivities } from '../../types/workout';
+import useFetchWorkout from '../../hooks/useFetchWorkout';
 
 const WorkoutTimer = () => {
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const { data, error } = useQuery({
-    queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
-    staleTime: Infinity,
-  });
+  const query = useFetchWorkout(workoutId);
 
-  if (!data) return <Preloader label="Loading workout..." />;
-  if (error) return <Preloader label="Error loading page" />;
+  if (!query.data) return <Preloader label="Loading workout..." />;
+  if (query.error) return <Preloader label="Error loading page" />;
 
   return (
     <TimerProvider>
       <Container>
-        <TimerHeader data={data} />
-        <Timer workoutData={data} />
+        <TimerHeader data={query.data} />
+        <Timer workoutData={query.data} />
         <TimerControl />
       </Container>
     </TimerProvider>

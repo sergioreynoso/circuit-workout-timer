@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useId, useMemo } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
@@ -7,23 +6,17 @@ import Button from '../../components/button';
 import { Box, Container, Flex, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
+import useFetchWorkout from '../../hooks/useFetchWorkout';
 import useUpdateWorkout from '../../hooks/useUpdateWorkout';
-import fetcher from '../../lib/fetcher';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
-import { WorkoutWithActivities } from '../../types/workout';
 
 const Edit = () => {
   const formId = useId();
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const { data, error, dataUpdatedAt } = useQuery({
-    queryKey: ['workout', workoutId],
-    queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
-    refetchOnWindowFocus: false,
-  });
-
+  const { data, error, dataUpdatedAt } = useFetchWorkout(workoutId);
   const mutation = useUpdateWorkout();
 
   const workoutDuration = useMemo(() => {
