@@ -1,6 +1,4 @@
-import { Workout } from '@prisma/client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useId, useMemo } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
@@ -9,7 +7,7 @@ import Button from '../../components/button';
 import { Box, Container, Flex, FooterContainer } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
-import { endPoints } from '../../lib/endPoints';
+import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import fetcher from '../../lib/fetcher';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
@@ -20,23 +18,13 @@ const Edit = () => {
   const router = useRouter();
   const workoutId = router.query.id as string;
 
-  const queryClient = useQueryClient();
   const { data, error, dataUpdatedAt } = useQuery({
     queryKey: ['workout', workoutId],
     queryFn: () => (workoutId ? fetcher<WorkoutWithActivities>(workoutId, 'workout') : null),
     refetchOnWindowFocus: false,
   });
 
-  const mutation = useMutation({
-    mutationFn: (workout: Partial<Workout>) => axios.patch(endPoints.workout, workout),
-    onMutate: newData => {
-      const oldData = queryClient.getQueryData<Workout>(['workout', workoutId]);
-      queryClient.setQueryData(['workout', workoutId], { ...oldData, ...newData });
-    },
-    onSuccess: ({ data: newData }) => {
-      router.push(`/workout/${newData.id}`);
-    },
-  });
+  const mutation = useUpdateWorkout();
 
   const workoutDuration = useMemo(() => {
     if (data) return formatTime(formatWorkout(data).duration);
