@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
-import Button from '../button';
-import { Flex } from '../layout';
 import { defaultWorkout } from '../../lib/defaultWorkout';
 
 type Props = {
@@ -39,22 +37,10 @@ const WorkoutListHeader = ({ userId }: Props) => {
   };
 
   return (
-    <Flex
-      css={{
-        justifyContent: 'space-between',
-        gap: '$lg',
-        paddingBlock: '$2x',
-      }}
-    >
-      <Flex direction="column" css={{ gap: '$sm' }}>
-        <h2>Build Workout</h2>
-        <p>Add exercises or rests between exercises. </p>
-      </Flex>
-
-      <Button colors="primary" onClick={onClickHandler}>
-        Add Workout
-      </Button>
-    </Flex>
+    <div className="flex flex-col gap-1">
+      <h2 className="text-xl font-extrabold leading-7 text-gray-100">Workouts</h2>
+      <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
+    </div>
   );
 };
 

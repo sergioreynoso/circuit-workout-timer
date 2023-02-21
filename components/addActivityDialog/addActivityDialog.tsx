@@ -56,9 +56,9 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
   };
 
   const triggerButton = (
-    <Button colors="primary">
+    <button>
       <PlusIcon />
-    </Button>
+    </button>
   );
 
   return (
@@ -101,9 +101,7 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
               <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <Button colors="primary" type="submit">
-              Save
-            </Button>
+            <button type="submit">Save</button>
             {/* </Action> */}
           </Flex>
         </Flex>

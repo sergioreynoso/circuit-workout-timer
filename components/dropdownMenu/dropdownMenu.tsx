@@ -1,123 +1,39 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Avatar from '../avatar';
 import { signOut } from 'next-auth/react';
-import { styled } from '../../styles/stitches.congif';
+
 import { ChevronDownIcon, ExitIcon } from '@radix-ui/react-icons';
 import { User } from '../../types/next-auth';
 
-const DropDownMenu = ({ user }: { user: User }) => (
+const DropDownMenu = ({ user }: { user: any }) => (
   <DropdownMenu.Root>
-    <Trigger>
-      <ChevronDown />
+    <DropdownMenu.Trigger className="flex items-center gap-3">
+      <ChevronDownIcon className="text-white" />
       <Avatar user={user} />
-    </Trigger>
+    </DropdownMenu.Trigger>
 
     <DropdownMenu.Portal>
-      <Content loop={true} collisionPadding={5}>
-        <Label css={{ fontWeight: '$700', paddingBottom: '$sm' }}>{user.name}</Label>
-        <Label css={{ paddingTop: '0', color: '$gray-08' }}>{user.email}</Label>
-        <StyledSeparator />
+      <DropdownMenu.Content
+        loop={true}
+        collisionPadding={5}
+        className="flex flex-col gap-2 p-3 text-gray-900 bg-gray-400"
+      >
+        <label>{user.name}</label>
+        <label>{user.email}</label>
+        <DropdownMenu.Separator className="bg-red-500" />
         {/* <Item>
           <SettingIcon />
           Settings
         </Item> */}
-        <DropdownMenu.Separator />
-        <Item onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>
-          <LogoutIcon />
+        <DropdownMenu.Separator className="bg-red-500" />
+        <div onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>
+          <ExitIcon />
           Logout
-        </Item>
-        <Arrow />
-      </Content>
+        </div>
+        <DropdownMenu.Arrow />
+      </DropdownMenu.Content>
     </DropdownMenu.Portal>
   </DropdownMenu.Root>
 );
-
-// const slideDown = keyframes({
-//   "0%": { transform: "translateY(0)" },
-//   "100%": { transform: "translateY(5px)" },
-// });
-
-const Content = styled(DropdownMenu.Content, {
-  width: '200px',
-  display: 'flex',
-  flexDirection: 'column',
-  borderRadius: '$xs',
-  backgroundColor: '$gray-12',
-  overflow: 'hidden',
-});
-
-const ChevronDown = styled(ChevronDownIcon, {
-  color: '$primary-09',
-  transition: '.2s',
-});
-
-const Trigger = styled(DropdownMenu.Trigger, {
-  display: 'flex',
-  justifyContent: 'flex-end',
-  alignItems: 'center',
-  padding: '$sm',
-  gap: '$sm',
-  border: 'none',
-  background: 'none',
-  backgroundColor: 'transparent',
-  cursor: 'pointer',
-  '&:focus': {
-    outline: 'none',
-  },
-  '&:focus span': {
-    outline: '3px solid $gray-01',
-    outlineOffset: '-2px',
-  },
-
-  '&:hover span': {
-    outline: '3px solid $gray-01',
-    outlineOffset: '-2px',
-  },
-  '&[data-state="open"] span': {
-    outline: '3px solid $gray-01',
-    outlineOffset: '-2px',
-  },
-  [`&:hover ${ChevronDown}`]: {
-    transform: 'translateY(5px)',
-  },
-});
-
-const Label = styled(DropdownMenu.Label, {
-  color: '$gray-01',
-  padding: '16px 16px',
-});
-
-const Item = styled(DropdownMenu.Item, {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '$md',
-  minWidth: '100%',
-  padding: '16px 16px',
-  cursor: 'pointer',
-  outline: 'none',
-  textAlign: 'right',
-  color: '$gray-01',
-
-  '&:hover,&:focus': {
-    backgroundColor: '$gray-11',
-  },
-});
-
-const StyledSeparator = styled(DropdownMenu.Separator, {
-  height: 1,
-  backgroundColor: '$gray-05',
-});
-
-const Arrow = styled(DropdownMenu.Arrow, {
-  fill: '$gray-12',
-});
-
-// const SettingIcon = styled(GearIcon, {
-//   color: '$gray-01',
-// });
-
-const LogoutIcon = styled(ExitIcon, {
-  color: '$gray-01',
-});
 
 export default DropDownMenu;

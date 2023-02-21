@@ -2,11 +2,9 @@ import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
 import { TrashIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog';
-import Button from '../button';
-import { Flex } from '../layout';
 
 type DeleteWorkoutDialogProps = {
   label?: string;
@@ -29,32 +27,28 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
     mutation.mutate(workoutId);
   };
 
-  const triggerButton = (
-    <Button colors="transparent" css={{ padding: '$lg', borderRadius: '0' }}>
-      {label ? label : <TrashIcon />}
-    </Button>
-  );
+  const triggerButton = <button>{label ? label : <TrashIcon className="h-6 w-6 text-gray-500" />}</button>;
 
   return (
     <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <Flex css={{ flexDirection: 'column', gap: '$lg' }}>
+        <div className="flex flex-col gap-4">
           <Title>Delete</Title>
           <Description>
             This action cannot be undone. This will permanently delete your workout and remove your data from our
             servers.
           </Description>
-          <Flex css={{ justifyContent: 'flex-end', gap: '$lg' }}>
+          <div className="flex justify-end gap-4">
             <Cancel asChild>
-              <Button>Cancel</Button>
+              <button>Cancel</button>
             </Cancel>
             {/* <Action asChild> */}
-            <Button onClick={onClickHandler}>Delete</Button>
+            <button onClick={onClickHandler}>Delete</button>
             {/* </Action> */}
-          </Flex>
-        </Flex>
+          </div>
+        </div>
       )}
     </AlertDialog>
   );

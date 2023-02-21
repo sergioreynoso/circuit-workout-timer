@@ -1,16 +1,7 @@
-import React from "react";
-import { styled } from "../../styles/stitches.congif";
+import React from 'react';
 
-const Preloader = ({ label = "preloader" }: { label: string }) => {
-  return <Box>{label}</Box>;
+const Preloader = ({ label = 'preloader' }: { label: string }) => {
+  return <div className="flex justify-center p-6 align-middle h-28">{label}</div>;
 };
 
 export default Preloader;
-
-const Box = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
-  padding: "24px",
-});

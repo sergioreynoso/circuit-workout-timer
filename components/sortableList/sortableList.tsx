@@ -22,8 +22,6 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { ReactNode, useState } from 'react';
 import updateDisplaySeq from '../../lib/updateDisplaySeq';
-import { styled } from '../../styles/stitches.congif';
-import { Box } from '../layout';
 
 type BaseItem = {
   id: UniqueIdentifier;
@@ -80,14 +78,7 @@ const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Prop
   };
 
   return (
-    <Box
-      css={{
-        height: '300px',
-        marginTop: '$2x',
-        overflowY: 'auto',
-        scrollbarColor: 'red white',
-      }}
-    >
+    <div>
       <DndContext
         id="0"
         sensors={sensors}
@@ -97,7 +88,7 @@ const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Prop
         modifiers={[restrictToVerticalAxis, restrictToParentElement]}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <ul>
+          <ul className="flex flex-col gap-3">
             {items.map(item => (
               <Draggable key={item.id} id={item.id}>
                 {renderItem(item)}
@@ -105,9 +96,9 @@ const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Prop
             ))}
           </ul>
         </SortableContext>
-        <StyledDragOverLay>{active && overlayItem(items, active)}</StyledDragOverLay>
+        <DragOverlay className="rounded-lg bg-gray-700 shadow-xl">{active && overlayItem(items, active)}</DragOverlay>
       </DndContext>
-    </Box>
+    </div>
   );
 };
 
@@ -119,14 +110,10 @@ function Draggable({ id, children }: { id: UniqueIdentifier; children?: ReactNod
     listStyle: 'none',
   };
   return (
-    <li ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <li className="rounded-lg bg-gray-800" ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {children}
     </li>
   );
 }
-
-const StyledDragOverLay = styled(DragOverlay, {
-  boxShadow: '$high',
-});
 
 export default SortableList;

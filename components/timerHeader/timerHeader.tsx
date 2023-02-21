@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
-import { styled } from '../../styles/stitches.congif';
 import { WorkoutWithActivities } from '../../types/workout';
-import Button from '../button';
 import { TimerContext } from '../timerContext';
 
 type Props = {
@@ -23,28 +21,12 @@ const TimerHeader = ({ data }: Props) => {
   };
 
   return (
-    <Header>
-      {!isTimerDone && <Button onClick={onCancel}>Cancel</Button>}
-      <Heading>{data.name}</Heading>
-      {!isTimerDone && <Button onClick={onEdit}>Edit</Button>}
-    </Header>
+    <div>
+      {!isTimerDone && <button onClick={onCancel}>Cancel</button>}
+      <h1>{data.name}</h1>
+      {!isTimerDone && <button onClick={onEdit}>Edit</button>}
+    </div>
   );
 };
-
-const Heading = styled('h1', {
-  flex: 1,
-  fontSize: '$lg',
-  lineHeight: '$150',
-  textAlign: 'center',
-});
-
-const Header = styled('div', {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '$2x',
-  maxWidth: '$bp-md',
-  paddingBlock: '$lg',
-});
 
 export default TimerHeader;

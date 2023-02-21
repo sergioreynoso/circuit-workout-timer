@@ -1,10 +1,9 @@
-import React, { useReducer } from "react";
-import { styled } from "../../styles/stitches.congif";
-import Input from "../input/input";
-import { Box } from "../layout";
-import StepperInput from "../stepperInput/stepperInput";
+import React, { useReducer } from 'react';
+import Input from '../input/input';
+import { Box } from '../layout';
+import StepperInput from '../stepperInput/stepperInput';
 
-interface Props extends React.ComponentPropsWithoutRef<"form"> {
+interface Props extends React.ComponentPropsWithoutRef<'form'> {
   name: string;
   setCount: number;
   setRest: number;
@@ -20,40 +19,40 @@ type FormReducer = {
 
 type FormActions =
   | {
-      type: "NAME";
+      type: 'NAME';
       payload: string;
     }
   | {
-      type: "SET_COUNT";
+      type: 'SET_COUNT';
       payload: number;
     }
   | {
-      type: "SET_REST_MIN";
+      type: 'SET_REST_MIN';
       payload: number;
     }
   | {
-      type: "SET_REST_SEC";
+      type: 'SET_REST_SEC';
       payload: number;
     };
 
 function formReducer(state: FormReducer, action: FormActions) {
   switch (action.type) {
-    case "NAME":
+    case 'NAME':
       return {
         ...state,
         name: action.payload,
       };
-    case "SET_COUNT":
+    case 'SET_COUNT':
       return {
         ...state,
         setCount: action.payload,
       };
-    case "SET_REST_MIN":
+    case 'SET_REST_MIN':
       return {
         ...state,
         setRestMin: action.payload,
       };
-    case "SET_REST_SEC":
+    case 'SET_REST_SEC':
       return {
         ...state,
         setRestSec: action.payload,
@@ -77,13 +76,7 @@ export function getMillSeconds(min: number, sec: number) {
   return minToMill + secToMill;
 }
 
-const WorkoutForm = ({
-  name,
-  setCount,
-  setRest,
-  onSubmitCallback,
-  ...delegated
-}: Props) => {
+const WorkoutForm = ({ name, setCount, setRest, onSubmitCallback, ...delegated }: Props) => {
   const [state, dispatch] = useReducer(formReducer, {
     name: name,
     setCount: setCount,
@@ -95,11 +88,7 @@ const WorkoutForm = ({
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmitCallback(
-      state.name,
-      state.setCount,
-      getMillSeconds(state.setRestMin, state.setRestSec)
-    );
+    onSubmitCallback(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
   };
 
   return (
@@ -109,9 +98,7 @@ const WorkoutForm = ({
         type="text"
         name="name"
         value={state.name}
-        onChange={(e) =>
-          dispatch({ type: "NAME", payload: e.currentTarget.value })
-        }
+        onChange={e => dispatch({ type: 'NAME', payload: e.currentTarget.value })}
         required={true}
         autoComplete="off"
       />
@@ -120,23 +107,23 @@ const WorkoutForm = ({
         min={1}
         max={100}
         initialValue={state.setCount}
-        handleChange={(value) =>
+        handleChange={value =>
           dispatch({
-            type: "SET_COUNT",
+            type: 'SET_COUNT',
             payload: value,
           })
         }
       />
-      <FieldSet>
-        <Legend>How long would you like to rest between sets?</Legend>
+      <fieldset>
+        <legend>How long would you like to rest between sets?</legend>
         <StepperInput
           label="Minutes"
           min={0}
           max={5}
           initialValue={state.setRestMin}
-          handleChange={(value) =>
+          handleChange={value =>
             dispatch({
-              type: "SET_REST_MIN",
+              type: 'SET_REST_MIN',
               payload: value,
             })
           }
@@ -146,30 +133,16 @@ const WorkoutForm = ({
           min={secondsInputMinValue}
           max={60}
           initialValue={state.setRestSec}
-          handleChange={(value) =>
+          handleChange={value =>
             dispatch({
-              type: "SET_REST_SEC",
+              type: 'SET_REST_SEC',
               payload: value,
             })
           }
         />
-      </FieldSet>
+      </fieldset>
     </Box>
   );
 };
-
-const FieldSet = styled("fieldset", {
-  display: "flex",
-  justifyContent: "space-between",
-  border: "none",
-  gap: "$2x",
-});
-
-const Legend = styled("legend", {
-  fontSize: "$lg",
-  fontWeight: "$700",
-  lineHeight: "$150",
-  padding: "$lg 0 $xs",
-});
 
 export default WorkoutForm;

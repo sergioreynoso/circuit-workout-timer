@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
-import { styled } from '../../styles/stitches.congif';
+
 import AlertDialog from '../alertDialog';
 import Button from '../button';
 
@@ -31,9 +31,9 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   };
 
   const triggerButton = (
-    <Button colors="transparent">
+    <button>
       <TrashIcon />
-    </Button>
+    </button>
   );
 
   return (
@@ -41,28 +41,24 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <Wrapper css={{ flexDirection: 'column', gap: '$lg' }}>
+        <div>
           <Title>Delete Exercise</Title>
           <Description>
             This action cannot be undone. This will permanently delete your exercise and remove your data from our
             servers.
           </Description>
-          <Wrapper css={{ justifyContent: 'flex-end', gap: '$lg' }}>
+          <div>
             <Cancel asChild>
               <Button>Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <Button onClick={onClickHandler}>Delete</Button>
+            <button onClick={onClickHandler}>Delete</button>
             {/* </Action> */}
-          </Wrapper>
-        </Wrapper>
+          </div>
+        </div>
       )}
     </AlertDialog>
   );
 };
-
-const Wrapper = styled('div', {
-  display: 'flex',
-});
 
 export default DeleteActivityDialog;

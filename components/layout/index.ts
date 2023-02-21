@@ -1,1 +1,1 @@
-export { Flex, Box, Container, FooterContainer } from './layout';
+export { Container } from './layout';

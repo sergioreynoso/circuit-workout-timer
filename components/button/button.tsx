@@ -1,61 +1,30 @@
-import { styled } from "../../styles/stitches.congif";
+import { ReactNode } from 'react';
 
-const Button = styled("button", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  minWidth: "45px",
-  border: "none",
-  borderRadius: "$md",
-  padding: "$md $xl",
-  cursor: "pointer",
-  fontWeight: "$700",
-  color: "$gray-11",
-  backgroundColor: "$gray-03",
+type Props = {
+  children: ReactNode;
+  intent: 'primary' | 'secondary';
+};
 
-  "&:hover": {
-    backgroundColor: "$gray-04",
-  },
-  "&:active": {
-    backgroundColor: "$gray-05",
-  },
-  variants: {
-    colors: {
-      primary: {
-        color: "$primary-01",
-        backgroundColor: "$primary-09",
-
-        "&:hover": {
-          backgroundColor: "$primary-10",
-        },
-        "&:active": {
-          backgroundColor: "$primary-11",
-        },
-      },
-      secondary: {
-        color: "$secondary-12",
-        backgroundColor: "$secondary-03",
-
-        "&:hover": {
-          backgroundColor: "$secondary-04",
-        },
-        "&:active": {
-          backgroundColor: "$secondary-05",
-        },
-      },
-      transparent: {
-        color: "$secondary-12",
-        backgroundColor: "transparent",
-        padding: "$xs",
-      },
-      ellipse: {
-        padding: "0",
-        width: "45px",
-        height: "45px",
-        borderRadius: "50%",
-      },
+function Button({ intent, children, ...delegated }: Props) {
+  const variant = {
+    primary: {
+      text: 'text-amber-900',
+      bg: 'bg-amber-500',
     },
-  },
-});
+    secondary: {
+      text: 'text-green-500',
+      bg: 'bg-green-900',
+    },
+  };
+
+  return (
+    <button
+      className={`h-16 flex-grow rounded-2xl ${variant[intent].text} text-xl font-extrabold leading-7 ${variant[intent].bg}`}
+      {...delegated}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default Button;

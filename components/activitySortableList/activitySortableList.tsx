@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import { formatTime } from '../../lib/formatTime';
-import { styled } from '../../styles/stitches.congif';
 import { WorkoutWithActivities } from '../../types/workout';
 import DeleteActivityDialog from '../deleteActivityDialog/deleteActivityDialog';
 import EditActivityDialog from '../editActivityDialog/editActivityDialog';
@@ -59,7 +58,7 @@ const ListItem = ({ item }: { item: Activity }) => {
         },
       }}
     >
-      <ItemTitle>{name}</ItemTitle>
+      <p>{name}</p>
       <Flex
         css={{
           justifyContent: 'flex-end',
@@ -67,24 +66,12 @@ const ListItem = ({ item }: { item: Activity }) => {
           gap: '$sm',
         }}
       >
-        <ListItemDuration>{formatTime(duration)}</ListItemDuration>
+        <span>{formatTime(duration)}</span>
         <EditActivityDialog activity={item} />
         <DeleteActivityDialog activityId={id} />
       </Flex>
     </Flex>
   );
 };
-
-const ItemTitle = styled('p', {
-  fontWeight: '$700',
-  lineHeight: '$150',
-  userSelect: 'none',
-  color: '$primary-01',
-});
-
-const ListItemDuration = styled('span', {
-  userSelect: 'none',
-  color: '$primary-01',
-});
 
 export default ActivitySortableList;

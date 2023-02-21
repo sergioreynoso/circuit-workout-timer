@@ -21,11 +21,9 @@ const TimerControl = () => {
   return (
     <FooterContainer>
       {!isTimerDone ? (
-        <Button colors="primary" onClick={handleTimerToggle}>
-          {label}
-        </Button>
+        <button onClick={handleTimerToggle}>{label}</button>
       ) : (
-        <Button onClick={handleBackToDashboard}>Return to Dashboard</Button>
+        <button onClick={handleBackToDashboard}>Return to Dashboard</button>
       )}
     </FooterContainer>
   );

@@ -1,5 +1,5 @@
-import { Activity, Workout } from '@prisma/client';
-import { Pencil1Icon } from '@radix-ui/react-icons';
+import { Workout } from '@prisma/client';
+import { DragHandleDots2Icon, DragHandleHorizontalIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
@@ -8,10 +8,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import { formatTime } from '../../lib/formatTime';
-import { styled } from '../../styles/stitches.congif';
-import Button from '../button/button';
+
 import DeleteWorkoutDialog from '../deleteWorkoutDialog';
-import { Flex } from '../layout';
 import SortableList from '../sortableList/sortableList';
 
 type Props = {
@@ -39,55 +37,30 @@ const WorkoutSortableList = ({ data }: Props) => {
   }
 
   return (
-    <Flex direction="column">
+    <div>
       <SortableList<Workout> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />
-    </Flex>
+    </div>
   );
 };
-
-const NextLink = styled(Link, {
-  flex: 1,
-  display: 'flex',
-  gap: '$2x',
-  alignItems: 'center',
-  padding: '$lg',
-  color: '$primary-01',
-  textDecoration: 'none',
-  cursor: 'pointer',
-  fontWeight: '$700',
-  '-webkit-touch-callout': 'none',
-});
 
 function ListItem({ item }: { item: Workout }) {
   const router = useRouter();
   const { id, name, duration } = item;
 
   return (
-    <Flex
-      css={{
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '$sm',
-        backgroundColor: '$primary-09',
-        cursor: 'grab',
-        '&:active': {
-          cursor: 'grabbing',
-        },
-      }}
-    >
-      <NextLink href={`/workout/${id}`}>
-        <p>{name}</p>
-        <p>{formatTime(duration)}</p>
-      </NextLink>
-      <Button
-        colors="transparent"
-        css={{ padding: '$lg', borderRadius: '0' }}
-        onClick={() => router.push(`/editWorkout/${id}`)}
-      >
-        <Pencil1Icon />
-      </Button>
-      <DeleteWorkoutDialog workoutId={id} />
-    </Flex>
+    <div className="flex h-16 items-center justify-between gap-5 rounded-lg px-4 text-gray-100">
+      <Link href={`/workout/${id}`} className="flex items-center gap-5">
+        <DragHandleDots2Icon className="h-6 w-6 text-gray-500" />
+        <p className="text-base font-medium leading-6 text-amber-400">{formatTime(duration)}</p>
+        <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
+      </Link>
+      <div className="flex gap-5">
+        <button onClick={() => router.push(`/editWorkout/${id}`)}>
+          <Pencil1Icon className="h-6 w-6 text-gray-500" />
+        </button>
+        <DeleteWorkoutDialog workoutId={id} />
+      </div>
+    </div>
   );
 }
 
