@@ -56,7 +56,7 @@ function ListItem({ item }: { item: Workout }) {
       </Link>
       <div className="flex gap-5">
         <button onClick={() => router.push(`/editWorkout/${id}`)}>
-          <Pencil1Icon className="h-6 w-6 text-gray-500" />
+          <Pencil1Icon className="h-6 w-6 text-gray-500 hover:text-gray-200" />
         </button>
         <DeleteWorkoutDialog workoutId={id} />
       </div>
