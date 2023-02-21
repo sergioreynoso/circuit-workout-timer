@@ -27,7 +27,9 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
     mutation.mutate(workoutId);
   };
 
-  const triggerButton = <button>{label ? label : <TrashIcon className="h-6 w-6 text-gray-500" />}</button>;
+  const triggerButton = (
+    <button>{label ? label : <TrashIcon className="h-6 w-6 text-gray-500 hover:text-gray-200" />}</button>
+  );
 
   return (
     <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
