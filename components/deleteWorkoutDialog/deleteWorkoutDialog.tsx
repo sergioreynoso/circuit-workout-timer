@@ -28,7 +28,9 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
   };
 
   const triggerButton = (
-    <button>{label ? label : <TrashIcon className="h-6 w-6 text-gray-500 hover:text-gray-200" />}</button>
+    <button className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-800/50">
+      {label ? label : <TrashIcon className="h-6 w-6 text-gray-500" />}
+    </button>
   );
 
   return (

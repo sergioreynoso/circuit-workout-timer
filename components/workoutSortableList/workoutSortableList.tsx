@@ -54,9 +54,12 @@ function ListItem({ item }: { item: Workout }) {
         <p className="text-base font-medium leading-6 text-amber-400">{formatTime(duration)}</p>
         <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
       </Link>
-      <div className="flex gap-5">
-        <button onClick={() => router.push(`/editWorkout/${id}`)}>
-          <Pencil1Icon className="h-6 w-6 text-gray-500 hover:text-gray-200" />
+      <div className="flex gap-1">
+        <button
+          className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-800/50"
+          onClick={() => router.push(`/editWorkout/${id}`)}
+        >
+          <Pencil1Icon className="h-6 w-6 text-gray-500 " />
         </button>
         <DeleteWorkoutDialog workoutId={id} />
       </div>
