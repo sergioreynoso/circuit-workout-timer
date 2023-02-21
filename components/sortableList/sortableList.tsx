@@ -110,7 +110,13 @@ function Draggable({ id, children }: { id: UniqueIdentifier; children?: ReactNod
     listStyle: 'none',
   };
   return (
-    <li className="rounded-lg bg-gray-800" ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <li
+      className="rounded-lg bg-gray-800 hover:bg-gray-700"
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
       {children}
     </li>
   );
