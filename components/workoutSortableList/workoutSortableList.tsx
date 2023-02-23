@@ -48,19 +48,19 @@ function ListItem({ item }: { item: Workout }) {
   const { id, name, duration } = item;
 
   return (
-    <div className="flex h-16 items-center justify-between gap-5 rounded-lg px-4 text-gray-100">
-      <Link href={`/workout/${id}`} className="flex items-center gap-5">
+    <div className="flex h-16 items-center justify-between rounded-lg px-4 text-gray-100">
+      <Link href={`/workout/${id}`} className="flex h-full grow items-center gap-5">
         <DragHandleDots2Icon className="h-6 w-6 text-gray-500" />
         <p className="text-base font-medium leading-6 text-amber-400">{formatTime(duration)}</p>
         <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
       </Link>
       <div className="flex gap-1">
-        <button
+        <Link
+          href={`/editWorkout/${id}`}
           className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-800/50"
-          onClick={() => router.push(`/editWorkout/${id}`)}
         >
           <Pencil1Icon className="h-6 w-6 text-gray-500 " />
-        </button>
+        </Link>
         <DeleteWorkoutDialog workoutId={id} />
       </div>
     </div>
