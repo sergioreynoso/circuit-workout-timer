@@ -40,8 +40,8 @@ const WorkoutListHeader = ({ userId }: Props) => {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-grow flex-col gap-1">
-        <h2 className="text-xl font-extrabold leading-7 text-gray-100">Workouts</h2>
+      <div className="flex flex-grow flex-col">
+        <h2 className="text-base font-bold leading-7 text-gray-300">Workouts</h2>
         <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
       </div>
       <Button intent="primary" onClick={onClickHandler}>
