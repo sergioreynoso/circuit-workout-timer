@@ -34,7 +34,7 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   function TriggerButton() {
     return (
       <AlertDialogPrimitive.Trigger asChild>
-        <CircleButton intent="delete" />
+        <CircleButton intent="delete" isBg={false} />
       </AlertDialogPrimitive.Trigger>
     );
   }

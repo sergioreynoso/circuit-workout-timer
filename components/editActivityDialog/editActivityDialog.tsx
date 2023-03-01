@@ -54,7 +54,7 @@ const EditActivityDialog = ({ activity }: Props) => {
   function TriggerButton() {
     return (
       <AlertDialogPrimitive.Trigger asChild>
-        <CircleButton intent="edit" />
+        <CircleButton intent="edit" isBg={false} />
       </AlertDialogPrimitive.Trigger>
     );
   }
