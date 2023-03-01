@@ -6,6 +6,7 @@ import React from 'react';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { defaultWorkout } from '../../lib/defaultWorkout';
+import Button from '../button/button';
 
 type Props = {
   userId: string;
@@ -19,11 +20,12 @@ const WorkoutListHeader = ({ userId }: Props) => {
     mutationFn: (workout: Optional<Workout, 'id'> & { activities: FormattedActivity[] }) =>
       axios.post('/api/v1/workout', workout),
     onSuccess: ({ data: newData }) => {
-      router.push(`/createWorkout/${newData.id}`);
+      router.push(`/editWorkout/${newData.id}`);
     },
   });
 
   const onClickHandler = () => {
+    console.log('first');
     const workouts = queryClient.getQueryData<Workout[]>(['workouts']);
     mutation.mutate({
       name: 'Untitled Workout',
@@ -37,9 +39,14 @@ const WorkoutListHeader = ({ userId }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-1">
-      <h2 className="text-xl font-extrabold leading-7 text-gray-100">Workouts</h2>
-      <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
+    <div className="flex items-center justify-between">
+      <div className="flex flex-grow flex-col gap-1">
+        <h2 className="text-xl font-extrabold leading-7 text-gray-100">Workouts</h2>
+        <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
+      </div>
+      <Button intent="primary" onClick={onClickHandler}>
+        Create Workout
+      </Button>
     </div>
   );
 };
