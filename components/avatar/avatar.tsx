@@ -1,5 +1,3 @@
-import React from 'react';
-import { violet, blackA } from '@radix-ui/colors';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import abbreviateName from '../../lib/abbreviateName';
 
@@ -12,9 +10,14 @@ interface User {
 
 const Avatar = ({ user }: { user: User }) => {
   return (
-    <AvatarPrimitive.Root>
-      <AvatarPrimitive.Image src={user.image} alt={user.name} className="object-cover rounded-full h-14" />
-      <AvatarPrimitive.Fallback delayMs={600}>{abbreviateName(user.name)}</AvatarPrimitive.Fallback>
+    <AvatarPrimitive.Root className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-700">
+      <AvatarPrimitive.Image src={user.image} alt={user.name} className="h-full w-full rounded-full  object-cover" />
+      <AvatarPrimitive.Fallback
+        delayMs={600}
+        className="flex h-full w-full items-center justify-center bg-gray-300 text-base font-medium text-gray-900"
+      >
+        {abbreviateName(user.name)}
+      </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
   );
 };
