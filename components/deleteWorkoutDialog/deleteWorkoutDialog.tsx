@@ -1,10 +1,13 @@
 import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+
 import { TrashIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog';
+import CircleButton from '../circleButton/circleButton';
 
 type DeleteWorkoutDialogProps = {
   label?: string;
@@ -27,19 +30,21 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
     mutation.mutate(workoutId);
   };
 
-  const triggerButton = (
-    <button className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-800/50">
-      {label ? label : <TrashIcon className="h-6 w-6 text-gray-500" />}
-    </button>
-  );
+  function TriggerButton() {
+    return (
+      <AlertDialogPrimitive.Trigger asChild>
+        <CircleButton intent="delete" />
+      </AlertDialogPrimitive.Trigger>
+    );
+  }
 
   return (
-    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <div className="flex flex-col gap-4">
-          <Title>Delete</Title>
+        <div className="flex flex-col gap-4 p-2 sm:p-4">
+          <Title className="mb-4 text-xl font-semibold leading-7 text-gray-300">Delete</Title>
           <Description>
             This action cannot be undone. This will permanently delete your workout and remove your data from our
             servers.

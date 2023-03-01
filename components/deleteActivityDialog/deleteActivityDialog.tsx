@@ -1,13 +1,14 @@
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
-import { TrashIcon } from '@radix-ui/react-icons';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 
 import AlertDialog from '../alertDialog';
-import Button from '../button';
+import CircleButton from '../circleButton/circleButton';
 
 type Props = {
   activityId: string;
@@ -30,26 +31,28 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
     mutation.mutate(activityId);
   };
 
-  const triggerButton = (
-    <button>
-      <TrashIcon />
-    </button>
-  );
+  function TriggerButton() {
+    return (
+      <AlertDialogPrimitive.Trigger asChild>
+        <CircleButton intent="delete" />
+      </AlertDialogPrimitive.Trigger>
+    );
+  }
 
   return (
-    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       {mutation.isLoading ? (
         <p>Deleting Exercise...</p>
       ) : (
-        <div>
-          <Title>Delete Exercise</Title>
-          <Description>
+        <div className="flex flex-col gap-4 p-2 sm:p-4">
+          <Title className="text-xl font-semibold leading-7 text-gray-300">Delete Exercise</Title>
+          <Description className="text-base font-normal leading-6 text-gray-300">
             This action cannot be undone. This will permanently delete your exercise and remove your data from our
             servers.
           </Description>
-          <div>
+          <div className="mt-4 flex justify-start gap-4">
             <Cancel asChild>
-              <Button>Cancel</Button>
+              <button>Cancel</button>
             </Cancel>
             {/* <Action asChild> */}
             <button onClick={onClickHandler}>Delete</button>
