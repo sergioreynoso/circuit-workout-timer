@@ -38,7 +38,7 @@ const Edit = () => {
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
             <div className="flex flex-grow flex-col">
-              <h3 className="tex-base font-semibold leading-6 text-gray-300">Workout Activities</h3>
+              <h3 className="text-base font-semibold leading-6 text-gray-300">Workout Activities</h3>
               <p className="text-base font-normal leading-6">Add up to 8 activity</p>
             </div>
             <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
