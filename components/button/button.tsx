@@ -28,7 +28,7 @@ const Button = ({ intent = 'primary', children, ...props }: Props) => {
   return (
     <button
       className={`
-     flex h-14 items-center justify-center gap-2 rounded-2xl px-4 sm:px-8 ${variant[intent].text} ${variant[intent].bg} text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text}`}
+     flex h-14 items-center justify-center gap-2 rounded-lg px-4 sm:px-8 ${variant[intent].text} ${variant[intent].bg} text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text}`}
       {...props}
     >
       {children}
