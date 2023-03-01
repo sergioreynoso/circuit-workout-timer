@@ -111,7 +111,7 @@ function Draggable({ id, children }: { id: UniqueIdentifier; children?: ReactNod
   };
   return (
     <li
-      className="touch-auto rounded-lg bg-gray-800 hover:bg-gray-700"
+      className="touch-manipulation rounded-lg bg-gray-800 hover:bg-gray-700"
       ref={setNodeRef}
       style={style}
       {...listeners}
