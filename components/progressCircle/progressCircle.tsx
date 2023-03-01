@@ -3,7 +3,6 @@ import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { TIMER_INTERVAL } from '../../hooks/useTimer';
 import { FormattedActivity, FormattedWorkout } from '../../hooks/useFormatWorkout';
 import { TimerContext } from '../timerContext/timerProvider';
-import { Box, Flex } from '../layout';
 
 type Props = {
   runningActivity: FormattedActivity | FormattedWorkout;
@@ -12,9 +11,14 @@ type Props = {
   size?: number;
   strokeWidth?: number;
   scale?: number;
-  color?: string;
+  intent?: 'workout' | 'activity';
   children?: JSX.Element | JSX.Element[];
 };
+
+const strokeColors = {
+  workout: 'stroke-amber-400',
+  activity: 'stroke-green-400',
+} as const;
 
 const ProgressCircle = ({
   runningActivity,
@@ -23,11 +27,15 @@ const ProgressCircle = ({
   size = 100,
   strokeWidth = 2,
   scale = 1,
-  color = '$primary-09',
+  intent = 'workout',
   children,
 }: Props) => {
   const controls = useAnimationControls();
   const { isTimer } = useContext(TimerContext);
+
+  const scaleValue = () => {
+    return `scale-[${scale}]`;
+  };
 
   const [center, radius, dashArray, dashOffset] = useMemo(() => {
     const center = size / 2;
@@ -76,62 +84,44 @@ const ProgressCircle = ({
   }, [toggleProgress]);
 
   return (
-    <>
-      <Flex
-        css={{
-          position: 'relative',
-          justifyContent: 'center',
-          alignItems: 'center',
-          maxWidth: '$bp-sm',
-          margin: 'auto',
-        }}
-      >
-        <Box as="svg" viewBox="0 0 100 100" css={{ width: '100%', transform: `rotate(-90deg) scale(${scale})` }}>
-          <Box
-            as="circle"
-            width={size}
-            height={size}
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-            css={{
-              fill: 'transparent',
-              stroke: '$gray-04',
-            }}
-          />
-          <Box
-            as={motion.circle}
-            width={size}
-            height={size}
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-            strokeDasharray={dashArray}
-            strokeDashoffset={dashOffset}
-            fill="transparent"
-            initial={{
-              strokeDashoffset: dashArray,
-            }}
-            animate={controls}
-            css={{
-              stroke: color,
-              strokeLinecap: 'round',
-            }}
-          />
-        </Box>
-        <Flex
-          direction="column"
-          css={{
-            position: 'absolute',
-            justifyContent: 'center',
+    <div className="relative flex items-center justify-center">
+      <svg viewBox="0 0 100 100" className={`-rotate-90`}>
+        <circle
+          width={size}
+          height={size}
+          cx={center}
+          cy={center}
+          r={radius}
+          strokeWidth={strokeWidth}
+          className="fill-transparent stroke-gray-800/30"
+        />
+        <motion.circle
+          width={size}
+          height={size}
+          cx={center}
+          cy={center}
+          r={radius}
+          strokeWidth={strokeWidth}
+          strokeDasharray={dashArray}
+          strokeDashoffset={dashOffset}
+          fill="transparent"
+          initial={{
+            strokeDashoffset: dashArray,
           }}
-        >
+          animate={controls}
+          // css={{
+          //   stroke: color,
+          //   strokeLinecap: 'round',
+          // }}
+          className={`${strokeColors[intent]}`}
+        />
+      </svg>
+      {children && (
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex scale-[.98] flex-col justify-center">
           {children}
-        </Flex>
-      </Flex>
-    </>
+        </div>
+      )}
+    </div>
   );
 };
 
