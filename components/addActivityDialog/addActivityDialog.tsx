@@ -57,7 +57,7 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
   function TriggerButton() {
     return (
       <AlertDialogPrimitive.Trigger asChild>
-        <button className="text-md flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 font-bold leading-7 text-green-900 hover:bg-green-400">
+        <button className="text-md flex h-14 items-center gap-2 rounded-lg bg-green-500 px-4 font-bold leading-7 text-green-900 hover:bg-green-400 sm:px-8">
           <PlusIcon className="h-7 w-7" /> Add Activity
         </button>
       </AlertDialogPrimitive.Trigger>
@@ -67,7 +67,7 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="items flex flex-col p-2 sm:p-4">
-        <Title className="mb-4 text-xl font-semibold leading-7 text-gray-300">Add Exercise</Title>
+        <Title className="mb-4 text-xl font-semibold leading-7 text-gray-300">Add Activity</Title>
         <form onSubmit={onFormSubmit} className="flex flex-col items-start justify-center gap-4  ">
           <Input
             type="text"
