@@ -13,10 +13,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="px-04 mx-auto flex max-w-lg flex-col gap-8 py-0">
+    <Container>
       <Header />
       <Workouts userId={userId} />
-    </div>
+    </Container>
   );
 };
 
