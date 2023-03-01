@@ -1,12 +1,10 @@
+import { PauseIcon, PlayIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
-import Button from '../button';
+import { useContext } from 'react';
 import { TimerContext } from '../timerContext/timerProvider';
-import { FooterContainer } from '../layout';
 
 const TimerControl = () => {
   const { isTimer, setIsTimer, isTimerDone } = useContext(TimerContext);
-  const [label, setLabel] = useState<string>('start');
 
   const router = useRouter();
   const handleBackToDashboard = () => {
@@ -14,18 +12,19 @@ const TimerControl = () => {
   };
 
   const handleTimerToggle = () => {
-    isTimer ? setLabel('continue') : setLabel('pause');
     setIsTimer(!isTimer);
   };
 
   return (
-    <FooterContainer>
+    <div>
       {!isTimerDone ? (
-        <button onClick={handleTimerToggle}>{label}</button>
+        <button className="flex h-12 w-12 items-center justify-center rounded-full" onClick={handleTimerToggle}>
+          {isTimer ? <PauseIcon className="h-9 w-9" /> : <PlayIcon className="h-9 w-9" />}
+        </button>
       ) : (
         <button onClick={handleBackToDashboard}>Return to Dashboard</button>
       )}
-    </FooterContainer>
+    </div>
   );
 };
 
