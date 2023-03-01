@@ -1,9 +1,9 @@
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
-import * as LabelPrimitive from '@radix-ui/react-label';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import * as Label from '@radix-ui/react-label';
+
 import React, { useId, useState } from 'react';
-import Button from '../button';
-import { Flex } from '../layout';
+import CircleButton from '../circleButton/circleButton';
 
 interface Props {
   label: string;
@@ -37,20 +37,35 @@ const StepperInput = ({ label, min, max, initialValue, handleChange }: Props) =>
   }
 
   return (
-    <Flex direction="column" css={{ gap: '$sm', paddingBlock: '$xl', maxWidth: '200px', flex: '1' }}>
-      <label htmlFor={id}>{label}</label>
-      <Flex css={{ gap: '$lg' }}>
-        <button type="button" name="decrement" onClick={onClickHandler}>
-          <MinusIcon />
-          <VisuallyHidden.Root>Decrease number of sets</VisuallyHidden.Root>
-        </button>
-        <input type="number" id={id} value={value} min={min} max={max} onChange={onChangeHandler} inputMode="decimal" />
-        <button type="button" name="increment" onClick={onClickHandler}>
-          <PlusIcon />
-          <VisuallyHidden.Root>Increase number of sets</VisuallyHidden.Root>
-        </button>
-      </Flex>
-    </Flex>
+    <div className="flex flex-col gap-3">
+      <Label.Root htmlFor={id} className="text-base font-semibold leading-6 text-gray-300">
+        {label}
+      </Label.Root>
+      <div className="flex items-center gap-2">
+        <CircleButton
+          name="decrement"
+          intent="decrement"
+          description="Decrease number of sets"
+          onClick={onClickHandler}
+        />
+        <input
+          type="number"
+          id={id}
+          value={value}
+          min={min}
+          max={max}
+          onChange={onChangeHandler}
+          inputMode="decimal"
+          className="w-13 h-12 rounded-lg border border-gray-500 bg-transparent px-4"
+        />
+        <CircleButton
+          name="increment"
+          intent="increment"
+          description="Increase number of sets"
+          onClick={onClickHandler}
+        />
+      </div>
+    </div>
   );
 };
 
