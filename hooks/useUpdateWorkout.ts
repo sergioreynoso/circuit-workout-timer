@@ -15,7 +15,6 @@ export default function useUpdateWorkout() {
     },
     onSuccess: ({ data: newData }) => {
       queryClient.invalidateQueries(['workouts']);
-      router.push(`/workout/${newData.id}`);
     },
   });
 }
