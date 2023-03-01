@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <div className="flex items-center justify-between bg-gray-800 p-5">
       <Link href={'/'}>
-        <h1 className="text-2xl font-extrabold leading-8 text-gray-100">Workout Timer</h1>
+        <h1 className="text-2xl font-bold leading-8 text-gray-100">Interval Workout App</h1>
       </Link>
       <div>
         {/* <Link href={'/dashboard'}>Workouts</Link> */}
