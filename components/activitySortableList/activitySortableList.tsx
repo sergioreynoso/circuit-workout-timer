@@ -1,4 +1,5 @@
 import { Activity, Workout } from '@prisma/client';
+import { DragHandleDots2Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
@@ -7,7 +8,6 @@ import { formatTime } from '../../lib/formatTime';
 import { WorkoutWithActivities } from '../../types/workout';
 import DeleteActivityDialog from '../deleteActivityDialog/deleteActivityDialog';
 import EditActivityDialog from '../editActivityDialog/editActivityDialog';
-import { Flex } from '../layout';
 import SortableList from '../sortableList';
 
 type Props = {
@@ -34,44 +34,24 @@ const ActivitySortableList = ({ data }: Props) => {
     setItems(updatedItems);
   }
 
-  return (
-    <Flex direction="column">
-      <SortableList<Activity> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />
-    </Flex>
-  );
+  return <SortableList<Activity> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />;
 };
 
-const ListItem = ({ item }: { item: Activity }) => {
+function ListItem({ item }: { item: Activity }) {
   const { id, name, duration } = item;
   return (
-    <Flex
-      css={{
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '$lg',
-        marginBottom: '$sm',
-        backgroundColor: '$primary-09',
-        cursor: 'grab',
-        '-webkit-touch-callout': 'none',
-        '&:active': {
-          cursor: 'grabbing',
-        },
-      }}
-    >
-      <p>{name}</p>
-      <Flex
-        css={{
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '$sm',
-        }}
-      >
-        <span>{formatTime(duration)}</span>
+    <div className="flex h-16 items-center justify-between rounded-lg px-4 text-gray-100">
+      <div className="flex h-full grow items-center gap-5">
+        <DragHandleDots2Icon className="h-6 w-6 text-gray-500" />
+        <p className="text-base font-medium leading-6 text-green-400">{formatTime(duration)}</p>
+        <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
+      </div>
+      <div className="flex gap-1">
         <EditActivityDialog activity={item} />
         <DeleteActivityDialog activityId={id} />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
-};
+}
 
 export default ActivitySortableList;

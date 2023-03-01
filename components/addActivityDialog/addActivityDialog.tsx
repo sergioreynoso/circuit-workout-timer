@@ -1,3 +1,4 @@
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { Cancel, Title } from '@radix-ui/react-alert-dialog';
 import { PlusIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -5,9 +6,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import AlertDialog from '../alertDialog/alertDialog';
-import Button from '../button';
 import Input from '../input';
-import { Flex } from '../layout';
 
 type Props = {
   workoutId: string;
@@ -55,27 +54,21 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
     });
   };
 
-  const triggerButton = (
-    <button>
-      <PlusIcon />
-    </button>
-  );
+  function TriggerButton() {
+    return (
+      <AlertDialogPrimitive.Trigger asChild>
+        <button className="text-md flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 font-bold leading-7 text-green-900 hover:bg-green-400">
+          <PlusIcon className="h-7 w-7" /> Add Activity
+        </button>
+      </AlertDialogPrimitive.Trigger>
+    );
+  }
 
   return (
-    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Flex direction="column">
-        <Title>Add Exercise</Title>
-        <Flex
-          as="form"
-          css={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '$lg',
-            gap: '$xl',
-          }}
-          onSubmit={onFormSubmit}
-        >
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="items flex flex-col p-2 sm:p-4">
+        <Title className="mb-4 text-xl font-semibold leading-7 text-gray-300">Add Exercise</Title>
+        <form onSubmit={onFormSubmit} className="flex flex-col items-start justify-center gap-4  ">
           <Input
             type="text"
             label="Exercise Name"
@@ -96,16 +89,16 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
             required={true}
           />
           <div>{mutation.isLoading && 'Updating exercise...'}</div>
-          <Flex css={{ justifyContent: 'flex-end', gap: '$lg' }}>
+          <div className="flex justify-end gap-4">
             <Cancel asChild>
-              <Button>Cancel</Button>
+              <button>Cancel</button>
             </Cancel>
             {/* <Action asChild> */}
             <button type="submit">Save</button>
             {/* </Action> */}
-          </Flex>
-        </Flex>
-      </Flex>
+          </div>
+        </form>
+      </div>
     </AlertDialog>
   );
 };

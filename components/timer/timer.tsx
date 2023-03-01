@@ -1,14 +1,14 @@
-import { useContext, useMemo } from 'react';
-import { P } from 'ts-toolbelt/out/Object/_api';
-import useTimer from '../../hooks/useTimer';
+import { useContext, useEffect, useMemo } from 'react';
+import useTimer, { CounterState } from '../../hooks/useTimer';
 
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 
 import { WorkoutWithActivities } from '../../types/workout';
-import { Box, Flex } from '../layout';
+import { Container } from '../layout';
 import ProgressCircle from '../progressCircle';
 import { TimerContext } from '../timerContext';
+import TimerControl from '../timerControl/timerControl';
 
 type Props = { workoutData: WorkoutWithActivities };
 
@@ -18,66 +18,66 @@ const Timer = ({ workoutData }: Props) => {
 
   const [state] = useTimer(formattedWorkout);
 
-  const NextExercise = () => {
-    return (
-      state.nextActivity && (
-        <Flex direction="column" css={{ alignItems: 'center', gap: '$sm', padding: '$sm' }}>
-          <h4>Next</h4>
-          <p>{state.nextActivity.name}</p>
-        </Flex>
-      )
-    );
-  };
+  useEffect(() => {
+    // console.log(formattedWorkout);
+  }, []);
 
-  const WorkoutComplete = () => {
+  if (isTimerDone)
     return (
-      <Flex css={{ justifyContent: 'center', padding: '$sm' }}>
-        <p>Complete!</p>
-      </Flex>
+      <Container>
+        <WorkoutComplete />
+      </Container>
     );
-  };
 
   return (
-    <Box
-      css={{
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      {isTimerDone ? (
-        <WorkoutComplete />
-      ) : (
-        <>
-          <h2>Time Remaining: {formatTime(state.runningTime)}</h2>
-          <p>
-            {state.setCount} / {formattedWorkout.totalSets}
-          </p>
-          <Box css={{ position: 'relative' }}>
-            <ProgressCircle runningActivity={formattedWorkout} runningActivityTime={state.runningTime} color="orange" />
-            <Box
-              css={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-              }}
-            >
-              <ProgressCircle
-                runningActivity={state.runningActivity}
-                runningActivityTime={state.runningActivityTime}
-                scale={0.95}
-              >
-                <h2>{formatTime(state.runningActivityTime)}</h2>
-                <p>{state.runningActivity.name}</p>
-              </ProgressCircle>
-            </Box>
-          </Box>
-          <NextExercise />
-        </>
-      )}
-    </Box>
+    <div className="px-4 text-center md:px-0">
+      <h2 className="text-3xl font-black leading-9 text-amber-400">{formatTime(state.runningTime)}</h2>
+      <p>
+        {state.setCount} / {formattedWorkout.totalSets}
+      </p>
+      <div className="relative">
+        <ProgressCircle runningActivity={formattedWorkout} runningActivityTime={state.runningTime} intent="workout">
+          <ProgressCircle
+            runningActivity={state.runningActivity}
+            runningActivityTime={state.runningActivityTime}
+            strokeWidth={4}
+            intent={'activity'}
+          />
+        </ProgressCircle>
+        <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-10">
+          <h2 className="text-3xl font-black leading-9 text-green-500">{formatTime(state.runningActivityTime)}</h2>
+          <p className="text-3xl font-bold leading-9 text-gray-300">{state.runningActivity.name}</p>
+          <TimerControl />
+        </div>
+      </div>
+      <NextExercise state={state} />
+    </div>
   );
 };
+
+const NextExercise = ({ state }: { state: CounterState }) => {
+  return (
+    state.nextActivity && (
+      <div className="flex flex-col items-center gap-4 p-4">
+        <p className="text-3xl font-light leading-9 text-gray-300">{state.nextActivity.name}</p>
+      </div>
+    )
+  );
+};
+
+const WorkoutComplete = () => {
+  return (
+    <div className="justify-center p-4">
+      <p>Complete!</p>
+    </div>
+  );
+};
+
+/*
+ <h2 className="text-3xl font-black leading-9 text-green-500">
+                  {formatTime(state.runningActivityTime)}
+                </h2>
+                <p className="text-3xl font-semibold leading-9 text-gray-300">{state.runningActivity.name}</p>
+                */
 
 export default Timer;

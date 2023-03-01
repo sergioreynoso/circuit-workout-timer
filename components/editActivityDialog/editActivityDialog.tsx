@@ -1,4 +1,5 @@
-import { Cancel, Title } from '@radix-ui/react-alert-dialog';
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { Cancel } from '@radix-ui/react-alert-dialog';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -6,9 +7,8 @@ import React, { useState } from 'react';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog/alertDialog';
-import Button from '../button';
+import CircleButton from '../circleButton/circleButton';
 import Input from '../input';
-import { Flex } from '../layout';
 
 type Props = {
   activity: FormattedActivity & { id: string };
@@ -51,27 +51,19 @@ const EditActivityDialog = ({ activity }: Props) => {
     });
   };
 
-  const triggerButton = (
-    <Button colors="transparent">
-      <Pencil1Icon />
-    </Button>
-  );
+  function TriggerButton() {
+    return (
+      <AlertDialogPrimitive.Trigger asChild>
+        <CircleButton intent="edit" />
+      </AlertDialogPrimitive.Trigger>
+    );
+  }
 
   return (
-    <AlertDialog triggerButton={triggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Flex direction="column">
-        <Title>Edit Exercise</Title>
-        <Flex
-          as="form"
-          css={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '$lg',
-            gap: '$xl',
-          }}
-          onSubmit={onFormSubmit}
-        >
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col p-2 sm:p-4">
+        <h1 className="text-xl font-semibold leading-7 text-gray-300">Edit Exercise</h1>
+        <form onSubmit={onFormSubmit} className="mt-4 flex flex-grow flex-col items-start gap-8">
           <Input
             type="text"
             label="Exercise Name"
@@ -83,8 +75,8 @@ const EditActivityDialog = ({ activity }: Props) => {
           />
           <Input
             type="number"
-            label="duration"
-            name="duration"
+            label="Length"
+            name="length"
             value={duration}
             onChange={handleChange}
             placeholder=""
@@ -92,18 +84,16 @@ const EditActivityDialog = ({ activity }: Props) => {
           />
           <div>{mutation.isLoading && 'Updating exercise...'}</div>
 
-          <Flex css={{ justifyContent: 'flex-end', gap: '$lg' }}>
+          <div className="flex justify-end gap-3">
             <Cancel asChild>
-              <Button>Cancel</Button>
+              <button>Cancel</button>
             </Cancel>
             {/* <Action asChild onClick={(event) => event.preventDefault()}> */}
-            <Button colors="primary" type="submit">
-              Save
-            </Button>
+            <button type="submit">Save</button>
             {/* </Action> */}
-          </Flex>
-        </Flex>
-      </Flex>
+          </div>
+        </form>
+      </div>
     </AlertDialog>
   );
 };
