@@ -1,6 +1,6 @@
-import * as LabelPrimitive from '@radix-ui/react-label';
+import * as Label from '@radix-ui/react-label';
+
 import React, { useId } from 'react';
-import { Flex } from '../layout';
 
 interface Props extends React.ComponentPropsWithoutRef<'input'> {
   label: string;
@@ -8,12 +8,18 @@ interface Props extends React.ComponentPropsWithoutRef<'input'> {
 
 const Input = ({ label, ...delegated }: Props) => {
   const id = useId();
-
   return (
-    <Flex direction="column" css={{ gap: '$sm' }}>
-      <label htmlFor={id}>{label}</label>
-      <input id={id} {...delegated} />
-    </Flex>
+    <div className="flex w-full flex-col gap-3">
+      <Label.Root htmlFor={id} className="text-base font-semibold leading-6 text-gray-300">
+        {label}
+      </Label.Root>
+      <input
+        id={id}
+        {...delegated}
+        maxLength={18}
+        className="max-w h-12 rounded-lg border border-gray-500 bg-transparent px-4"
+      />
+    </div>
   );
 };
 
