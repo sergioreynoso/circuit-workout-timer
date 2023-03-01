@@ -15,22 +15,22 @@ const DropDownMenu = ({ user }: { user: any }) => (
     <DropdownMenu.Portal>
       <DropdownMenu.Content
         loop={true}
-        collisionPadding={5}
-        className="flex flex-col gap-2 p-3 text-gray-900 bg-gray-400"
+        collisionPadding={0}
+        alignOffset={-20}
+        align={'end'}
+        className="flex flex-col gap-2  rounded-lg bg-gray-900 p-3 shadow-xl"
       >
         <label>{user.name}</label>
         <label>{user.email}</label>
-        <DropdownMenu.Separator className="bg-red-500" />
-        {/* <Item>
-          <SettingIcon />
-          Settings
-        </Item> */}
-        <DropdownMenu.Separator className="bg-red-500" />
-        <div onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>
+        <DropdownMenu.Separator className="my-1 h-[1px] bg-gray-500" />
+        <button
+          onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}
+          className="flex items-center justify-center gap-3 rounded-lg py-2 font-semibold hover:bg-amber-400 hover:text-gray-900"
+        >
           <ExitIcon />
           Logout
-        </div>
-        <DropdownMenu.Arrow />
+        </button>
+        <DropdownMenu.Arrow className="-translate-x-3 fill-gray-900" />
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
   </DropdownMenu.Root>
