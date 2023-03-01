@@ -1,13 +1,16 @@
 import React, { useReducer } from 'react';
+import useUpdateWorkout from '../../hooks/useUpdateWorkout';
+import { formatWorkout } from '../../lib/formatWorkout';
+import { getMillSeconds } from '../../lib/getMillSeconds';
+import { getMin } from '../../lib/getMin';
+import { getSeconds } from '../../lib/getSeconds';
+import { WorkoutWithActivities } from '../../types/workout';
 import Input from '../input/input';
-import { Box } from '../layout';
+
 import StepperInput from '../stepperInput/stepperInput';
 
 interface Props extends React.ComponentPropsWithoutRef<'form'> {
-  name: string;
-  setCount: number;
-  setRest: number;
-  onSubmitCallback: (name: string, setCount: number, setRest: number) => void;
+  data: WorkoutWithActivities;
 }
 
 type FormReducer = {
@@ -62,86 +65,86 @@ function formReducer(state: FormReducer, action: FormActions) {
   }
 }
 
-export function getMin(millSec: number) {
-  return Math.floor(millSec / 60000);
-}
-
-export function getSeconds(millSec: number) {
-  return (millSec % 60000) / 1000;
-}
-
-export function getMillSeconds(min: number, sec: number) {
-  const minToMill = min > 0 ? 60000 * min : 0;
-  const secToMill = sec > 0 ? sec * 1000 : 0;
-  return minToMill + secToMill;
-}
-
-const WorkoutForm = ({ name, setCount, setRest, onSubmitCallback, ...delegated }: Props) => {
+const WorkoutForm = ({ data, ...delegated }: Props) => {
   const [state, dispatch] = useReducer(formReducer, {
-    name: name,
-    setCount: setCount,
-    setRestMin: getMin(setRest),
-    setRestSec: getSeconds(setRest),
+    name: data.name,
+    setCount: data.set_count,
+    setRestMin: getMin(data.set_rest),
+    setRestSec: getSeconds(data.set_rest),
   });
-
   const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
+
+  const mutation = useUpdateWorkout();
+  const mutateWorkout = (name: string, set: number, rest: number) => {
+    mutation.mutate({
+      id: data.id,
+      name: name,
+      set_count: Number(set),
+      set_rest: Number(rest),
+      duration: formatWorkout(data).duration,
+    });
+  };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmitCallback(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
+    mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
   };
 
   return (
-    <Box as="form" {...delegated} onSubmit={onFormSubmit}>
-      <Input
-        label="Workout Name"
-        type="text"
-        name="name"
-        value={state.name}
-        onChange={e => dispatch({ type: 'NAME', payload: e.currentTarget.value })}
-        required={true}
-        autoComplete="off"
-      />
-      <StepperInput
-        label="Sets"
-        min={1}
-        max={100}
-        initialValue={state.setCount}
-        handleChange={value =>
-          dispatch({
-            type: 'SET_COUNT',
-            payload: value,
-          })
-        }
-      />
-      <fieldset>
-        <legend>How long would you like to rest between sets?</legend>
-        <StepperInput
-          label="Minutes"
-          min={0}
-          max={5}
-          initialValue={state.setRestMin}
-          handleChange={value =>
-            dispatch({
-              type: 'SET_REST_MIN',
-              payload: value,
-            })
-          }
+    <form {...delegated} onSubmit={onFormSubmit}>
+      <div className="flex flex-col justify-between gap-4">
+        <Input
+          label="Workout Name"
+          type="text"
+          name="name"
+          value={state.name}
+          onChange={e => dispatch({ type: 'NAME', payload: e.currentTarget.value })}
+          required={true}
+          autoComplete="off"
         />
-        <StepperInput
-          label="Seconds"
-          min={secondsInputMinValue}
-          max={60}
-          initialValue={state.setRestSec}
-          handleChange={value =>
-            dispatch({
-              type: 'SET_REST_SEC',
-              payload: value,
-            })
-          }
-        />
-      </fieldset>
-    </Box>
+        <div className="mt-3 flex flex-col gap-4">
+          <StepperInput
+            label="Sets"
+            min={1}
+            max={100}
+            initialValue={state.setCount}
+            handleChange={value =>
+              dispatch({
+                type: 'SET_COUNT',
+                payload: value,
+              })
+            }
+          />
+          <p className="mt-4">How long would you like to rest between sets?</p>
+          <div className="flex gap-6">
+            <StepperInput
+              label="Minutes"
+              min={0}
+              max={5}
+              initialValue={state.setRestMin}
+              handleChange={value =>
+                dispatch({
+                  type: 'SET_REST_MIN',
+                  payload: value,
+                })
+              }
+            />
+            <StepperInput
+              label="Seconds"
+              min={secondsInputMinValue}
+              max={60}
+              initialValue={state.setRestSec}
+              handleChange={value =>
+                dispatch({
+                  type: 'SET_REST_SEC',
+                  payload: value,
+                })
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </form>
   );
 };
 
