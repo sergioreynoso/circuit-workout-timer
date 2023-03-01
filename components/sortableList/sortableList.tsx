@@ -78,7 +78,7 @@ const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Prop
   };
 
   return (
-    <div>
+    <div className="mb-4 sm:max-h-80 sm:overflow-y-auto sm:scroll-auto">
       <DndContext
         id="0"
         sensors={sensors}
