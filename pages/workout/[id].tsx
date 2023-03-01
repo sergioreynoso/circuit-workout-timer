@@ -3,7 +3,6 @@ import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import Timer from '../../components/timer';
 import TimerProvider from '../../components/timerContext';
-import TimerControl from '../../components/timerControl/timerControl';
 import TimerHeader from '../../components/timerHeader';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
 
@@ -21,7 +20,6 @@ const WorkoutTimer = () => {
       <Container>
         <TimerHeader data={query.data} />
         <Timer workoutData={query.data} />
-        <TimerControl />
       </Container>
     </TimerProvider>
   );
