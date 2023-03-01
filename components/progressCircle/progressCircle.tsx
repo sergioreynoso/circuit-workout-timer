@@ -85,7 +85,7 @@ const ProgressCircle = ({
 
   return (
     <div className="relative flex items-center justify-center">
-      <svg viewBox="0 0 100 100" className={`-rotate-90`}>
+      <svg viewBox="0 0 100 100" className={`-rotate-90`} width="100%" height="100%">
         <circle
           width={size}
           height={size}
