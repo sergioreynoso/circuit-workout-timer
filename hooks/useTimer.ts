@@ -5,7 +5,7 @@ import useInterval from './useInterval';
 
 export const TIMER_INTERVAL: 1000 = 1000;
 
-type CounterState = {
+export type CounterState = {
   runningTime: number;
   activity: FormattedActivity[];
   setCount: number;
