@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 import { WorkoutWithActivities } from '../../types/workout';
+import CircleButton from '../circleButton/circleButton';
 import { TimerContext } from '../timerContext';
 
 type Props = {
@@ -21,10 +22,11 @@ const TimerHeader = ({ data }: Props) => {
   };
 
   return (
-    <div>
-      {!isTimerDone && <button onClick={onCancel}>Cancel</button>}
-      <h1>{data.name}</h1>
-      {!isTimerDone && <button onClick={onEdit}>Edit</button>}
+    <div className="flex h-24 items-center justify-between px-4 text-gray-400 md:px-0">
+      {!isTimerDone && <CircleButton intent="cancel" onClick={onCancel} />}
+
+      <h1 className="text-xl font-medium leading-7">{data.name}</h1>
+      {!isTimerDone && <CircleButton intent="edit" onClick={onEdit} />}
     </div>
   );
 };
