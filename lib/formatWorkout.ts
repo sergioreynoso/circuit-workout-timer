@@ -40,7 +40,7 @@ export function formatWorkout(workout: WorkoutWithActivities) {
     return arr;
   });
 
-  const duration = formattedWorkout.reduce((prev, curr) => prev + curr.duration, 0) * totalSets;
+  const duration = formattedWorkout.reduce((prev, curr) => prev + curr.duration, 0);
   const activities = addTimestamp(formattedWorkout, duration);
 
   return { id, activities, duration, totalSets };
