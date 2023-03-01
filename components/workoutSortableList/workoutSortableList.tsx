@@ -35,16 +35,23 @@ const WorkoutSortableList = ({ data }: Props) => {
     setItems(updatedItem);
   }
 
-  return <SortableList<Workout> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />;
+  // return <SortableList<Workout> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />;
+  return (
+    <ul className="flex flex-col gap-3">
+      {items.map(item => {
+        return <ListItem key={item.id} item={item} />;
+      })}
+    </ul>
+  );
 };
 
 function ListItem({ item }: { item: Workout }) {
   const { id, name, duration } = item;
 
   return (
-    <div className="flex h-16 items-center justify-between rounded-lg px-4 text-gray-100">
+    <div className="flex h-16 items-center justify-between rounded-lg bg-gray-800 px-4  text-gray-100 hover:bg-gray-700">
       <Link href={`/workout/${id}`} className="flex h-full grow items-center gap-5">
-        <DragHandleDots2Icon className="h-6 w-6 text-gray-400" />
+        {/* <DragHandleDots2Icon className="h-6 w-6 text-gray-400" /> */}
         <p className="text-base font-medium leading-6 text-amber-400">{formatTime(duration)}</p>
         <p className="text-base font-bold leading-6 text-gray-400">{name}</p>
       </Link>
