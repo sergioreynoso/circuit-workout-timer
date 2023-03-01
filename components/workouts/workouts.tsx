@@ -16,13 +16,9 @@ const Workouts = ({ userId }: { userId: string }) => {
   if (query.error) return <Preloader label="Error loading page" />;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className=" mt-8 flex max-w-lg flex-col gap-8  px-4 md:px-0">
       <WorkoutListHeader userId={userId} />
       <WorkoutSortableList key={query.dataUpdatedAt} data={query.data} />
-      {/* <button className="flex-grow h-16 text-xl font-extrabold leading-7 rounded-2xl bg-amber-500 text-amber-900">
-        Create Workout
-      </button> */}
-      <Button intent="primary">Create Workout</Button>
     </div>
   );
 };
