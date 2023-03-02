@@ -13,10 +13,12 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
+    <>
       <Header />
-      <Workouts userId={userId} />
-    </Container>
+      <Container>
+        <Workouts userId={userId} />
+      </Container>
+    </>
   );
 };
 
