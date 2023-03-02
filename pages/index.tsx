@@ -6,6 +6,8 @@ import Header from '../components/header/header';
 import mock from '../public/mock.png';
 import { signIn, useSession } from 'next-auth/react';
 
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
+
 const Home: NextPage = () => {
   return (
     <div className="flex flex-col justify-center">
@@ -21,7 +23,7 @@ const Home: NextPage = () => {
           intent="primary"
           onClick={() =>
             signIn(undefined, {
-              callbackUrl: 'http://localhost:3000/dashboard',
+              callbackUrl: `${NEXTAUTH_URL}/dashboard`,
             })
           }
         >
