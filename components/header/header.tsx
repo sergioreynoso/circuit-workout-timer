@@ -9,28 +9,25 @@ const Header = () => {
 
   if (router.asPath === '/createWorkout') return null;
 
-  if (status === 'unauthenticated') {
-    return (
-      <button
-        onClick={() =>
-          signIn(undefined, {
-            callbackUrl: 'http://localhost:3000/dashboard',
-          })
-        }
-      >
-        Sign In
-      </button>
-    );
-  }
-
   return (
     <div className="flex items-center justify-between bg-gray-800 p-5">
       <Link href={'/'}>
         <h1 className="text-2xl font-bold leading-8 text-gray-100">Interval Workout App</h1>
       </Link>
       <div>
-        {/* <Link href={'/dashboard'}>Workouts</Link> */}
-        {session ? <DropdownMenu user={session.user} /> : null}
+        {session ? (
+          <DropdownMenu user={session.user} />
+        ) : (
+          <button
+            onClick={() =>
+              signIn(undefined, {
+                callbackUrl: 'http://localhost:3000/dashboard',
+              })
+            }
+          >
+            Sign In
+          </button>
+        )}
       </div>
     </div>
   );
