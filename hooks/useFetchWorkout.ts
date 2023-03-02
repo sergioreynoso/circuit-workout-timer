@@ -8,5 +8,6 @@ export default function useFetchWorkout(id: string) {
     queryKey: ['workout', id],
     queryFn: () => (id ? fetcher<WorkoutWithActivities>(id, 'workout') : null),
     refetchOnWindowFocus: false,
+    cacheTime: Infinity,
   });
 }
