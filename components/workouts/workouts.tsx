@@ -22,13 +22,13 @@ const Workouts = ({ userId }: { userId: string }) => {
     queryKey: ['workouts'],
     queryFn: () => fetcher<Workout[]>(userId, 'workouts'),
     onSuccess: data => {
-      if (data.length === 0)
+      if (data.length === 0) {
         mutation.mutate(
           {
             name: 'Light Workout',
             set_count: 1,
             set_rest: 10000,
-            duration: 0,
+            duration: 125000,
             userId: userId,
             display_seq: 0,
             activities: defaultActivities,
@@ -39,6 +39,7 @@ const Workouts = ({ userId }: { userId: string }) => {
             },
           }
         );
+      }
     },
   });
 
