@@ -28,7 +28,12 @@ const Edit = () => {
     <Container>
       <div className="px-4 md:px-0">
         <div className="mb-8 flex items-center justify-start gap-6 py-4">
-          <CircleButton intent="cancel" onClick={() => router.push(`/workout/${data.id}`)} />
+          <CircleButton
+            intent="cancel"
+            onClick={() => router.push(`/workout/${data.id}`)}
+            // type="submit"
+            // form={formId}
+          />
           <h1 className="flex-grow text-xl font-semibold leading-7">
             <span className="text-amber-500">{workoutDuration}</span>
             {` ${data.name}`}
@@ -38,10 +43,10 @@ const Edit = () => {
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
             <div className="flex flex-grow flex-col">
-              <h3 className="text-base font-semibold leading-6 text-gray-300">Workout Activities</h3>
+              <h3 className="tex-base font-semibold leading-6 text-gray-300">Workout Activities</h3>
               <p className="text-base font-normal leading-6">Add up to 8 activity</p>
             </div>
-            <AddActivityDialog workoutId={data.id} activitiesTotalCount={data.activities.length} />
+            <AddActivityDialog data={data} />
           </div>
         </div>
         <ActivitySortableList key={dataUpdatedAt} data={data} />
