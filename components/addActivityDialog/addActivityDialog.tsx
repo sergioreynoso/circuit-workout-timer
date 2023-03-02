@@ -5,20 +5,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
+import { WorkoutWithActivities } from '../../types/workout';
 import AlertDialog from '../alertDialog/alertDialog';
 import Input from '../input';
 
 type Props = {
-  workoutId: string;
-  activitiesTotalCount: number;
+  data: WorkoutWithActivities;
 };
 
-const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
+const AddActivityDialog = ({ data }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [{ name, duration, workoutId }, setInputValue] = useState({
     name: '',
     duration: 30,
-    workoutId: id,
+    workoutId: data.id,
   });
 
   const queryClient = useQueryClient();
@@ -44,13 +44,12 @@ const AddActivityDialog = ({ workoutId: id, activitiesTotalCount }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    e.stopPropagation();
     mutation.mutate({
       name: name,
       type: 'WORK',
       duration: Number(duration * 1000),
       workoutId: workoutId,
-      display_seq: activitiesTotalCount + 1,
+      display_seq: data.activities.length + 1,
     });
   };
 
