@@ -17,7 +17,7 @@ const Workouts = ({ userId }: { userId: string }) => {
 
   return (
     <div className=" mt-8 flex max-w-lg flex-col gap-8  px-4 md:px-0">
-      <WorkoutListHeader userId={userId} />
+      <WorkoutListHeader userId={userId} data={query.data} />
       <WorkoutSortableList key={query.dataUpdatedAt} data={query.data} />
     </div>
   );
