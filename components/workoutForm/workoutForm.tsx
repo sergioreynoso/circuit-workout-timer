@@ -1,5 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React, { useReducer } from 'react';
 import useUpdateWorkout from '../../hooks/useUpdateWorkout';
+import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 import { getMillSeconds } from '../../lib/getMillSeconds';
 import { getMin } from '../../lib/getMin';
@@ -66,6 +69,7 @@ function formReducer(state: FormReducer, action: FormActions) {
 }
 
 const WorkoutForm = ({ data, ...delegated }: Props) => {
+  const router = useRouter();
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
     setCount: data.set_count,
@@ -74,19 +78,30 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
   });
   const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
 
+  const queryClient = useQueryClient();
   const mutation = useUpdateWorkout();
   const mutateWorkout = (name: string, set: number, rest: number) => {
-    mutation.mutate({
-      id: data.id,
-      name: name,
-      set_count: Number(set),
-      set_rest: Number(rest),
-      duration: formatWorkout(data).duration,
-    });
+    console.log('DURATION', formatTime(formatWorkout(data).duration), set);
+    mutation.mutate(
+      {
+        id: data.id,
+        name: name,
+        set_count: Number(set),
+        set_rest: Number(rest),
+        duration: formatWorkout(data).duration,
+      },
+      {
+        onSuccess: ({ data: newData }) => {
+          queryClient.invalidateQueries(['workouts']);
+          // router.push(`/workout/${data.id}`);
+        },
+      }
+    );
   };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
   };
 
@@ -101,6 +116,7 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
           onChange={e => dispatch({ type: 'NAME', payload: e.currentTarget.value })}
           required={true}
           autoComplete="off"
+          maxLength={18}
         />
         <div className="mt-3 flex flex-col gap-4">
           <StepperInput
