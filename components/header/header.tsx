@@ -19,6 +19,7 @@ const Header = () => {
           <DropdownMenu user={session.user} />
         ) : (
           <button
+            className="font-semibold text-gray-300 hover:text-gray-200"
             onClick={() =>
               signIn(undefined, {
                 callbackUrl: 'http://localhost:3000/dashboard',
