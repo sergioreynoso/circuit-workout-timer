@@ -2,23 +2,12 @@ import { Workout } from '@prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
-import { defaultWorkout } from '../../lib/defaultWorkout';
+import { newActivity } from '../../lib/defaultWorkout';
 import Button from '../button/button';
 
 const MAX_WORKOUTS = 5 as const;
-
-const WORKOUT_TEMPLATE = (userId: string, workouts: Workout[]) => ({
-  name: 'Untitled Workout',
-  set_count: 1,
-  set_rest: 10000,
-  duration: 0,
-  userId: userId,
-  display_seq: workouts?.length! + 1,
-  activities: defaultWorkout,
-});
 
 type Props = {
   userId: string;
@@ -32,15 +21,28 @@ const WorkoutListHeader = ({ userId, data }: Props) => {
   const mutation = useMutation({
     mutationFn: (workout: Optional<Workout, 'id'> & { activities: FormattedActivity[] }) =>
       axios.post('/api/v1/workout', workout),
-    onSuccess: ({ data: newData }) => {
-      router.push(`/editWorkout/${newData.id}`);
-    },
   });
 
   const onClickHandler = () => {
     console.log('first');
     const workouts = queryClient.getQueryData<Workout[]>(['workouts']);
-    if (workouts) mutation.mutate(WORKOUT_TEMPLATE(userId, workouts));
+    if (workouts)
+      mutation.mutate(
+        {
+          name: 'Untitled Workout',
+          set_count: 1,
+          set_rest: 10000,
+          duration: 0,
+          userId: userId,
+          display_seq: workouts.length + 1,
+          activities: newActivity,
+        },
+        {
+          onSuccess: ({ data: newData }) => {
+            router.push(`/editWorkout/${newData.id}`);
+          },
+        }
+      );
   };
 
   return (
