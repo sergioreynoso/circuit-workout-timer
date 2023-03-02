@@ -4,7 +4,7 @@ import { Optional } from 'ts-toolbelt/out/Object/Optional';
 export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
   {
     name: 'Jumping Jacks',
-    display_seq: 4,
+    display_seq: 0,
     duration: 30000,
     type: 'WORK',
   },
@@ -16,13 +16,13 @@ export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
   },
   {
     name: 'Pushups',
-    display_seq: 7,
+    display_seq: 2,
     duration: 30000,
     type: 'WORK',
   },
   {
     name: 'Plank',
-    display_seq: 5,
+    display_seq: 3,
     duration: 30000,
     type: 'WORK',
   },
@@ -31,7 +31,7 @@ export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
 export const newActivity: Optional<Activity, 'id' | 'workoutId'>[] = [
   {
     name: 'First Exercise',
-    display_seq: 4,
+    display_seq: 0,
     duration: 30000,
     type: 'WORK',
   },
