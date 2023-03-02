@@ -72,11 +72,12 @@ const EditActivityDialog = ({ activity }: Props) => {
             onChange={handleChange}
             placeholder=""
             required={true}
+            maxLength={18}
           />
           <Input
             type="number"
             label="Length"
-            name="length"
+            name="duration"
             value={duration}
             onChange={handleChange}
             placeholder=""
