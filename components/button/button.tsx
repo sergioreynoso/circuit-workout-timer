@@ -22,13 +22,19 @@ const variant = {
 interface Props extends ComponentPropsWithoutRef<'button'> {
   children: ReactNode;
   intent: keyof typeof variant;
+  disabled?: boolean;
 }
 
-const Button = ({ intent = 'primary', children, ...props }: Props) => {
+const Button = ({ intent = 'primary', disabled = false, children, ...props }: Props) => {
   return (
     <button
+      disabled={disabled}
       className={`
-     flex h-14 items-center justify-center gap-2 rounded-lg px-4 sm:px-8 ${variant[intent].text} ${variant[intent].bg} text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text}`}
+     flex h-14 items-center justify-center gap-2 rounded-lg px-4 sm:px-8 ${variant[intent].text} ${
+        variant[intent].bg
+      } text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text} ${
+        disabled && 'opacity-25'
+      }`}
       {...props}
     >
       {children}
