@@ -1,25 +1,7 @@
 import { Activity } from '@prisma/client';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
 
-export const defaultWorkout: Optional<Activity, 'id' | 'workoutId'>[] = [
-  {
-    name: 'Squats',
-    display_seq: 1,
-    duration: 30000,
-    type: 'WORK',
-  },
-  {
-    name: 'Sit-Ups',
-    display_seq: 2,
-    duration: 30000,
-    type: 'WORK',
-  },
-  {
-    name: 'Lunges',
-    display_seq: 3,
-    duration: 30000,
-    type: 'WORK',
-  },
+export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
   {
     name: 'Jumping Jacks',
     display_seq: 4,
@@ -27,14 +9,8 @@ export const defaultWorkout: Optional<Activity, 'id' | 'workoutId'>[] = [
     type: 'WORK',
   },
   {
-    name: 'Plank',
-    display_seq: 5,
-    duration: 30000,
-    type: 'WORK',
-  },
-  {
-    name: 'Mountain Climber',
-    display_seq: 6,
+    name: 'Squats',
+    display_seq: 1,
     duration: 30000,
     type: 'WORK',
   },
@@ -45,14 +21,17 @@ export const defaultWorkout: Optional<Activity, 'id' | 'workoutId'>[] = [
     type: 'WORK',
   },
   {
-    name: 'Jumping Jacks',
-    display_seq: 8,
+    name: 'Plank',
+    display_seq: 5,
     duration: 30000,
     type: 'WORK',
   },
+];
+
+export const newActivity: Optional<Activity, 'id' | 'workoutId'>[] = [
   {
-    name: 'Burpee',
-    display_seq: 9,
+    name: 'First Exercise',
+    display_seq: 4,
     duration: 30000,
     type: 'WORK',
   },
