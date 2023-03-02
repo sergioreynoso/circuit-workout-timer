@@ -1,5 +1,4 @@
 import { signIn, useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DropdownMenu from '../dropdownMenu';
 
@@ -25,7 +24,7 @@ const Header = () => {
               })
             }
           >
-            Sign In
+            Log In
           </button>
         )}
       </div>
