@@ -18,7 +18,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex flex-col items-center justify-center  gap-5 p-6 sm:gap-10">
         <p className="text-center text-2xl font-black leading-10 text-gray-200 sm:text-4xl">Interval Workout App</p>
-        <Image src={mock} alt="workout out displayed on an mobile phone" className="w-56 sm:w-72" />
+        <Image src={mock} priority alt="workout out displayed on an mobile phone" className="w-56 sm:w-72" />
         <Button
           intent="primary"
           onClick={() =>
