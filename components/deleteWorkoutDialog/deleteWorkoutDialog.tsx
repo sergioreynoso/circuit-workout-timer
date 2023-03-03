@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog';
 import CircleButton from '../circleButton/circleButton';
+import Button from '../button/button';
 
 type DeleteWorkoutDialogProps = {
   label?: string;
@@ -49,12 +50,14 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
             This action cannot be undone. This will permanently delete your workout and remove your data from our
             servers.
           </Description>
-          <div className="flex justify-end gap-4">
+          <div className="flex w-full justify-end gap-4">
             <Cancel asChild>
-              <button>Cancel</button>
+              <Button intent="transparent">Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <button onClick={onClickHandler}>Delete</button>
+            <Button intent="delete" onClick={onClickHandler}>
+              Delete
+            </Button>
             {/* </Action> */}
           </div>
         </div>

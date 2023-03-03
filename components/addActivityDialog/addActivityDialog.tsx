@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 import AlertDialog from '../alertDialog/alertDialog';
+import Button from '../button/button';
 import Input from '../input';
 
 type Props = {
@@ -88,12 +89,14 @@ const AddActivityDialog = ({ data }: Props) => {
             required={true}
           />
           <div>{mutation.isLoading && 'Updating exercise...'}</div>
-          <div className="flex justify-end gap-4">
+          <div className="flex w-full justify-end gap-4">
             <Cancel asChild>
-              <button>Cancel</button>
+              <Button intent="transparent">Cancel</Button>
             </Cancel>
             {/* <Action asChild> */}
-            <button type="submit">Save</button>
+            <Button type="submit" intent="secondary">
+              Save
+            </Button>
             {/* </Action> */}
           </div>
         </form>
