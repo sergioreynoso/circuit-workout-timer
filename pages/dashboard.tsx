@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { Container } from '../components/layout';
 import Preloader from '../components/preloader';
-import Workouts from '../components/workouts/workouts';
+import WorkoutsList from '../components/workoutsList/workoutsList';
 import Header from '../components/header';
 
 const Dashboard = () => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
     <>
       <Header />
       <Container>
-        <Workouts userId={userId} />
+        <WorkoutsList userId={userId} />
       </Container>
     </>
   );
