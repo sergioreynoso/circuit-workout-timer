@@ -17,11 +17,27 @@ const variant = {
       bg: 'hover:bg-green-300',
     },
   },
+  transparent: {
+    text: 'text-gray-400',
+    bg: '',
+    hover: {
+      text: 'hover:text-gray-300',
+      bg: '',
+    },
+  },
+  delete: {
+    text: 'text-red-900',
+    bg: 'bg-red-300/90',
+    hover: {
+      text: 'hover:text-red-900',
+      bg: 'hover:bg-red-300',
+    },
+  },
 } as const;
 
 interface Props extends ComponentPropsWithoutRef<'button'> {
   children: ReactNode;
-  intent: keyof typeof variant;
+  intent?: keyof typeof variant;
   disabled?: boolean;
 }
 
@@ -30,7 +46,7 @@ const Button = ({ intent = 'primary', disabled = false, children, ...props }: Pr
     <button
       disabled={disabled}
       className={`
-     flex h-14 items-center justify-center gap-2 rounded-lg px-4 sm:px-8 ${variant[intent].text} ${
+     flex h-12 items-center justify-center gap-2 rounded-lg px-4 sm:px-8 ${variant[intent].text} ${
         variant[intent].bg
       } text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text} ${
         disabled && 'opacity-25'
