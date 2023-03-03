@@ -81,7 +81,6 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useUpdateWorkout();
   const mutateWorkout = (name: string, set: number, rest: number) => {
-    console.log('DURATION', formatTime(formatWorkout(data).duration), set);
     mutation.mutate(
       {
         id: data.id,
