@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import useTimer, { CounterState } from '../../hooks/useTimer';
 
 import { formatTime } from '../../lib/formatTime';
@@ -7,7 +7,6 @@ import { formatWorkout } from '../../lib/formatWorkout';
 
 import { WorkoutWithActivities } from '../../types/workout';
 import Button from '../button/button';
-import { Container } from '../layout';
 import ProgressCircle from '../progressCircle';
 import { TimerContext } from '../timerContext';
 import TimerControl from '../timerControl/timerControl';
