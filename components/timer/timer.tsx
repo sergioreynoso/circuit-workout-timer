@@ -30,7 +30,7 @@ const Timer = ({ workoutData }: Props) => {
   return (
     <div className="px-4 text-center md:px-0">
       <h2 className="text-3xl font-black leading-9 text-amber-400">{formatTime(state.runningTime)}</h2>
-      <p>
+      <p className="mt-4 mb-4">
         {state.setCount} / {formattedWorkout.totalSets}
       </p>
       <div className="relative">
@@ -57,6 +57,7 @@ const NextExercise = ({ state }: { state: CounterState }) => {
   return (
     state.nextActivity && (
       <div className="flex flex-col items-center gap-4 p-4">
+        <p>Next</p>
         <p className="text-3xl font-light leading-9 text-gray-300">{state.nextActivity.name}</p>
       </div>
     )
