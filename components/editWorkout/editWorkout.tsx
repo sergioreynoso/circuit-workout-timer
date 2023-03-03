@@ -35,8 +35,8 @@ const EditWorkout = ({ workoutId }: Props) => {
             <CircleButton
               intent="cancel"
               onClick={() => router.push(`/workout/${data.id}`)}
-              type="submit"
-              form={formId}
+              // type="submit"
+              // form={formId}
             />
             <h1 className="flex-grow text-xl font-semibold leading-7">
               <span className="text-amber-500">{workoutDuration}</span>
