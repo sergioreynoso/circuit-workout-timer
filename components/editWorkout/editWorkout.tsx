@@ -30,18 +30,20 @@ const EditWorkout = ({ workoutId }: Props) => {
   return (
     <Container>
       <div className="px-4 md:px-0">
-        <div className="mb-8 flex items-center justify-start gap-6 py-4">
-          <CircleButton
-            intent="cancel"
-            onClick={() => router.push(`/workout/${data.id}`)}
-            type="submit"
-            form={formId}
-          />
-          <h1 className="flex-grow text-xl font-semibold leading-7">
-            <span className="text-amber-500">{workoutDuration}</span>
-            {` ${data.name}`}
-          </h1>
-        </div>
+        <header>
+          <nav className="mb-8 flex items-center justify-start gap-6 py-4">
+            <CircleButton
+              intent="cancel"
+              onClick={() => router.push(`/workout/${data.id}`)}
+              type="submit"
+              form={formId}
+            />
+            <h1 className="flex-grow text-xl font-semibold leading-7">
+              <span className="text-amber-500">{workoutDuration}</span>
+              {` ${data.name}`}
+            </h1>
+          </nav>
+        </header>
         <WorkoutForm data={data} id={formId} />
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
