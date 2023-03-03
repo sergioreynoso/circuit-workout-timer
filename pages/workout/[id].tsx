@@ -1,25 +1,23 @@
 import { useRouter } from 'next/router';
 import { Container } from '../../components/layout';
-import Preloader from '../../components/preloader';
-import Timer from '../../components/timer';
+import Preloader from '../../components/preloader/preloader';
 import TimerProvider from '../../components/timerContext';
-import TimerHeader from '../../components/timerHeader';
-import useFetchWorkout from '../../hooks/useFetchWorkout';
+import Workout from '../../components/workout/workout';
 
 const WorkoutTimer = () => {
-  const router = useRouter();
-  const workoutId = router.query.id as string;
+  const {
+    isReady,
+    query: { id },
+  } = useRouter();
 
-  const query = useFetchWorkout(workoutId);
-
-  if (!query.data) return <Preloader label="Loading workout..." />;
-  if (query.error) return <Preloader label="Error loading page" />;
+  if (!isReady) {
+    return <Preloader label="Loading" />;
+  }
 
   return (
     <TimerProvider>
       <Container>
-        <TimerHeader data={query.data} />
-        <Timer workoutData={query.data} />
+        <Workout workoutId={id as string} />
       </Container>
     </TimerProvider>
   );
