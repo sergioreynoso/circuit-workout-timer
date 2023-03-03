@@ -69,7 +69,6 @@ function formReducer(state: FormReducer, action: FormActions) {
 }
 
 const WorkoutForm = ({ data, ...delegated }: Props) => {
-  const router = useRouter();
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
     setCount: data.set_count,
@@ -92,7 +91,6 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
       {
         onSuccess: ({ data: newData }) => {
           queryClient.invalidateQueries(['workouts']);
-          // router.push(`/workout/${data.id}`);
         },
       }
     );
