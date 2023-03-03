@@ -13,7 +13,7 @@ const AlertDialog = ({ TriggerButton, children, isOpen, setIsOpen }: Props) => {
       <TriggerButton />
       <AlertDialogPrimitive.Portal>
         <AlertDialogPrimitive.Overlay className="fixed inset-0 bg-gray-900/80" />
-        <AlertDialogPrimitive.Content className="fixed left-4 right-4 top-1/2 -translate-y-1/2 rounded-md bg-gray-800 p-6 sm:left-1/3 sm:right-1/3">
+        <AlertDialogPrimitive.Content className="fixed top-1/2 left-1/2 w-11/12 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray-800 p-4 sm:w-1/3">
           {children}
         </AlertDialogPrimitive.Content>
       </AlertDialogPrimitive.Portal>
