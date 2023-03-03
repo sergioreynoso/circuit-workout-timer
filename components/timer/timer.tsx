@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo } from 'react';
 import useTimer, { CounterState } from '../../hooks/useTimer';
 
@@ -5,6 +6,7 @@ import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 
 import { WorkoutWithActivities } from '../../types/workout';
+import Button from '../button/button';
 import { Container } from '../layout';
 import ProgressCircle from '../progressCircle';
 import { TimerContext } from '../timerContext';
@@ -18,15 +20,11 @@ const Timer = ({ workoutData }: Props) => {
 
   const [state] = useTimer(formattedWorkout);
 
-  useEffect(() => {
-    // console.log(formattedWorkout);
-  }, []);
-
   if (isTimerDone)
     return (
-      <Container>
+      <div className="px-4 text-center md:px-0">
         <WorkoutComplete />
-      </Container>
+      </div>
     );
 
   return (
@@ -66,18 +64,16 @@ const NextExercise = ({ state }: { state: CounterState }) => {
 };
 
 const WorkoutComplete = () => {
+  const router = useRouter();
+
   return (
-    <div className="justify-center p-4">
-      <p>Complete!</p>
+    <div className="mt-6 flex h-20 flex-col items-center justify-center gap-4 rounded-lg bg-gray-800 p-40">
+      <p className="text-4xl font-extrabold leading-relaxed text-gray-300">Workout Complete!</p>
+      <Button intent="primary" onClick={() => router.push(`/dashboard`)}>
+        Done
+      </Button>
     </div>
   );
 };
-
-/*
- <h2 className="text-3xl font-black leading-9 text-green-500">
-                  {formatTime(state.runningActivityTime)}
-                </h2>
-                <p className="text-3xl font-semibold leading-9 text-gray-300">{state.runningActivity.name}</p>
-                */
 
 export default Timer;
