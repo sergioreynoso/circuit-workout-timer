@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
+import useDebounce from '../../hooks/useDebounce';
 import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
@@ -75,35 +76,43 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
     setRestMin: getMin(data.set_rest),
     setRestSec: getSeconds(data.set_rest),
   });
-  const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
 
-  const queryClient = useQueryClient();
+  const debounceState = useDebounce(state, 500);
+
   const mutation = useUpdateWorkout();
-  const mutateWorkout = (name: string, set: number, rest: number) => {
-    mutation.mutate(
-      {
+
+  const mutateWorkout = useCallback(
+    (name: string, set: number, rest: number) => {
+      mutation.mutate({
         id: data.id,
         name: name,
         set_count: Number(set),
         set_rest: Number(rest),
         duration: formatWorkout(data).duration,
-      },
-      {
-        onSuccess: ({ data: newData }) => {
-          queryClient.invalidateQueries(['workouts']);
-        },
-      }
-    );
-  };
+      });
+    },
+    [data, mutation]
+  );
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
-  };
+  // const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
+  // };
+
+  const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
+
+  //TODO: Refactor without useEffect
+  useEffect(() => {
+    mutateWorkout(
+      debounceState.name,
+      debounceState.setCount,
+      getMillSeconds(debounceState.setRestMin, debounceState.setRestSec)
+    );
+  }, [debounceState]);
 
   return (
-    <form {...delegated} onSubmit={onFormSubmit}>
+    <form {...delegated}>
       <div className="flex flex-col justify-between gap-4">
         <Input
           label="Workout Name"
