@@ -1,3 +1,4 @@
+import { useSortable } from '@dnd-kit/sortable';
 import { Activity, Workout } from '@prisma/client';
 import { DragHandleDots2Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,6 +10,7 @@ import { WorkoutWithActivities } from '../../types/workout';
 import DeleteActivityDialog from '../deleteActivityDialog/deleteActivityDialog';
 import EditActivityDialog from '../editActivityDialog/editActivityDialog';
 import SortableList from '../sortableList';
+import { CSS } from '@dnd-kit/utilities';
 
 type Props = {
   data: WorkoutWithActivities;
@@ -39,18 +41,30 @@ const ActivitySortableList = ({ data }: Props) => {
 
 function ListItem({ item }: { item: Activity }) {
   const { id, name, duration } = item;
+
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    listStyle: 'none',
+  };
+
   return (
-    <div className="flex h-16 items-center justify-between rounded-lg px-4 text-gray-100">
-      <div className="flex h-full grow items-center gap-5">
+    <li
+      className="flex h-16 items-center justify-between rounded-lg bg-gray-800 pr-4 text-gray-100 hover:bg-gray-700 active:bg-gray-800"
+      ref={setNodeRef}
+      style={style}
+    >
+      <button className="flex h-full grow items-center gap-5 pl-4" {...listeners} {...attributes}>
         <DragHandleDots2Icon className="h-6 w-6 text-gray-500" />
         <p className="text-base font-medium leading-6 text-green-400">{formatTime(duration)}</p>
         <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
-      </div>
+      </button>
       <div className="flex gap-1">
         <EditActivityDialog activity={item} />
         <DeleteActivityDialog activityId={id} />
       </div>
-    </div>
+    </li>
   );
 }
 
