@@ -104,11 +104,12 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
 
   //TODO: Refactor without useEffect
   useEffect(() => {
-    mutateWorkout(
-      debounceState.name,
-      debounceState.setCount,
-      getMillSeconds(debounceState.setRestMin, debounceState.setRestSec)
-    );
+    if (debounceState.name)
+      mutateWorkout(
+        debounceState.name,
+        debounceState.setCount,
+        getMillSeconds(debounceState.setRestMin, debounceState.setRestSec)
+      );
   }, [debounceState]);
 
   return (
