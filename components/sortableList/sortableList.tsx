@@ -88,38 +88,12 @@ const SortableList = <T extends BaseItem>({ items, onDragEnd, renderItem }: Prop
         modifiers={[restrictToVerticalAxis, restrictToParentElement]}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <ul className="flex flex-col gap-3">
-            {items.map(item => (
-              <Draggable key={item.id} id={item.id}>
-                {renderItem(item)}
-              </Draggable>
-            ))}
-          </ul>
+          <ul className="flex flex-col gap-3">{items.map(item => renderItem(item))}</ul>
         </SortableContext>
         <DragOverlay className="rounded-lg bg-gray-700 shadow-xl">{active && overlayItem(items, active)}</DragOverlay>
       </DndContext>
     </div>
   );
 };
-
-function Draggable({ id, children }: { id: UniqueIdentifier; children?: ReactNode }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    listStyle: 'none',
-  };
-  return (
-    <li
-      className="touch-manipulation rounded-lg bg-gray-800 hover:bg-gray-700"
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-    >
-      {children}
-    </li>
-  );
-}
 
 export default SortableList;
