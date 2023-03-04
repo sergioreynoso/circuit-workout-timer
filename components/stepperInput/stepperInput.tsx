@@ -26,7 +26,7 @@ const StepperInput = ({ label, min, max, initialValue, handleChange }: Props) =>
   }
 
   function onClickHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    // e.preventDefault();
+    e.preventDefault();
 
     const inputName = e.currentTarget.name;
     let newValue = Number(value);
