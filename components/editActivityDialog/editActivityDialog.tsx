@@ -1,4 +1,5 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import * as Label from '@radix-ui/react-label';
 import { Cancel, Action } from '@radix-ui/react-alert-dialog';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -62,13 +63,18 @@ const EditActivityDialog = ({ activity }: Props) => {
   }
 
   return (
-    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col p-2 sm:p-4">
-        <h1 className="text-xl font-semibold leading-7 text-gray-300">Edit Exercise</h1>
-        <form onSubmit={onFormSubmit} className="mt-4 flex flex-grow flex-col items-start gap-8">
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Edit Activity">
+      <div className="flex flex-col p-6">
+        {mutation.isLoading && (
+          <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
+            <p className="text-xl font-bold text-gray-300">Updating Activity...</p>{' '}
+          </div>
+        )}
+
+        <form onSubmit={onFormSubmit} className="mt-2 flex flex-grow flex-col items-start gap-8">
           <Input
             type="text"
-            label="Exercise Name"
+            label="Name"
             name="name"
             value={name}
             onChange={handleChange}
@@ -76,18 +82,20 @@ const EditActivityDialog = ({ activity }: Props) => {
             required={true}
             maxLength={18}
           />
-          <div className="flex w-full flex-grow  gap-3 ">
-            <p className="w-16 font-bold text-green-500">{formatTime(duration[0])}</p>
-            <Slider
-              defaultValue={50000}
-              min={5000}
-              max={300000}
-              step={1000}
-              value={duration}
-              onValueChange={(value: number[]) => setInputValue(prev => ({ ...prev, duration: value }))}
-            />
+          <div className="w-full ">
+            <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
+            <div className="mt-2 flex items-center gap-8">
+              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(duration[0])}</p>
+              <Slider
+                defaultValue={50000}
+                min={5000}
+                max={300000}
+                step={1000}
+                value={duration}
+                onValueChange={(value: number[]) => setInputValue(prev => ({ ...prev, duration: value }))}
+              />
+            </div>
           </div>
-          <div>{mutation.isLoading && 'Updating exercise...'}</div>
           <div className="flex w-full justify-end gap-4">
             <Cancel asChild>
               <Button intent="transparent">Cancel</Button>

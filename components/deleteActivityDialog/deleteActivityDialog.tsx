@@ -41,27 +41,27 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   }
 
   return (
-    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
-      {mutation.isLoading ? (
-        <p>Deleting Exercise...</p>
-      ) : (
-        <div className="flex flex-col gap-4 p-2 sm:p-4">
-          <Title className="text-xl font-semibold leading-7 text-gray-300">Delete Exercise</Title>
-          <Description className="text-base font-normal leading-6 text-gray-300">
-            This action is irreversible and will delete your exercise and data permanently.
-          </Description>
-          <div className="flex w-full justify-end gap-4">
-            <Cancel asChild>
-              <Button intent="transparent">Cancel</Button>
-            </Cancel>
-            {/* <Action asChild> */}
-            <Button onClick={onClickHandler} intent="delete">
-              Delete
-            </Button>
-            {/* </Action> */}
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Delete Activity">
+      <div className="flex flex-col gap-4 p-2 sm:p-4">
+        {mutation.isLoading && (
+          <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
+            <p className="text-xl font-bold text-gray-300">Deleting Activity...</p>{' '}
           </div>
+        )}
+        <Description className="text-base font-normal leading-6 text-gray-300">
+          This action is irreversible and will delete your exercise and data permanently.
+        </Description>
+        <div className="mt-4 flex w-full justify-end gap-4">
+          <Cancel asChild>
+            <Button intent="transparent">Cancel</Button>
+          </Cancel>
+          {/* <Action asChild> */}
+          <Button onClick={onClickHandler} intent="delete">
+            Delete
+          </Button>
+          {/* </Action> */}
         </div>
-      )}
+      </div>
     </AlertDialog>
   );
 };
