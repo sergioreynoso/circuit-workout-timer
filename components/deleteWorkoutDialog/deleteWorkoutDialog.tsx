@@ -52,7 +52,9 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
           </Description>
           <div className="flex w-full justify-end gap-4">
             <Cancel asChild>
-              <Button intent="transparent">Cancel</Button>
+              <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
+                Cancel
+              </button>
             </Cancel>
             {/* <Action asChild> */}
             <Button intent="delete" onClick={onClickHandler}>
