@@ -11,9 +11,10 @@ interface Props {
   max: number;
   initialValue: number;
   handleChange: (value: number) => void;
+  disabled?: boolean;
 }
 
-const StepperInput = ({ label, min, max, initialValue, handleChange }: Props) => {
+const StepperInput = ({ label, min, max, initialValue, disabled = false, handleChange }: Props) => {
   const id = useId();
   const [value, setValue] = useState(() => initialValue.toString());
 
@@ -49,6 +50,7 @@ const StepperInput = ({ label, min, max, initialValue, handleChange }: Props) =>
           intent="decrement"
           description="Decrease number of sets"
           onClick={onClickHandler}
+          disabled={disabled}
         />
         <input
           type="number"
@@ -59,12 +61,14 @@ const StepperInput = ({ label, min, max, initialValue, handleChange }: Props) =>
           onChange={onChangeHandler}
           inputMode="decimal"
           className="w-13 h-12 rounded-lg border border-gray-500 bg-transparent px-4"
+          disabled={disabled}
         />
         <CircleButton
           name="increment"
           intent="increment"
           description="Increase number of sets"
           onClick={onClickHandler}
+          disabled={disabled}
         />
       </div>
     </div>
