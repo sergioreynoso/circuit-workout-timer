@@ -112,9 +112,10 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
       );
   }, [debounceState]);
 
+  //TODO: When set is one, disable set time controls
   return (
     <form {...delegated}>
-      <div className="flex flex-col justify-between gap-4">
+      <div className={`flex flex-col justify-between gap-4`}>
         <Input
           label="Workout Name"
           type="text"
@@ -138,32 +139,36 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
               })
             }
           />
-          <p className="mt-4">How long would you like to rest between sets?</p>
-          <div className="flex gap-6">
-            <StepperInput
-              label="Minutes"
-              min={0}
-              max={5}
-              initialValue={state.setRestMin}
-              handleChange={value =>
-                dispatch({
-                  type: 'SET_REST_MIN',
-                  payload: value,
-                })
-              }
-            />
-            <StepperInput
-              label="Seconds"
-              min={secondsInputMinValue}
-              max={60}
-              initialValue={state.setRestSec}
-              handleChange={value =>
-                dispatch({
-                  type: 'SET_REST_SEC',
-                  payload: value,
-                })
-              }
-            />
+          <div className={`flex flex-col gap-4 ${state.setCount === 1 ? 'opacity-30' : ''}`}>
+            <p className="mt-4 w-full flex-wrap">How long would you like to rest between sets?</p>
+            <div className="flex gap-6">
+              <StepperInput
+                label="Minutes"
+                min={0}
+                max={5}
+                initialValue={state.setRestMin}
+                disabled={state.setCount === 1 ? true : false}
+                handleChange={value =>
+                  dispatch({
+                    type: 'SET_REST_MIN',
+                    payload: value,
+                  })
+                }
+              />
+              <StepperInput
+                label="Seconds"
+                min={secondsInputMinValue}
+                max={60}
+                initialValue={state.setRestSec}
+                disabled={state.setCount === 1 ? true : false}
+                handleChange={value =>
+                  dispatch({
+                    type: 'SET_REST_SEC',
+                    payload: value,
+                  })
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
