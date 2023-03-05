@@ -46,23 +46,6 @@ const ProgressCircle = ({
     return [center, radius, dashArray, dashOffset];
   }, [progress, size, strokeWidth]);
 
-  const updateRunningActivityProgress = useCallback(
-    (activity: FormattedActivity | FormattedWorkout) => {
-      const totalDuration = activity.duration;
-      controls.set({
-        strokeDashoffset: dashArray,
-      });
-      controls.start({
-        strokeDashoffset: dashOffset,
-        transition: {
-          duration: totalDuration / TIMER_INTERVAL,
-          ease: [0, 0, 0, 0],
-        },
-      });
-    },
-    [controls, dashArray, dashOffset]
-  );
-
   const toggleProgress = useCallback(() => {
     isTimer
       ? controls.start({
@@ -76,8 +59,10 @@ const ProgressCircle = ({
   }, [controls, dashOffset, isTimer, runningActivityTime]);
 
   useEffect(() => {
-    updateRunningActivityProgress(runningActivity);
-  }, [runningActivity, updateRunningActivityProgress]);
+    controls.set({
+      strokeDashoffset: dashArray,
+    });
+  }, [runningActivity, dashArray, controls]);
 
   useEffect(() => {
     toggleProgress();
