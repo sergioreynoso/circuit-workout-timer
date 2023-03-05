@@ -97,9 +97,9 @@ const EditActivityDialog = ({ activity }: Props) => {
             </div>
           </div>
           <div className="flex w-full justify-end gap-4">
-            <Cancel asChild>
-              <Button intent="transparent">Cancel</Button>
-            </Cancel>
+            <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
+              Cancel
+            </button>
             {/* <Action asChild> */}
             <Button type="submit" intent="secondary">
               Save

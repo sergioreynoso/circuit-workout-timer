@@ -36,7 +36,13 @@ const ActivitySortableList = ({ data }: Props) => {
     setItems(updatedItems);
   }
 
-  return <SortableList<Activity> items={items} onDragEnd={onDragEnd} renderItem={item => <ListItem item={item} />} />;
+  return (
+    <SortableList<Activity>
+      items={items}
+      onDragEnd={onDragEnd}
+      renderItem={item => <ListItem key={item.id} item={item} />}
+    />
+  );
 };
 
 function ListItem({ item }: { item: Activity }) {
