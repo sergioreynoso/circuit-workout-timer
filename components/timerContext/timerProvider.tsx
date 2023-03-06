@@ -5,6 +5,8 @@ export type TimerContextType = {
   setIsTimer: Dispatch<SetStateAction<boolean>>;
   isTimerDone: boolean;
   setIsTimerDone: Dispatch<SetStateAction<boolean>>;
+  isTimerStart: boolean;
+  setIsTimerStart: Dispatch<SetStateAction<boolean>>;
 };
 
 export const TimerContext = createContext({} as TimerContextType);
@@ -16,9 +18,10 @@ type Props = {
 const TimerProvider = ({ children }: Props) => {
   const [isTimer, setIsTimer] = useState(false);
   const [isTimerDone, setIsTimerDone] = useState(false);
+  const [isTimerStart, setIsTimerStart] = useState(false);
 
   return (
-    <TimerContext.Provider value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone }}>
+    <TimerContext.Provider value={{ isTimer, setIsTimer, isTimerDone, setIsTimerDone, isTimerStart, setIsTimerStart }}>
       {children}
     </TimerContext.Provider>
   );
