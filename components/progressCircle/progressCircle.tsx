@@ -31,7 +31,7 @@ const ProgressCircle = ({
   children,
 }: Props) => {
   const controls = useAnimationControls();
-  const { isTimer } = useContext(TimerContext);
+  const { isTimer, isTimerStart } = useContext(TimerContext);
 
   const scaleValue = () => {
     return `scale-[${scale}]`;
@@ -98,7 +98,9 @@ const ProgressCircle = ({
           //   stroke: color,
           //   strokeLinecap: 'round',
           // }}
-          className={`${strokeColors[intent]}`}
+          className={`${strokeColors[intent]} ${!isTimerStart && 'opacity-0'} ${
+            !isTimer && isTimerStart && 'opacity-20'
+          }`}
         />
       </svg>
       {children && (

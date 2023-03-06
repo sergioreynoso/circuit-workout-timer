@@ -14,7 +14,7 @@ import TimerControl from '../timerControl/timerControl';
 type Props = { workoutData: WorkoutWithActivities };
 
 const Timer = ({ workoutData }: Props) => {
-  const { isTimerDone } = useContext(TimerContext);
+  const { isTimerDone, isTimer, isTimerStart } = useContext(TimerContext);
   const formattedWorkout = useMemo(() => formatWorkout(workoutData), [workoutData]);
 
   const [state] = useTimer(formattedWorkout);
@@ -28,10 +28,12 @@ const Timer = ({ workoutData }: Props) => {
 
   return (
     <div className="px-4 text-center md:px-0">
-      <h2 className="text-3xl font-black leading-9 text-amber-400">{formatTime(state.runningTime)}</h2>
-      <p className="mt-4 mb-4">
-        {state.setCount} / {formattedWorkout.totalSets}
-      </p>
+      <div className={`${!isTimerStart && 'opacity-0'} ${!isTimer && isTimerStart && 'opacity-20'} transition-opacity`}>
+        <h2 className="text-3xl font-black leading-9 text-amber-400 ">{formatTime(state.runningTime)}</h2>
+        <p className="mt-4 mb-4">
+          {state.setCount} / {formattedWorkout.totalSets}
+        </p>
+      </div>
       <div className="relative">
         <ProgressCircle runningActivity={formattedWorkout} runningActivityTime={state.runningTime} intent="workout">
           <ProgressCircle
@@ -42,12 +44,24 @@ const Timer = ({ workoutData }: Props) => {
           />
         </ProgressCircle>
         <div className="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-10">
-          <h2 className="text-3xl font-black leading-9 text-green-500">{formatTime(state.runningActivityTime)}</h2>
-          <p className="text-3xl font-bold leading-9 text-gray-300">{state.runningActivity.name}</p>
+          <h2
+            className={`text-3xl font-black leading-9 text-green-500 ${!isTimerStart && 'opacity-0'} ${
+              !isTimer && isTimerStart && 'opacity-20'
+            } transition-opacity`}
+          >
+            {formatTime(state.runningActivityTime)}
+          </h2>
+          {!isTimerStart ? (
+            <p className="text-3xl font-bold leading-9 text-amber-300">Tap to start</p>
+          ) : (
+            <p className="text-3xl font-bold leading-9 text-gray-300">{state.runningActivity.name}</p>
+          )}
           <TimerControl />
         </div>
       </div>
-      <NextExercise state={state} />
+      <div className={`${!isTimerStart && 'opacity-0'} ${!isTimer && isTimerStart && 'opacity-20'} transition-opacity`}>
+        {isTimerStart && <NextExercise state={state} />}
+      </div>
     </div>
   );
 };
