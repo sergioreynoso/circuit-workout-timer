@@ -70,7 +70,7 @@ const ProgressCircle = ({
 
   return (
     <div className="relative flex items-center justify-center">
-      <svg viewBox="0 0 100 100" className={`-rotate-90`} width="100%" height="100%">
+      <svg viewBox="0 0 100 100" className={`-rotate-90`} width="100%" height="100%" style={{ strokeLinecap: 'round' }}>
         <circle
           width={size}
           height={size}
@@ -94,17 +94,16 @@ const ProgressCircle = ({
             strokeDashoffset: dashArray,
           }}
           animate={controls}
-          // css={{
-          //   stroke: color,
-          //   strokeLinecap: 'round',
-          // }}
           className={`${strokeColors[intent]} ${!isTimerStart && 'opacity-0'} ${
             !isTimer && isTimerStart && 'opacity-20'
           }`}
         />
       </svg>
       {children && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 flex scale-[.98] flex-col justify-center">
+        <div
+          className="absolute top-0 bottom-0 left-0 right-0 flex scale-[.98] flex-col justify-center"
+          style={{ strokeLinecap: 'round' }}
+        >
           {children}
         </div>
       )}
