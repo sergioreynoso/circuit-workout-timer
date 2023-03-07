@@ -26,9 +26,6 @@ const ActivitySortableList = ({ data }: Props) => {
       const workout = queryClient.getQueryData<Workout>(['workout', data.id]);
       queryClient.setQueryData(['workout', data.id], { ...workout, activities: newActivities });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['workout', data.id]);
-    },
   });
 
   function onDragEnd(updatedItems: Activity[]) {
