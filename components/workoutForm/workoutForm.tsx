@@ -15,6 +15,7 @@ import StepperInput from '../stepperInput/stepperInput';
 
 interface Props extends React.ComponentPropsWithoutRef<'form'> {
   data: WorkoutWithActivities;
+  formId: string;
 }
 
 type FormReducer = {
@@ -69,15 +70,13 @@ function formReducer(state: FormReducer, action: FormActions) {
   }
 }
 
-const WorkoutForm = ({ data, ...delegated }: Props) => {
+const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
     setCount: data.set_count,
     setRestMin: getMin(data.set_rest),
     setRestSec: getSeconds(data.set_rest),
   });
-
-  const debounceState = useDebounce(state, 500);
 
   const mutation = useUpdateWorkout();
 
@@ -94,27 +93,16 @@ const WorkoutForm = ({ data, ...delegated }: Props) => {
     [data, mutation]
   );
 
-  // const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
-  // };
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
+  };
 
   const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
 
-  //TODO: Refactor without useEffect
-  useEffect(() => {
-    if (debounceState.name)
-      mutateWorkout(
-        debounceState.name,
-        debounceState.setCount,
-        getMillSeconds(debounceState.setRestMin, debounceState.setRestSec)
-      );
-  }, [debounceState]);
-
   //TODO: When set is one, disable set time controls
   return (
-    <form {...delegated}>
+    <form id={formId} onSubmit={onFormSubmit} {...delegated}>
       <div className={`flex flex-col justify-between gap-4`}>
         <Input
           label="Workout Name"
