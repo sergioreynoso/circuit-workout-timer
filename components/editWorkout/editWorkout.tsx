@@ -9,6 +9,7 @@ import WorkoutForm from '../../components/workoutForm';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
+import Button from '../button/button';
 
 type Props = {
   workoutId: string;
@@ -39,7 +40,7 @@ const EditWorkout = ({ workoutId }: Props) => {
             </h1>
           </nav>
         </header>
-        <WorkoutForm data={data} id={formId} />
+        <WorkoutForm data={data} formId={formId} />
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
             <div className="flex flex-grow flex-col">
@@ -50,6 +51,11 @@ const EditWorkout = ({ workoutId }: Props) => {
           </div>
         </div>
         <ActivitySortableList key={dataUpdatedAt} data={data} />
+        <div className="flex items-center justify-center bg-gray-800 p-4">
+          <Button intent="primary" type="submit" form={formId}>
+            Done
+          </Button>
+        </div>
       </div>
     </Container>
   );
