@@ -57,7 +57,7 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
           </div>
         )}
         <Description className="text-base font-normal leading-6 text-gray-300">
-          This action is irreversible and will delete your exercise and data permanently.
+          This action is irreversible and will delete your activity permanently.
         </Description>
         <div className="mt-4 flex w-full justify-end gap-4">
           <Cancel asChild>

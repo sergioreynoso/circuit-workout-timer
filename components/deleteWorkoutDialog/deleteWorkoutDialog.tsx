@@ -47,9 +47,7 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
             <p className="text-xl font-bold text-gray-300">Deleting Workout...</p>{' '}
           </div>
         )}
-        <Description>
-          This action cannot be undone. This will permanently delete your workout and remove your data from our servers.
-        </Description>
+        <Description>This action is irreversible and will delete your workout permanently.</Description>
         <div className="flex w-full justify-end gap-4">
           <Cancel asChild>
             <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
