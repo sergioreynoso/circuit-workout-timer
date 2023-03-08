@@ -1,16 +1,17 @@
 import { useSortable } from '@dnd-kit/sortable';
-import { Activity, Workout } from '@prisma/client';
+import { CSS } from '@dnd-kit/utilities';
+import { Workout } from '@prisma/client';
 import { DragHandleDots2Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import { formatTime } from '../../lib/formatTime';
+import { FormattedActivity } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 import DeleteActivityDialog from '../deleteActivityDialog/deleteActivityDialog';
 import EditActivityDialog from '../editActivityDialog/editActivityDialog';
 import SortableList from '../sortableList';
-import { CSS } from '@dnd-kit/utilities';
 
 type Props = {
   data: WorkoutWithActivities;
@@ -21,20 +22,20 @@ const ActivitySortableList = ({ data }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (activities: Activity[]) => axios.patch(endPoints.activitySort, activities),
+    mutationFn: (activities: FormattedActivity[]) => axios.patch(endPoints.activitySort, activities),
     onMutate: newActivities => {
       const workout = queryClient.getQueryData<Workout>(['workout', data.id]);
       queryClient.setQueryData(['workout', data.id], { ...workout, activities: newActivities });
     },
   });
 
-  function onDragEnd(updatedItems: Activity[]) {
+  function onDragEnd(updatedItems: FormattedActivity[]) {
     mutation.mutate(updatedItems);
     setItems(updatedItems);
   }
 
   return (
-    <SortableList<Activity>
+    <SortableList<FormattedActivity>
       items={items}
       onDragEnd={onDragEnd}
       renderItem={item => <ListItem key={item.id} item={item} />}
@@ -42,7 +43,7 @@ const ActivitySortableList = ({ data }: Props) => {
   );
 };
 
-function ListItem({ item }: { item: Activity }) {
+function ListItem({ item }: { item: FormattedActivity }) {
   const { id, name, duration } = item;
 
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
