@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
+import { WorkoutWithActivities } from '../../types/workout';
 
 import AlertDialog from '../alertDialog';
 import Button from '../button/button';
@@ -22,8 +23,15 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation((id: string) => axios.delete(endPoints.activity, { data: { id: id } }), {
+    onMutate: data => {
+      queryClient.setQueryData(['workout', workoutId], (oldData: WorkoutWithActivities | undefined) => {
+        if (oldData) {
+          const newActivities = oldData.activities.filter(item => item.id !== data);
+          return { ...oldData, activities: newActivities };
+        }
+      });
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout', workoutId] });
       setIsOpen(false);
     },
   });
