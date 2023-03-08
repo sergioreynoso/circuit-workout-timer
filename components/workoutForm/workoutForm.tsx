@@ -1,15 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useReducer } from 'react';
-import useDebounce from '../../hooks/useDebounce';
+import React, { useReducer } from 'react';
 import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
-import { getMillSeconds } from '../../lib/getMillSeconds';
-import { getMin } from '../../lib/getMin';
-import { getSeconds } from '../../lib/getSeconds';
 import { WorkoutWithActivities } from '../../types/workout';
 import Input from '../input/input';
+import Slider from '../slider/slider';
 
 import StepperInput from '../stepperInput/stepperInput';
 
@@ -21,8 +18,8 @@ interface Props extends React.ComponentPropsWithoutRef<'form'> {
 type FormReducer = {
   name: string;
   setCount: number;
-  setRestMin: number;
-  setRestSec: number;
+  setRestDuration: number;
+  workoutDuration: number;
 };
 
 type FormActions =
@@ -35,11 +32,11 @@ type FormActions =
       payload: number;
     }
   | {
-      type: 'SET_REST_MIN';
+      type: 'SET_REST_DURATION';
       payload: number;
     }
   | {
-      type: 'SET_REST_SEC';
+      type: 'SET_WORKOUT_DURATION';
       payload: number;
     };
 
@@ -55,15 +52,15 @@ function formReducer(state: FormReducer, action: FormActions) {
         ...state,
         setCount: action.payload,
       };
-    case 'SET_REST_MIN':
+    case 'SET_REST_DURATION':
       return {
         ...state,
-        setRestMin: action.payload,
+        setRestDuration: action.payload,
       };
-    case 'SET_REST_SEC':
+    case 'SET_WORKOUT_DURATION':
       return {
         ...state,
-        setRestSec: action.payload,
+        workoutDuration: action.payload,
       };
     default:
       return state;
@@ -71,36 +68,62 @@ function formReducer(state: FormReducer, action: FormActions) {
 }
 
 const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
+  const router = useRouter();
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
     setCount: data.set_count,
-    setRestMin: getMin(data.set_rest),
-    setRestSec: getSeconds(data.set_rest),
+    setRestDuration: data.set_rest,
+    workoutDuration: data.duration,
   });
 
+  const queryClient = useQueryClient();
   const mutation = useUpdateWorkout();
-
-  const mutateWorkout = useCallback(
-    (name: string, set: number, rest: number) => {
-      mutation.mutate({
-        id: data.id,
-        name: name,
-        set_count: Number(set),
-        set_rest: Number(rest),
-        duration: formatWorkout(data).duration,
-      });
-    },
-    [data, mutation]
-  );
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutateWorkout(state.name, state.setCount, getMillSeconds(state.setRestMin, state.setRestSec));
+    mutation.mutate(
+      {
+        id: data.id,
+        name: state.name,
+        set_count: state.setCount,
+        set_rest: state.setRestDuration,
+        duration: formatWorkout(data).duration,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['workouts']);
+          router.push(`/workout/${data.id}`);
+        },
+      }
+    );
   };
 
-  const secondsInputMinValue = state.setRestMin >= 1 ? 0 : 5;
+  function handleOnSliderChange(value: number) {
+    queryClient.setQueryData(['workout', data.id], (data: WorkoutWithActivities | undefined) => {
+      if (data)
+        return {
+          ...data,
+          set_rest: value,
+        };
+    });
+    dispatch({ type: 'SET_REST_DURATION', payload: value });
+  }
 
-  //TODO: When set is one, disable set time controls
+  function handleOnStepperChange(value: number) {
+    queryClient.setQueryData(['workout', data.id], (data: WorkoutWithActivities | undefined) => {
+      if (data) {
+        return {
+          ...data,
+          set_count: value,
+        };
+      }
+    });
+    dispatch({
+      type: 'SET_COUNT',
+      payload: value,
+    });
+  }
+
   return (
     <form id={formId} onSubmit={onFormSubmit} {...delegated}>
       <div className={`flex flex-col justify-between gap-4`}>
@@ -120,41 +143,20 @@ const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
             min={1}
             max={100}
             initialValue={state.setCount}
-            handleChange={value =>
-              dispatch({
-                type: 'SET_COUNT',
-                payload: value,
-              })
-            }
+            handleChange={value => handleOnStepperChange(value)}
           />
           <div className={`flex flex-col gap-4 ${state.setCount === 1 ? 'opacity-30' : ''}`}>
             <p className="mt-4 w-full flex-wrap">How long would you like to rest between sets?</p>
-            <div className="flex gap-6">
-              <StepperInput
-                label="Minutes"
-                min={0}
-                max={5}
-                initialValue={state.setRestMin}
+            <div className="mt-2 flex items-center gap-8">
+              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(state.setRestDuration)}</p>
+              <Slider
+                defaultValue={50000}
+                min={5000}
+                max={300000}
+                step={1000}
+                value={[state.setRestDuration]}
                 disabled={state.setCount === 1 ? true : false}
-                handleChange={value =>
-                  dispatch({
-                    type: 'SET_REST_MIN',
-                    payload: value,
-                  })
-                }
-              />
-              <StepperInput
-                label="Seconds"
-                min={secondsInputMinValue}
-                max={60}
-                initialValue={state.setRestSec}
-                disabled={state.setCount === 1 ? true : false}
-                handleChange={value =>
-                  dispatch({
-                    type: 'SET_REST_SEC',
-                    payload: value,
-                  })
-                }
+                onValueChange={(value: number[]) => handleOnSliderChange(value[0])}
               />
             </div>
           </div>
