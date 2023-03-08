@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useId, useMemo } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
@@ -9,7 +10,9 @@ import WorkoutForm from '../../components/workoutForm';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
+import { WorkoutWithActivities } from '../../types/workout';
 import Button from '../button/button';
+import EditWorkoutHeader from '../editWorkoutHeader/editWorkoutHeader';
 
 type Props = {
   workoutId: string;
@@ -17,29 +20,17 @@ type Props = {
 
 const EditWorkout = ({ workoutId }: Props) => {
   const formId = useId();
-  const router = useRouter();
 
+  const queryClient = useQueryClient();
   const { data, error, dataUpdatedAt } = useFetchWorkout(workoutId);
-
-  const workoutDuration = useMemo(() => {
-    if (data) return formatTime(formatWorkout(data).duration);
-  }, [data]);
 
   if (!data) return <Preloader label="Loading workout..." />;
   if (error) return <Preloader label="Error loading page" />;
 
   return (
     <Container>
-      <div className="px-4 md:px-0">
-        <header>
-          <nav className="mb-8 flex items-center justify-start gap-6 py-4">
-            <CircleButton intent="cancel" onClick={() => router.push(`/workout/${data.id}`)} />
-            <h1 className="flex-grow text-xl font-semibold leading-7">
-              <span className="text-amber-500">{workoutDuration}</span>
-              {` ${data.name}`}
-            </h1>
-          </nav>
-        </header>
+      <EditWorkoutHeader initialData={data} formId={formId} />
+      <div className="mt-24 mb-24 px-4 md:px-0">
         <WorkoutForm data={data} formId={formId} />
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
@@ -51,11 +42,6 @@ const EditWorkout = ({ workoutId }: Props) => {
           </div>
         </div>
         <ActivitySortableList key={dataUpdatedAt} data={data} />
-        <div className="flex items-center justify-center bg-gray-800 p-4">
-          <Button intent="primary" type="submit" form={formId}>
-            Done
-          </Button>
-        </div>
       </div>
     </Container>
   );
