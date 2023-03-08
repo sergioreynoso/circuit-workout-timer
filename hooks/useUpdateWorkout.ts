@@ -12,8 +12,5 @@ export default function useUpdateWorkout() {
       const oldData = queryClient.getQueryData<Workout>(['workout', newData.id]);
       queryClient.setQueryData(['workout', newData.id], { ...oldData, ...newData });
     },
-    onSuccess: ({ data: newData }) => {
-      queryClient.invalidateQueries(['workouts']);
-    },
   });
 }
