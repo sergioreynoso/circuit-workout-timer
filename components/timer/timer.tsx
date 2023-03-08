@@ -28,9 +28,9 @@ const Timer = ({ workoutData }: Props) => {
 
   return (
     <div className="px-4 text-center md:px-0">
-      <div className={`${!isTimerStart && 'opacity-0'} ${!isTimer && isTimerStart && 'opacity-20'} transition-opacity`}>
+      <div className={` ${!isTimer && isTimerStart && 'opacity-20'} transition-opacity`}>
         <h2 className="text-3xl font-black leading-9 text-amber-400 ">{formatTime(state.runningTime)}</h2>
-        <p className="mt-4 mb-4">
+        <p className={`${!isTimerStart && 'opacity-0'} mt-4 mb-4`}>
           {state.setCount} / {formattedWorkout.totalSets}
         </p>
       </div>
