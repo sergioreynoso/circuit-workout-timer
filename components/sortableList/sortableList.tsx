@@ -24,7 +24,7 @@ import { ReactNode, useState } from 'react';
 import updateDisplaySeq from '../../lib/updateDisplaySeq';
 
 type BaseItem = {
-  id: UniqueIdentifier;
+  id: string | number;
 };
 
 type Props<T> = {
