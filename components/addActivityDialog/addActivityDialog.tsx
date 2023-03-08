@@ -5,13 +5,13 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { WorkoutWithActivities } from '../../types/workout';
 import AlertDialog from '../alertDialog/alertDialog';
 import Button from '../button/button';
 import Input from '../input';
 import Slider from '../slider/slider';
+import { FormattedActivity } from '../../lib/formatWorkout';
 
 type Props = {
   data: WorkoutWithActivities;
@@ -27,9 +27,11 @@ const AddActivityDialog = ({ data }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (activity: FormattedActivity) => axios.post(`/api/v1/activity`, activity),
+    mutationFn: (activity: Omit<FormattedActivity, 'id'>) => axios.post(`/api/v1/activity`, activity),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workout', workoutId], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['workout', 'duration', workoutId], exact: true });
       setIsOpen(false);
       setInputValue(prev => ({
         ...prev,
@@ -63,14 +65,6 @@ const AddActivityDialog = ({ data }: Props) => {
         <button className="text-md flex h-14 items-center gap-2 rounded-lg bg-green-500 px-4 font-bold leading-7 text-green-900 hover:bg-green-400 sm:px-8">
           <PlusIcon className="h-7 w-7" /> Add Activity
         </button>
-
-        {
-          //TODO: Solve ref bug.
-          /* <Button>
-          {' '}
-          <PlusIcon className="h-7 w-7" /> Add Activity
-        </Button> */
-        }
       </AlertDialogPrimitive.Trigger>
     );
   }

@@ -1,7 +1,8 @@
 import { Activity } from '@prisma/client';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
+import { FormattedActivity } from './formatWorkout';
 
-export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
+export const defaultActivities: Omit<FormattedActivity, 'id'>[] = [
   {
     name: 'Jumping Jacks',
     display_seq: 0,
@@ -28,7 +29,7 @@ export const defaultActivities: Optional<Activity, 'id' | 'workoutId'>[] = [
   },
 ];
 
-export const newActivity: Optional<Activity, 'id' | 'workoutId'>[] = [
+export const newActivity: Omit<FormattedActivity, 'id'>[] = [
   {
     name: 'First Exercise',
     display_seq: 0,
