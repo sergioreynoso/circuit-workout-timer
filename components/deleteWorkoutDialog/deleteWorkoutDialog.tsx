@@ -40,30 +40,29 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
   }
 
   return (
-    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen}>
-      {mutation.isLoading ? (
-        <p>Deleting Exercise...</p>
-      ) : (
-        <div className="flex flex-col gap-4 p-2 sm:p-4">
-          <Title className="mb-4 text-xl font-semibold leading-7 text-gray-300">Delete</Title>
-          <Description>
-            This action cannot be undone. This will permanently delete your workout and remove your data from our
-            servers.
-          </Description>
-          <div className="flex w-full justify-end gap-4">
-            <Cancel asChild>
-              <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
-                Cancel
-              </button>
-            </Cancel>
-            {/* <Action asChild> */}
-            <Button intent="delete" onClick={onClickHandler}>
-              Delete
-            </Button>
-            {/* </Action> */}
+    <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Delete workout">
+      <div className="flex flex-col gap-4 p-2 sm:p-4">
+        {mutation.isLoading && (
+          <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
+            <p className="text-xl font-bold text-gray-300">Deleting Workout...</p>{' '}
           </div>
+        )}
+        <Description>
+          This action cannot be undone. This will permanently delete your workout and remove your data from our servers.
+        </Description>
+        <div className="flex w-full justify-end gap-4">
+          <Cancel asChild>
+            <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
+              Cancel
+            </button>
+          </Cancel>
+          {/* <Action asChild> */}
+          <Button intent="delete" onClick={onClickHandler}>
+            Delete
+          </Button>
+          {/* </Action> */}
         </div>
-      )}
+      </div>
     </AlertDialog>
   );
 };
