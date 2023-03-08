@@ -1,11 +1,9 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import * as Label from '@radix-ui/react-label';
 import { Cancel, Action } from '@radix-ui/react-alert-dialog';
-import { Pencil1Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { endPoints } from '../../lib/endPoints';
 import { formatTime } from '../../lib/formatTime';
 import AlertDialog from '../alertDialog/alertDialog';
@@ -13,9 +11,11 @@ import Button from '../button/button';
 import CircleButton from '../circleButton/circleButton';
 import Input from '../input';
 import Slider from '../slider/slider';
+import { WorkoutWithActivities } from '../../types/workout';
+import { FormattedActivity } from '../../lib/formatWorkout';
 
 type Props = {
-  activity: FormattedActivity & { id: string };
+  activity: FormattedActivity;
 };
 
 const EditActivityDialog = ({ activity }: Props) => {
@@ -28,8 +28,17 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation((data: FormattedActivity) => axios.patch(endPoints.activity, data), {
+    onMutate: newData => {
+      queryClient.setQueryData(['workout', activity.workoutId], (oldData: WorkoutWithActivities | undefined) => {
+        if (oldData) {
+          const oldActivityIndex = oldData.activities.findIndex(item => item.id === newData.id);
+          const newActivities = (oldData.activities[oldActivityIndex] = newData);
+          console.log({ ...oldData, newActivities });
+          return { ...oldData, newActivities };
+        }
+      });
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout', activity.workoutId] });
       setIsOpen(false);
     },
   });
@@ -87,7 +96,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             <div className="mt-2 flex items-center gap-8">
               <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(duration[0])}</p>
               <Slider
-                defaultValue={50000}
+                defaultValue={5000}
                 min={5000}
                 max={300000}
                 step={1000}
