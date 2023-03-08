@@ -1,1 +1,1 @@
-export { default } from './editWorkoutHeader';
+export { default as EditWorkoutHeader } from './editWorkoutHeader';

@@ -6,7 +6,7 @@ import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
-import EditWorkoutHeader from '../editWorkoutHeader';
+import { EditWorkoutHeader } from '../editWorkoutHeader';
 
 type Props = {
   workoutId: string;
