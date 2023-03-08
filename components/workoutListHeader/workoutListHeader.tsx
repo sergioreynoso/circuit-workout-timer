@@ -3,8 +3,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
-import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { newActivity } from '../../lib/defaultWorkout';
+import { FormattedActivity } from '../../lib/formatWorkout';
+import { WorkoutWithActivities } from '../../types/workout';
 import Button from '../button/button';
 
 const MAX_WORKOUTS = 5 as const;
@@ -25,7 +26,7 @@ const WorkoutListHeader = ({ userId, data }: Props) => {
 
   const onClickHandler = () => {
     console.log('first');
-    const workouts = queryClient.getQueryData<Workout[]>(['workouts']);
+    const workouts = queryClient.getQueryData<WorkoutWithActivities[]>(['workouts']);
     if (workouts)
       mutation.mutate(
         {
@@ -35,7 +36,7 @@ const WorkoutListHeader = ({ userId, data }: Props) => {
           duration: 0,
           userId: userId,
           display_seq: workouts.length + 1,
-          activities: newActivity,
+          activities: newActivity as FormattedActivity[],
         },
         {
           onSuccess: ({ data: newData }) => {

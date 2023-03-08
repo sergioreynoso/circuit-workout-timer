@@ -1,6 +1,6 @@
 import { useContext, useReducer } from 'react';
 import { TimerContext } from '../components/timerContext';
-import { FormattedActivity, FormattedWorkout } from './useFormatWorkout';
+import { FormattedActivity, FormattedWorkout } from '../lib/formatWorkout';
 import useInterval from './useInterval';
 
 export const TIMER_INTERVAL: 1000 = 1000;

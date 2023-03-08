@@ -1,7 +1,7 @@
 import { motion, useAnimationControls } from 'framer-motion';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { TIMER_INTERVAL } from '../../hooks/useTimer';
-import { FormattedActivity, FormattedWorkout } from '../../hooks/useFormatWorkout';
+import { FormattedActivity, FormattedWorkout } from '../../lib/formatWorkout';
 import { TimerContext } from '../timerContext/timerProvider';
 
 type Props = {

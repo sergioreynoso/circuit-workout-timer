@@ -2,9 +2,9 @@ import { Workout } from '@prisma/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
-import { FormattedActivity } from '../../hooks/useFormatWorkout';
 import { defaultActivities } from '../../lib/defaultWorkout';
 import fetcher from '../../lib/fetcher';
+import { FormattedActivity } from '../../lib/formatWorkout';
 import Button from '../button';
 import Preloader from '../preloader/preloader';
 import WorkoutListHeader from '../workoutListHeader';
@@ -31,7 +31,7 @@ const Workouts = ({ userId }: { userId: string }) => {
             duration: 125000,
             userId: userId,
             display_seq: 0,
-            activities: defaultActivities,
+            activities: defaultActivities as FormattedActivity[],
           },
           {
             onSuccess: () => {
