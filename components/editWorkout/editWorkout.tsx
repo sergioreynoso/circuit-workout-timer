@@ -1,18 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { useId, useMemo } from 'react';
+import { useId } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
-import CircleButton from '../../components/circleButton/circleButton';
 import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
 import WorkoutForm from '../../components/workoutForm';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
-import { formatTime } from '../../lib/formatTime';
-import { formatWorkout } from '../../lib/formatWorkout';
-import { WorkoutWithActivities } from '../../types/workout';
-import Button from '../button/button';
-import EditWorkoutHeader from '../editWorkoutHeader/editWorkoutHeader';
+import EditWorkoutHeader from '../editWorkoutHeader';
 
 type Props = {
   workoutId: string;
@@ -29,7 +23,7 @@ const EditWorkout = ({ workoutId }: Props) => {
 
   return (
     <Container>
-      <EditWorkoutHeader initialData={data} formId={formId} />
+      <EditWorkoutHeader initialData={data} formId={formId} /> 
       <div className="mt-24 mb-24 px-4 md:px-0">
         <WorkoutForm data={data} formId={formId} />
         <div className="mt-12 flex items-center justify-center">
