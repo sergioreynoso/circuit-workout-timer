@@ -1,10 +1,9 @@
 import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Button from '../components/button/button';
-import Header from '../components/header/header';
 import mock from '../public/mock.png';
-import { signIn, useSession } from 'next-auth/react';
 
 const NEXTAUTH_URL = process.env.NEXTAUTH_URL;
 
