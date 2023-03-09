@@ -1,11 +1,10 @@
 import { Workout } from '@prisma/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import { defaultActivities } from '../../lib/defaultWorkout';
 import fetcher from '../../lib/fetcher';
 import { FormattedActivity } from '../../lib/formatWorkout';
-import Button from '../button';
+import { WorkoutWithActivities } from '../../types/workout';
 import Preloader from '../preloader/preloader';
 import WorkoutListHeader from '../workoutListHeader';
 import WorkoutSortableList from '../workoutSortableList';
@@ -14,8 +13,7 @@ const Workouts = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (workout: Optional<Workout, 'id'> & { activities: FormattedActivity[] }) =>
-      axios.post('/api/v1/workout', workout),
+    mutationFn: (workout: Omit<WorkoutWithActivities, 'id'>) => axios.post('/api/v1/workout', workout),
   });
 
   const query = useQuery({
