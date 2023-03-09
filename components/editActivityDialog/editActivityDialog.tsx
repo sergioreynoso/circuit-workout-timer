@@ -32,9 +32,8 @@ const EditActivityDialog = ({ activity }: Props) => {
       queryClient.setQueryData(['workout', activity.workoutId], (oldData: WorkoutWithActivities | undefined) => {
         if (oldData) {
           const oldActivityIndex = oldData.activities.findIndex(item => item.id === newData.id);
-          const newActivities = (oldData.activities[oldActivityIndex] = newData);
-          console.log({ ...oldData, newActivities });
-          return { ...oldData, newActivities };
+          oldData.activities[oldActivityIndex] = newData;
+          return oldData;
         }
       });
     },
