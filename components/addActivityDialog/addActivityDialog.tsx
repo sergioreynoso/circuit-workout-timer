@@ -87,6 +87,7 @@ const AddActivityDialog = ({ data }: Props) => {
             placeholder=""
             required={true}
             autoComplete="off"
+            autoFocus
           />
           <div className="w-full ">
             <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
