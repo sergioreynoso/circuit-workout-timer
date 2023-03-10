@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import useTimer, { CounterState } from '../../hooks/useTimer';
 
 import { formatTime } from '../../lib/formatTime';
@@ -14,17 +14,43 @@ import TimerControl from '../timerControl/timerControl';
 type Props = { workoutData: WorkoutWithActivities };
 
 const Timer = ({ workoutData }: Props) => {
+  const [activityHalfWay, setActivityHalfway] = useState(false);
   const { isTimerDone, isTimer, isTimerStart } = useContext(TimerContext);
   const formattedWorkout = useMemo(() => formatWorkout(workoutData), [workoutData]);
 
   const [state] = useTimer(formattedWorkout);
 
-  if (isTimerDone)
+  useEffect(() => {
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = `${state.runningActivity.name}`;
+    setActivityHalfway(false);
+    if (isTimer) window.speechSynthesis.speak(msg);
+  }, [isTimer, state.runningActivity.name]);
+
+  useEffect(() => {
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = 'workout complete.';
+    isTimerDone && window.speechSynthesis.speak(msg);
+  }, [isTimerDone]);
+
+  useEffect(() => {
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = 'Halfway there.';
+    const isHalfwayThere = state.runningActivityTime <= Math.ceil(state.runningActivity.duration / 2);
+
+    if (isHalfwayThere && !activityHalfWay && !isTimerDone) {
+      setActivityHalfway(true);
+      window.speechSynthesis.speak(msg);
+    }
+  }, [state.runningActivityTime, state.runningActivity.duration, activityHalfWay, setActivityHalfway, isTimerDone]);
+
+  if (isTimerDone) {
     return (
       <div className="px-4 text-center md:px-0">
         <WorkoutComplete />
       </div>
     );
+  }
 
   return (
     <div className="px-4 text-center md:px-0">
