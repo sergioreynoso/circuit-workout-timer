@@ -5,6 +5,7 @@ import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
+import { CircleButton } from '../circleButton';
 import Input from '../input/input';
 import Slider from '../slider/slider';
 
@@ -148,16 +149,34 @@ const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
           <div className={`flex flex-col gap-4 ${state.setCount === 1 ? 'opacity-30' : ''}`}>
             <p className="mt-4 w-full flex-wrap">How long would you like to rest between sets?</p>
             <div className="mt-2 flex items-center gap-8">
-              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(state.setRestDuration)}</p>
-              <Slider
-                defaultValue={50000}
-                min={5000}
-                max={300000}
-                step={1000}
-                value={[state.setRestDuration]}
-                disabled={state.setCount === 1 ? true : false}
-                onValueChange={(value: number[]) => handleOnSliderChange(value[0])}
-              />
+              <p className="w-16 flex-grow text-left  text-2xl font-bold text-green-500 ">
+                {formatTime(state.setRestDuration)}
+              </p>
+              <div className="flex grow-[5] items-center gap-2">
+                <CircleButton
+                  intent="decrement"
+                  onClick={e => {
+                    e.preventDefault();
+                    handleOnSliderChange(state.setRestDuration - 1000);
+                  }}
+                />
+                <Slider
+                  defaultValue={50000}
+                  min={5000}
+                  max={300000}
+                  step={5000}
+                  value={[state.setRestDuration]}
+                  disabled={state.setCount === 1 ? true : false}
+                  onValueChange={(value: number[]) => handleOnSliderChange(value[0])}
+                />
+                <CircleButton
+                  intent="increment"
+                  onClick={e => {
+                    e.preventDefault();
+                    handleOnSliderChange(state.setRestDuration + 1000);
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
