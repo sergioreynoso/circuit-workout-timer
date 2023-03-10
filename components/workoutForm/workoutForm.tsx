@@ -136,7 +136,7 @@ const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
           onChange={e => dispatch({ type: 'NAME', payload: e.currentTarget.value })}
           required={true}
           autoComplete="off"
-          maxLength={18}
+          maxLength={25}
         />
         <div className="mt-3 flex flex-col gap-4">
           <StepperInput
