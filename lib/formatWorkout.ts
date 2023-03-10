@@ -18,7 +18,7 @@ export type FormattedActivity = Optional<Activity, 'display_seq' | 'workoutId'> 
 const WARMUP: Omit<FormattedActivity, 'id'> = {
   name: 'Warm up',
   type: 'WORK',
-  duration: 5000,
+  duration: 10000,
 };
 
 const SET_REST = (rest: number): Omit<FormattedActivity, 'id'> => ({
