@@ -15,7 +15,7 @@ const AlertDialog = ({ TriggerButton, children, isOpen, setIsOpen, title = 'Titl
       <TriggerButton />
       <AlertDialogPrimitive.Portal>
         <AlertDialogPrimitive.Overlay className="fixed inset-0 bg-gray-900/80" />
-        <AlertDialogPrimitive.Content className="fixed top-1/2 left-1/2 w-11/12 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray-800 sm:w-1/3">
+        <AlertDialogPrimitive.Content className="fixed top-1/2 left-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray-800 sm:w-full">
           <AlertDialogPrimitive.Title className="p-4 text-xl font-semibold leading-7 text-gray-300">
             {title}
           </AlertDialogPrimitive.Title>
