@@ -1,1 +1,1 @@
-export { default } from './circleButton';
+export { default as CircleButton } from './circleButton';
