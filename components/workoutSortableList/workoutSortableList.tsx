@@ -1,6 +1,7 @@
 import { Workout } from '@prisma/client';
 import { DragHandleDots2Icon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -61,6 +62,7 @@ function ListItem({ item }: { item: Workout }) {
           className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-800/50"
         >
           <Pencil1Icon className="h-6 w-6 text-gray-400 " />
+          <VisuallyHidden.Root>Edit workout</VisuallyHidden.Root>
         </Link>
         <DeleteWorkoutDialog workoutId={id} />
       </div>
