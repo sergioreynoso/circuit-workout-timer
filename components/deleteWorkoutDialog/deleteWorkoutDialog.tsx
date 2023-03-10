@@ -1,14 +1,13 @@
-import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { Cancel, Description } from '@radix-ui/react-alert-dialog';
 
-import { TrashIcon } from '@radix-ui/react-icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import { endPoints } from '../../lib/endPoints';
 import AlertDialog from '../alertDialog';
-import CircleButton from '../circleButton/circleButton';
 import Button from '../button/button';
+import CircleButton from '../circleButton/circleButton';
 
 type DeleteWorkoutDialogProps = {
   label?: string;
@@ -34,7 +33,7 @@ const DeleteWorkoutDialog = ({ label, workoutId }: DeleteWorkoutDialogProps) => 
   function TriggerButton() {
     return (
       <AlertDialogPrimitive.Trigger asChild>
-        <CircleButton intent="delete" isBg={false} />
+        <CircleButton intent="delete" description="Delete Workout" isBg={false} />
       </AlertDialogPrimitive.Trigger>
     );
   }
