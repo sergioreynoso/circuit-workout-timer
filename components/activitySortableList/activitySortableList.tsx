@@ -24,7 +24,7 @@ const ActivitySortableList = ({ data }: Props) => {
   const mutation = useMutation({
     mutationFn: (activities: FormattedActivity[]) => axios.patch(endPoints.activitySort, activities),
     onMutate: newActivities => {
-      const workout = queryClient.getQueryData<Workout>(['workout', data.id]);
+      const workout = queryClient.getQueryData<Workout>(['workout', data.id], { exact: true });
       queryClient.setQueryData(['workout', data.id], { ...workout, activities: newActivities });
     },
   });
