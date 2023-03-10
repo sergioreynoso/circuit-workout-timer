@@ -20,11 +20,7 @@ type Props = {
 
 const EditActivityDialog = ({ activity }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [{ name, duration, type }, setInputValue] = useState({
-    name: activity.name,
-    duration: [activity.duration],
-    type: activity.type,
-  });
+  const [formValues, setFormValues] = useState({ name: activity.name, duration: activity.duration });
 
   const queryClient = useQueryClient();
   const mutation = useMutation((data: FormattedActivity) => axios.patch(endPoints.activity, data), {
@@ -44,7 +40,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    setInputValue(prev => ({
+    setFormValues(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -55,10 +51,9 @@ const EditActivityDialog = ({ activity }: Props) => {
     e.stopPropagation();
 
     mutation.mutate({
-      id: activity.id,
-      name: name,
-      type: type,
-      duration: duration[0],
+      ...activity,
+      name: formValues.name,
+      duration: formValues.duration,
     });
   };
 
@@ -84,7 +79,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             type="text"
             label="Name"
             name="name"
-            value={name}
+            value={formValues.name}
             onChange={handleChange}
             placeholder=""
             required={true}
@@ -93,21 +88,23 @@ const EditActivityDialog = ({ activity }: Props) => {
           <div className="w-full ">
             <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
             <div className="mt-2 flex items-center gap-8">
-              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(duration[0])}</p>
+              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(formValues.duration)}</p>
               <Slider
                 defaultValue={5000}
                 min={5000}
                 max={300000}
                 step={1000}
-                value={duration}
-                onValueChange={(value: number[]) => setInputValue(prev => ({ ...prev, duration: value }))}
+                value={[formValues.duration]}
+                onValueChange={(value: number[]) => setFormValues(prev => ({ ...prev, duration: value[0] }))}
               />
             </div>
           </div>
           <div className="flex w-full justify-end gap-4">
-            <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
-              Cancel
-            </button>
+            <Cancel asChild>
+              <button className="text-md flex h-12 items-center justify-center gap-2 rounded-lg px-4 font-bold leading-7 sm:px-8 ">
+                Cancel
+              </button>
+            </Cancel>
             {/* <Action asChild> */}
             <Button type="submit" intent="secondary">
               Save
