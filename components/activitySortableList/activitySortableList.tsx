@@ -55,15 +55,19 @@ function ListItem({ item }: { item: FormattedActivity }) {
 
   return (
     <li
-      className="flex h-16 items-center justify-between rounded-lg bg-gray-800 pr-4 text-gray-100 hover:bg-gray-700 active:bg-gray-800"
+      className="flex h-16 items-center justify-between rounded-lg bg-gray-800 pr-4 text-gray-100 active:bg-gray-800"
       ref={setNodeRef}
       style={style}
     >
-      <button className="flex h-full grow items-center gap-5 pl-4" {...listeners} {...attributes}>
+      <div
+        className="flex h-full grow cursor-grab items-center gap-5 pl-4 active:cursor-grabbing"
+        {...listeners}
+        {...attributes}
+      >
         <DragHandleDots2Icon className="h-6 w-6 text-gray-500" />
         <p className="text-base font-medium leading-6 text-green-400">{formatTime(duration)}</p>
         <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
-      </button>
+      </div>
       <div className="flex gap-1">
         <EditActivityDialog activity={item} />
         <DeleteActivityDialog activityId={id} />
