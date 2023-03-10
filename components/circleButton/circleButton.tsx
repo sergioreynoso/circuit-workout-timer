@@ -22,9 +22,9 @@ const CircleButton = forwardRef<HTMLButtonElement, Props>(
     const Icon = icons[intent];
     return (
       <button
-        className={`flex h-10 w-10 items-center justify-center rounded-full ${
+        className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
           isBg ? 'bg-gray-800' : ''
-        } hover:bg-gray-800/50`}
+        } hover:bg-gray-900/50`}
         {...delegated}
         ref={forwardedRef}
       >
