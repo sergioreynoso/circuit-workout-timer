@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useTimer, { CounterState } from '../../hooks/useTimer';
 
 import { formatTime } from '../../lib/formatTime';
@@ -17,32 +17,31 @@ const Timer = ({ workoutData }: Props) => {
   const [activityHalfWay, setActivityHalfway] = useState(false);
   const { isTimerDone, isTimer, isTimerStart } = useContext(TimerContext);
   const formattedWorkout = useMemo(() => formatWorkout(workoutData), [workoutData]);
+  const msg = useMemo(() => new SpeechSynthesisUtterance(), []);
 
   const [state] = useTimer(formattedWorkout);
+  const isHalfwayThere = useMemo(
+    () => state.runningActivityTime <= Math.ceil(state.runningActivity.duration / 2),
+    [state.runningActivityTime, state.runningActivity.duration]
+  );
 
   useEffect(() => {
-    const msg = new SpeechSynthesisUtterance();
     msg.text = `${state.runningActivity.name}`;
-    setActivityHalfway(false);
+    activityHalfWay && setActivityHalfway(false);
     if (isTimer) window.speechSynthesis.speak(msg);
-  }, [isTimer, state.runningActivity.name]);
+  }, [isTimer, state.runningActivity.name, msg, activityHalfWay]);
 
   useEffect(() => {
-    const msg = new SpeechSynthesisUtterance();
     msg.text = 'workout complete.';
     isTimerDone && window.speechSynthesis.speak(msg);
-  }, [isTimerDone]);
+  }, [isTimerDone, msg]);
 
   useEffect(() => {
-    const msg = new SpeechSynthesisUtterance();
-    msg.text = 'Halfway there.';
-    const isHalfwayThere = state.runningActivityTime <= Math.ceil(state.runningActivity.duration / 2);
-
-    if (isHalfwayThere && !activityHalfWay && !isTimerDone) {
-      setActivityHalfway(true);
+    if (isHalfwayThere) {
+      msg.text = 'Halfway there.';
       window.speechSynthesis.speak(msg);
     }
-  }, [state.runningActivityTime, state.runningActivity.duration, activityHalfWay, setActivityHalfway, isTimerDone]);
+  }, [isHalfwayThere, msg]);
 
   if (isTimerDone) {
     return (
