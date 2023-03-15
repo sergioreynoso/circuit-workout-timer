@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useId } from 'react';
 import ActivitySortableList from '../../components/activitySortableList/activitySortableList';
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
@@ -15,7 +14,6 @@ type Props = {
 const EditWorkout = ({ workoutId }: Props) => {
   const formId = useId();
 
-  const queryClient = useQueryClient();
   const { data, error, dataUpdatedAt } = useFetchWorkout(workoutId);
 
   if (!data) return <Preloader label="Loading workout..." />;
