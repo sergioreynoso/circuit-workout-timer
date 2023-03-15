@@ -1,5 +1,5 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { Cancel, Description } from '@radix-ui/react-alert-dialog';
+import { Cancel, Action, Description } from '@radix-ui/react-alert-dialog';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
@@ -45,11 +45,11 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
               Cancel
             </button>
           </Cancel>
-          {/* <Action asChild> */}
-          <Button onClick={onClickHandler} intent="delete">
-            Delete
-          </Button>
-          {/* </Action> */}
+          <Action asChild>
+            <Button onClick={onClickHandler} intent="delete">
+              Delete
+            </Button>
+          </Action>
         </div>
       </div>
     </AlertDialog>
