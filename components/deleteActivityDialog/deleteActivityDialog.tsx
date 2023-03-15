@@ -1,13 +1,8 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { Cancel, Description, Title } from '@radix-ui/react-alert-dialog';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { Cancel, Description } from '@radix-ui/react-alert-dialog';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { endPoints } from '../../lib/endPoints';
-import { WorkoutWithActivities } from '../../types/workout';
-
+import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
 import AlertDialog from '../alertDialog';
 import Button from '../button/button';
 import CircleButton from '../circleButton/circleButton';
@@ -17,27 +12,12 @@ type Props = {
 };
 
 const DeleteActivityDialog = ({ activityId }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const workoutId = router.query.id as string;
-
-  const queryClient = useQueryClient();
-  const mutation = useMutation((id: string) => axios.delete(endPoints.activity, { data: { id: id } }), {
-    onMutate: data => {
-      queryClient.setQueryData(['workout', workoutId], (oldData: WorkoutWithActivities | undefined) => {
-        if (oldData) {
-          const newActivities = oldData.activities.filter(item => item.id !== data);
-          return { ...oldData, activities: newActivities };
-        }
-      });
-    },
-    onSuccess: () => {
-      setIsOpen(false);
-    },
-  });
+  const { deleteActivity } = useActivityMutation(router.query.id as string);
+  const [isOpen, setIsOpen] = useState(false);
 
   const onClickHandler = () => {
-    mutation.mutate(activityId);
+    deleteActivity.mutate(activityId, { onSuccess: () => setIsOpen(false) });
   };
 
   function TriggerButton() {
@@ -51,7 +31,7 @@ const DeleteActivityDialog = ({ activityId }: Props) => {
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Delete Activity">
       <div className="flex flex-col gap-4 p-2 sm:p-4">
-        {mutation.isLoading && (
+        {deleteActivity.isLoading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
             <p className="text-xl font-bold text-gray-300">Deleting Activity...</p>{' '}
           </div>

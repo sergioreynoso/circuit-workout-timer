@@ -2,23 +2,21 @@ import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { Action, Cancel } from '@radix-ui/react-alert-dialog';
 import { PlusIcon } from '@radix-ui/react-icons';
 import * as Label from '@radix-ui/react-label';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import React, { useRef, useState } from 'react';
+import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
 import { formatTime } from '../../lib/formatTime';
-import { FormattedActivity } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 import AlertDialog from '../alertDialog/alertDialog';
 import Button from '../button/button';
 import Input from '../input';
 import Slider from '../slider/slider';
-import workout from '../workout';
 
 type Props = {
   data: WorkoutWithActivities;
 };
 
 const AddActivityDialog = ({ data }: Props) => {
+  const { createActivity } = useActivityMutation(data.id);
   const formRef = useRef<HTMLFormElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [{ name, duration, workoutId }, setInputValue] = useState({
@@ -27,27 +25,6 @@ const AddActivityDialog = ({ data }: Props) => {
     workoutId: data.id,
   });
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (activity: Omit<FormattedActivity, 'id'>) => axios.post(`/api/v1/activity`, activity),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['workout', workoutId], exact: true });
-      setIsOpen(false);
-      setInputValue(prev => ({
-        ...prev,
-        name: '',
-      }));
-    },
-  });
-
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    setInputValue(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const onSaveHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (formRef.current) formRef.current.requestSubmit();
@@ -55,13 +32,25 @@ const AddActivityDialog = ({ data }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate({
-      name: name,
-      type: 'WORK',
-      duration: duration[0],
-      workoutId: workoutId,
-      display_seq: data.activities.length + 1,
-    });
+    //TODO:Update display_seq on delete activity
+    createActivity.mutate(
+      {
+        name: name,
+        type: 'WORK',
+        duration: duration[0],
+        workoutId: workoutId,
+        display_seq: data.activities.length,
+      },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+          setInputValue(prev => ({
+            ...prev,
+            name: '',
+          }));
+        },
+      }
+    );
   };
 
   function TriggerButton() {
@@ -77,7 +66,7 @@ const AddActivityDialog = ({ data }: Props) => {
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Add Activity">
       <div className="flex flex-col p-6">
-        {mutation.isLoading && (
+        {createActivity.isLoading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
             <p className="text-xl font-bold text-gray-300">Creating New Activity...</p>{' '}
           </div>
@@ -88,7 +77,7 @@ const AddActivityDialog = ({ data }: Props) => {
             label="Name"
             name="name"
             value={name}
-            onChange={handleChange}
+            onChange={e => setInputValue(prev => ({ ...prev, name: e.currentTarget.value }))}
             placeholder=""
             required={true}
             autoComplete="off"

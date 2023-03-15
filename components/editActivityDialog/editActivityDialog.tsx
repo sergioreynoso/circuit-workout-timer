@@ -1,60 +1,40 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import { Cancel } from '@radix-ui/react-alert-dialog';
 import * as Label from '@radix-ui/react-label';
-import { Cancel, Action } from '@radix-ui/react-alert-dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import React, { useState } from 'react';
-import { endPoints } from '../../lib/endPoints';
+import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
 import { formatTime } from '../../lib/formatTime';
+import { FormattedActivity } from '../../lib/formatWorkout';
 import AlertDialog from '../alertDialog/alertDialog';
 import Button from '../button/button';
 import CircleButton from '../circleButton/circleButton';
 import Input from '../input';
 import Slider from '../slider/slider';
-import { WorkoutWithActivities } from '../../types/workout';
-import { FormattedActivity } from '../../lib/formatWorkout';
 
 type Props = {
   activity: FormattedActivity;
 };
 
 const EditActivityDialog = ({ activity }: Props) => {
+  const { updateActivity } = useActivityMutation(activity.workoutId as string); //TODO:Improve activity types
   const [isOpen, setIsOpen] = useState(false);
   const [formValues, setFormValues] = useState({ name: activity.name, duration: activity.duration });
-
-  const queryClient = useQueryClient();
-  const mutation = useMutation((data: FormattedActivity) => axios.patch(endPoints.activity, data), {
-    onMutate: newData => {
-      queryClient.setQueryData(['workout', activity.workoutId], (oldData: WorkoutWithActivities | undefined) => {
-        if (oldData) {
-          const oldActivityIndex = oldData.activities.findIndex(item => item.id === newData.id);
-          oldData.activities[oldActivityIndex] = newData;
-          return oldData;
-        }
-      });
-    },
-    onSuccess: () => {
-      setIsOpen(false);
-    },
-  });
-
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    setFormValues(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-
-    mutation.mutate({
-      ...activity,
-      name: formValues.name,
-      duration: formValues.duration,
-    });
+    updateActivity.mutate(
+      {
+        ...activity,
+        name: formValues.name,
+        duration: formValues.duration,
+      },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+        },
+      }
+    );
   };
 
   function TriggerButton() {
@@ -64,11 +44,11 @@ const EditActivityDialog = ({ activity }: Props) => {
       </AlertDialogPrimitive.Trigger>
     );
   }
-
+  //TODO:Use Action primitive for radixUi
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Edit Activity">
       <div className="flex flex-col p-6">
-        {mutation.isLoading && (
+        {updateActivity.isLoading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
             <p className="text-xl font-bold text-gray-300">Updating Activity...</p>{' '}
           </div>
@@ -80,8 +60,8 @@ const EditActivityDialog = ({ activity }: Props) => {
             label="Name"
             name="name"
             value={formValues.name}
-            onChange={handleChange}
-            placeholder=""
+            onChange={e => setFormValues(prev => ({ ...prev, name: e.currentTarget.value }))}
+            autoComplete={'off'}
             required={true}
             maxLength={18}
           />
