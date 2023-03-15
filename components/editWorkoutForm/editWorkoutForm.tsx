@@ -68,7 +68,7 @@ function formReducer(state: FormReducer, action: FormActions) {
   }
 }
 
-const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
+const EditWorkoutForm = ({ data, formId, ...delegated }: Props) => {
   const router = useRouter();
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
@@ -185,4 +185,4 @@ const WorkoutForm = ({ data, formId, ...delegated }: Props) => {
   );
 };
 
-export default WorkoutForm;
+export default EditWorkoutForm;

@@ -3,8 +3,8 @@ import ActivitySortableList from '../../components/activitySortableList/activity
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
 import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
-import WorkoutForm from '../../components/workoutForm';
 import useFetchWorkout from '../../hooks/useFetchWorkout';
+import { EditWorkoutForm } from '../editWorkoutForm';
 import { EditWorkoutHeader } from '../editWorkoutHeader';
 
 type Props = {
@@ -23,7 +23,7 @@ const EditWorkout = ({ workoutId }: Props) => {
     <Container>
       <EditWorkoutHeader initialData={data} formId={formId} /> 
       <div className="mt-24 mb-24 px-4 md:px-0">
-        <WorkoutForm data={data} formId={formId} />
+        <EditWorkoutForm data={data} formId={formId} />
         <div className="mt-12 flex items-center justify-center">
           <div className="mb-8 flex flex-1 items-center justify-between gap-4">
             <div className="flex flex-grow flex-col">
