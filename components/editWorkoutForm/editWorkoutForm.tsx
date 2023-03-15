@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useReducer } from 'react';
+import useWorkoutMutation from '../../hooks/reactQueryHooks/useWorkoutMutation';
 import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
@@ -70,6 +71,7 @@ function formReducer(state: FormReducer, action: FormActions) {
 
 const EditWorkoutForm = ({ data, formId, ...delegated }: Props) => {
   const router = useRouter();
+  const { updateWorkout } = useWorkoutMutation('');
   const [state, dispatch] = useReducer(formReducer, {
     name: data.name,
     setCount: data.set_count,
@@ -78,11 +80,10 @@ const EditWorkoutForm = ({ data, formId, ...delegated }: Props) => {
   });
 
   const queryClient = useQueryClient();
-  const mutation = useUpdateWorkout();
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutation.mutate(
+    updateWorkout.mutate(
       {
         id: data.id,
         name: state.name,

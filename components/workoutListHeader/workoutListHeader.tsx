@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Optional } from 'ts-toolbelt/out/Object/Optional';
+import useWorkoutMutation from '../../hooks/reactQueryHooks/useWorkoutMutation';
 import { newActivity } from '../../lib/defaultWorkout';
 import { FormattedActivity } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
@@ -17,18 +18,13 @@ type Props = {
 
 const WorkoutListHeader = ({ userId, data }: Props) => {
   const router = useRouter();
+  const { createWorkout } = useWorkoutMutation('');
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: (workout: Optional<Workout, 'id'> & { activities: FormattedActivity[] }) =>
-      axios.post('/api/v1/workout', workout),
-  });
-
   const onClickHandler = () => {
-    console.log('first');
     const workouts = queryClient.getQueryData<WorkoutWithActivities[]>(['workouts']);
     if (workouts)
-      mutation.mutate(
+      createWorkout.mutate(
         {
           name: 'Untitled Workout',
           set_count: 1,
@@ -48,7 +44,7 @@ const WorkoutListHeader = ({ userId, data }: Props) => {
 
   return (
     <div className="flex items-center justify-between">
-      {mutation.isLoading && <Preloader />}
+      {createWorkout.isLoading && <Preloader />}
       <div className="flex flex-grow flex-col">
         <h2 className="text-base font-bold leading-7 text-gray-300">Workouts</h2>
         <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
