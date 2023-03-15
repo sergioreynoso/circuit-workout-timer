@@ -1,7 +1,7 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { Cancel } from '@radix-ui/react-alert-dialog';
+import { Cancel, Action } from '@radix-ui/react-alert-dialog';
 import * as Label from '@radix-ui/react-label';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
 import { formatTime } from '../../lib/formatTime';
 import { FormattedActivity } from '../../lib/formatWorkout';
@@ -16,9 +16,15 @@ type Props = {
 };
 
 const EditActivityDialog = ({ activity }: Props) => {
-  const { updateActivity } = useActivityMutation(activity.workoutId as string); //TODO:Improve activity types
-  const [isOpen, setIsOpen] = useState(false);
   const [formValues, setFormValues] = useState({ name: activity.name, duration: activity.duration });
+  const { updateActivity } = useActivityMutation(activity.workoutId as string); //TODO:Improve activity types
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onSaveHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (formRef.current) formRef.current.requestSubmit();
+  };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +50,7 @@ const EditActivityDialog = ({ activity }: Props) => {
       </AlertDialogPrimitive.Trigger>
     );
   }
-  //TODO:Use Action primitive for radixUi
+
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Edit Activity">
       <div className="flex flex-col p-6">
@@ -54,7 +60,7 @@ const EditActivityDialog = ({ activity }: Props) => {
           </div>
         )}
 
-        <form onSubmit={onFormSubmit} className="mt-2 flex flex-grow flex-col items-start gap-8">
+        <form ref={formRef} onSubmit={onFormSubmit} className="mt-2 flex flex-grow flex-col items-start gap-8">
           <Input
             type="text"
             label="Name"
@@ -101,11 +107,11 @@ const EditActivityDialog = ({ activity }: Props) => {
                 Cancel
               </button>
             </Cancel>
-            {/* <Action asChild> */}
-            <Button type="submit" intent="secondary">
-              Save
-            </Button>
-            {/* </Action> */}
+            <Action asChild>
+              <Button intent="secondary" onClick={onSaveHandler}>
+                Save
+              </Button>
+            </Action>
           </div>
         </form>
       </div>
