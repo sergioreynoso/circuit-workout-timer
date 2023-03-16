@@ -1,42 +1,26 @@
 import { Workout } from '@prisma/client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { defaultActivities } from '../../lib/defaultWorkout';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import useWorkoutMutation from '../../hooks/reactQueryHooks/useWorkoutMutation';
+import { defaultWorkout } from '../../lib/defaultWorkout';
 import fetcher from '../../lib/fetcher';
-import { FormattedActivity } from '../../lib/formatWorkout';
-import { WorkoutWithActivities } from '../../types/workout';
 import Preloader from '../preloader/preloader';
 import WorkoutListHeader from '../workoutListHeader';
 import WorkoutSortableList from '../workoutSortableList';
 
 const Workouts = ({ userId }: { userId: string }) => {
+  const { createWorkout } = useWorkoutMutation('');
+
   const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (workout: Omit<WorkoutWithActivities, 'id'>) => axios.post('/api/v1/workout', workout),
-  });
-
   const query = useQuery({
     queryKey: ['workouts'],
     queryFn: () => fetcher<Workout[]>(userId, 'workouts'),
     onSuccess: data => {
       if (data.length === 0) {
-        mutation.mutate(
-          {
-            name: 'Light Workout',
-            set_count: 1,
-            set_rest: 10000,
-            duration: 125000,
-            userId: userId,
-            display_seq: 0,
-            activities: defaultActivities as FormattedActivity[],
+        createWorkout.mutate(defaultWorkout(userId), {
+          onSuccess: () => {
+            queryClient.invalidateQueries(['workouts']);
           },
-          {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['workouts']);
-            },
-          }
-        );
+        });
       }
     },
   });
