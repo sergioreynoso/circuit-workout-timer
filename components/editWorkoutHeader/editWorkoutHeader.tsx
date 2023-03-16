@@ -17,9 +17,8 @@ const EditWorkoutHeader = ({ initialData, formId }: Props) => {
           <ChevronLeftIcon className="h-6 w-6" />
           Done
         </Button>
-        <h1 className="flex items-center gap-4 text-2xl font-semibold leading-7 text-gray-300">
-          {<span className="text-amber-400">{formatTime(formatWorkout(initialData).duration)}</span>}
-          {` ${initialData.name}`}
+        <h1 className="flex flex-grow justify-end gap-4 text-2xl font-semibold leading-7">
+          Duration:{<span className="text-amber-400">{formatTime(formatWorkout(initialData).duration)}</span>}
         </h1>
       </nav>
     </header>
