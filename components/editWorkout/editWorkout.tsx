@@ -3,7 +3,7 @@ import ActivitySortableList from '../../components/activitySortableList/activity
 import AddActivityDialog from '../../components/addActivityDialog/addActivityDialog';
 import { Container } from '../../components/layout';
 import Preloader from '../../components/preloader';
-import useFetchWorkout from '../../hooks/useFetchWorkout';
+import useFetchWorkout from '../../hooks/reactQueryHooks/useFetchWorkout';
 import { EditWorkoutForm } from '../editWorkoutForm';
 import { EditWorkoutHeader } from '../editWorkoutHeader';
 

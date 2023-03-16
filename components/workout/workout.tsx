@@ -1,7 +1,7 @@
 import Preloader from '../../components/preloader';
 import Timer from '../../components/timer';
 import TimerHeader from '../../components/timerHeader';
-import useFetchWorkout from '../../hooks/useFetchWorkout';
+import useFetchWorkout from '../../hooks/reactQueryHooks/useFetchWorkout';
 
 type Props = {
   workoutId: string;
