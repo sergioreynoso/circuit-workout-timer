@@ -1,10 +1,8 @@
 import { Workout } from '@prisma/client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Optional } from 'ts-toolbelt/out/Object/Optional';
 import useWorkoutMutation from '../../hooks/reactQueryHooks/useWorkoutMutation';
-import { newActivity } from '../../lib/defaultWorkout';
+import { newActivity } from '../../lib/defaultActivities';
 import { FormattedActivity } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
 import Button from '../button/button';
