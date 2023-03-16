@@ -2,7 +2,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useReducer } from 'react';
 import useWorkoutMutation from '../../hooks/reactQueryHooks/useWorkoutMutation';
-import useUpdateWorkout from '../../hooks/useUpdateWorkout';
 import { formatTime } from '../../lib/formatTime';
 import { formatWorkout } from '../../lib/formatWorkout';
 import { WorkoutWithActivities } from '../../types/workout';
