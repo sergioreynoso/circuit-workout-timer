@@ -11,8 +11,6 @@ export default function useFetchWorkoutList(userId: string) {
   const queryClient = useQueryClient();
   const { createWorkout } = useWorkoutMutation('');
 
-  console.log(session);
-
   return useQuery({
     queryKey: ['workouts'],
     queryFn: () => fetcher<Workout[]>(userId, 'workouts'),
