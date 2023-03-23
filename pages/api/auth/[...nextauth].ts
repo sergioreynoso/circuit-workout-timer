@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import { prisma } from '../../../lib/prisma';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -23,9 +24,42 @@ export const authOptions: NextAuthOptions = {
         },
       },
     }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: { label: 'Username', type: 'text', placeholder: 'guest' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        if (!credentials) {
+          console.log('credentials are missing');
+          throw new Error('internal-server-error');
+        }
+        const user = await prisma.user.findUnique({
+          where: { username: credentials.username.toLowerCase() },
+        });
+        if (!user) {
+          throw new Error('user-not-found');
+        }
+        if (!user.password) {
+          throw new Error('missing-password');
+        }
+        const isCorrectPassword = credentials.password === user.password;
+
+        if (!isCorrectPassword) {
+          throw new Error('incorrect-password');
+        }
+        return {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          name: user.name,
+        };
+      },
+    }),
   ],
   callbacks: {
-    session: async ({ session, token }) => {
+    async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub as string;
       }
