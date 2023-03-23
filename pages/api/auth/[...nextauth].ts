@@ -27,27 +27,31 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'guest' },
+        username: { label: 'Username', type: 'text', placeholder: '' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
         if (!credentials) {
           console.log('credentials are missing');
-          throw new Error('internal-server-error');
+          // throw new Error('internal-server-error');
+          return null;
         }
         const user = await prisma.user.findUnique({
           where: { username: credentials.username.toLowerCase() },
         });
         if (!user) {
-          throw new Error('user-not-found');
+          // throw new Error('user-not-found');
+          return null;
         }
         if (!user.password) {
-          throw new Error('missing-password');
+          // throw new Error('missing-password');
+          return null;
         }
         const isCorrectPassword = credentials.password === user.password;
 
         if (!isCorrectPassword) {
-          throw new Error('incorrect-password');
+          // throw new Error('incorrect-password');
+          return null;
         }
         return {
           id: user.id,
