@@ -47,7 +47,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
     return (
       <button
         disabled={disabled}
-        className={`flex h-12 items-center justify-center gap-1 rounded-lg px-5 sm:px-4 ${variant[intent].text} ${
+        className={`flex h-12 items-center justify-center gap-2 rounded-lg px-5 sm:px-4 ${variant[intent].text} ${
           variant[intent].bg
         } text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text} ${
           disabled && 'opacity-25'
