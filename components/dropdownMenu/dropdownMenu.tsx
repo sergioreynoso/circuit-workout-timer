@@ -4,6 +4,7 @@ import { signOut } from 'next-auth/react';
 
 import { ChevronDownIcon, ExitIcon } from '@radix-ui/react-icons';
 import { User } from '../../types/next-auth';
+import { Button } from '../button';
 
 const DropDownMenu = ({ user }: { user: any }) => (
   <DropdownMenu.Root>
@@ -20,16 +21,13 @@ const DropDownMenu = ({ user }: { user: any }) => (
         align={'end'}
         className="flex flex-col gap-2  rounded-lg bg-gray-900 p-3 shadow-xl"
       >
-        <label>{user.name}</label>
-        <label>{user.email}</label>
-        <DropdownMenu.Separator className="my-1 h-[1px] bg-gray-500" />
-        <button
-          onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}
-          className="flex items-center justify-center gap-3 rounded-lg py-2 font-semibold hover:bg-amber-400 hover:text-gray-900"
-        >
+        <p className="">{user.name}</p>
+        {user.email && <label>{user.email}</label>}
+        <DropdownMenu.Separator className=" h-[1px] bg-gray-400" />
+        <Button intent="transparent" onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>
           <ExitIcon />
           Logout
-        </button>
+        </Button>
         <DropdownMenu.Arrow className="-translate-x-3 fill-gray-900" />
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
