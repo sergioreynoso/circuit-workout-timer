@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
+import { Header } from '../components/header';
 import { Container } from '../components/layout';
 import Preloader from '../components/preloader';
 import WorkoutsList from '../components/workoutsList/workoutsList';
-import Header from '../components/header';
 
 const Dashboard = () => {
   const { data: session } = useSession();
