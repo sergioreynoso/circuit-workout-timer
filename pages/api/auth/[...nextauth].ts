@@ -5,6 +5,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import { prisma } from '../../../lib/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { redirect } from 'next/dist/server/api-utils';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -63,6 +64,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/dashboard`;
+    },
     async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub as string;
