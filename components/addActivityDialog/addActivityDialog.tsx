@@ -9,7 +9,7 @@ import { WorkoutWithActivities } from '../../types/workout';
 import AlertDialog from '../alertDialog/alertDialog';
 import Button from '../button/button';
 import Input from '../input';
-import Slider from '../slider/slider';
+import { SliderStepper } from '../sliderStepper';
 
 type Props = {
   data: WorkoutWithActivities;
@@ -19,9 +19,9 @@ const AddActivityDialog = ({ data }: Props) => {
   const { createActivity } = useActivityMutation(data.id);
   const formRef = useRef<HTMLFormElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [{ name, duration, workoutId }, setInputValue] = useState({
+  const [formValues, setFormValues] = useState({
     name: '',
-    duration: [30000],
+    duration: 30000,
     workoutId: data.id,
   });
 
@@ -32,25 +32,32 @@ const AddActivityDialog = ({ data }: Props) => {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //TODO:Update display_seq on delete activity
     createActivity.mutate(
       {
-        name: name,
+        name: formValues.name,
         type: 'WORK',
-        duration: duration[0],
-        workoutId: workoutId,
+        duration: formValues.duration,
+        workoutId: formValues.workoutId,
         display_seq: data.activities.length,
       },
       {
         onSuccess: () => {
           setIsOpen(false);
-          setInputValue(prev => ({
+          setFormValues(prev => ({
             ...prev,
             name: '',
           }));
         },
       }
     );
+  };
+
+  const onCancel = () => {
+    setFormValues(prev => ({ ...prev, name: '', duration: 30000, workoutId: data.id }));
+  };
+
+  const handleOnSliderChange = (value: number) => {
+    setFormValues(prev => ({ ...prev, duration: value }));
   };
 
   function TriggerButton() {
@@ -76,8 +83,8 @@ const AddActivityDialog = ({ data }: Props) => {
             type="text"
             label="Name"
             name="name"
-            value={name}
-            onChange={e => setInputValue(prev => ({ ...prev, name: e.currentTarget.value }))}
+            value={formValues.name}
+            onChange={e => setFormValues(prev => ({ ...prev, name: e.currentTarget.value }))}
             placeholder=""
             required={true}
             autoComplete="off"
@@ -86,20 +93,15 @@ const AddActivityDialog = ({ data }: Props) => {
           <div className="w-full ">
             <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
             <div className="mt-2 flex items-center gap-8">
-              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(duration[0])}</p>
-              <Slider
-                defaultValue={50000}
-                min={5000}
-                max={300000}
-                step={1000}
-                value={duration}
-                onValueChange={(value: number[]) => setInputValue(prev => ({ ...prev, duration: value }))}
-              />
+              <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(formValues.duration)}</p>
+              <SliderStepper value={formValues.duration} onChange={handleOnSliderChange} maxValue={90000} />
             </div>
           </div>
           <div className="flex w-full justify-end gap-4">
             <Cancel asChild>
-              <Button intent="transparent">Cancel</Button>
+              <Button intent="transparent" onClick={onCancel}>
+                Cancel
+              </Button>
             </Cancel>
             <Action asChild>
               <Button intent="secondary" onClick={onSaveHandler}>

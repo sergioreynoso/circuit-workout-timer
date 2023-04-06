@@ -1,5 +1,5 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { Cancel, Action } from '@radix-ui/react-alert-dialog';
+import { Action, Cancel } from '@radix-ui/react-alert-dialog';
 import * as Label from '@radix-ui/react-label';
 import React, { useRef, useState } from 'react';
 import useActivityMutation from '../../hooks/reactQueryHooks/useActivityMutation';
@@ -9,7 +9,7 @@ import AlertDialog from '../alertDialog/alertDialog';
 import Button from '../button/button';
 import CircleButton from '../circleButton/circleButton';
 import Input from '../input';
-import Slider from '../slider/slider';
+import { SliderStepper } from '../sliderStepper';
 
 type Props = {
   activity: FormattedActivity;
@@ -43,6 +43,10 @@ const EditActivityDialog = ({ activity }: Props) => {
     );
   };
 
+  function handleOnSliderChange(value: number) {
+    setFormValues(prev => ({ ...prev, duration: value }));
+  }
+
   function TriggerButton() {
     return (
       <AlertDialogPrimitive.Trigger asChild>
@@ -75,30 +79,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
             <div className="mt-2 flex items-center gap-8">
               <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(formValues.duration)}</p>
-              <div className="flex flex-grow items-center gap-2">
-                <CircleButton
-                  intent="decrement"
-                  onClick={e => {
-                    e.preventDefault();
-                    setFormValues(prev => ({ ...prev, duration: prev.duration - 1000 }));
-                  }}
-                />
-                <Slider
-                  defaultValue={5000}
-                  min={5000}
-                  max={300000}
-                  step={1000}
-                  value={[formValues.duration]}
-                  onValueChange={(value: number[]) => setFormValues(prev => ({ ...prev, duration: value[0] }))}
-                />
-                <CircleButton
-                  intent="increment"
-                  onClick={e => {
-                    e.preventDefault();
-                    setFormValues(prev => ({ ...prev, duration: prev.duration + 1000 }));
-                  }}
-                />
-              </div>
+              <SliderStepper value={formValues.duration} onChange={handleOnSliderChange} maxValue={90000} />
             </div>
           </div>
           <div className="flex w-full justify-end gap-4">
