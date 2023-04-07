@@ -21,4 +21,10 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
+
+  html,
+  body,
+  #__next {
+    height: 100%;
+  }
 }
