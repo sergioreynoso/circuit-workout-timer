@@ -1,10 +1,9 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Avatar from '../avatar';
 import { signOut } from 'next-auth/react';
-
 import { ChevronDownIcon, ExitIcon } from '@radix-ui/react-icons';
-import { User } from '../../types/next-auth';
 import { Button } from '../button';
+const homepage = process.env.NEXTAUTH_URL;
 
 const DropDownMenu = ({ user }: { user: any }) => (
   <DropdownMenu.Root>
@@ -24,7 +23,7 @@ const DropDownMenu = ({ user }: { user: any }) => (
         <p className="">{user.name}</p>
         {user.email && <label>{user.email}</label>}
         <DropdownMenu.Separator className=" h-[1px] bg-gray-400" />
-        <Button intent="transparent" onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}>
+        <Button intent="transparent" onClick={() => signOut({ callbackUrl: `${homepage}` })}>
           <ExitIcon />
           Logout
         </Button>
