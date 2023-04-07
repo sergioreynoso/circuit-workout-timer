@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<Ses
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <Head>
-          <title>Create Next App</title>
+          <title>Interval Workout App</title>
         </Head>
         <Component {...pageProps} />
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
