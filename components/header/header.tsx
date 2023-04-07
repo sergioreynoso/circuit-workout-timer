@@ -6,7 +6,7 @@ import DropdownMenu from '../dropdownMenu';
 const Header = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  const homepage = process.env.NEXTAUTH_URL;
   if (router.asPath === '/createWorkout') return null;
 
   return (
@@ -20,7 +20,7 @@ const Header = () => {
             intent="primary"
             onClick={() =>
               signIn(undefined, {
-                callbackUrl: 'http://localhost:3000/dashboard',
+                callbackUrl: `${homepage}/dashboard`,
               })
             }
           >
