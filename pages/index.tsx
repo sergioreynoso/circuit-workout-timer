@@ -41,7 +41,7 @@ const Home: NextPage = () => {
             </Button>
           </div>
           <div className="flex justify-center">
-            <Image src={gauge} priority alt="image of the workout app gauges" className="w-9/12" />
+            <Image src={gauge} priority alt="image of the workout app gauges" className="w-auto" />
           </div>
         </div>
       </div>
