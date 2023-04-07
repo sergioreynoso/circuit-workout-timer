@@ -39,19 +39,20 @@ interface Props extends ComponentPropsWithoutRef<'button'> {
   children: ReactNode;
   intent?: keyof typeof variant;
   disabled?: boolean;
+  className?: string;
 }
 
 //eslint-disable-next-line react/display-name
 const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ intent = 'primary', disabled = false, children, ...props }: Props, forwardedRef) => {
+  ({ intent = 'primary', disabled = false, children, className = '', ...props }: Props, forwardedRef) => {
     return (
       <button
         disabled={disabled}
-        className={`flex h-12 items-center justify-center gap-2 rounded-lg px-5 sm:px-4 ${variant[intent].text} ${
-          variant[intent].bg
-        } text-md font-bold leading-7  ${variant[intent].hover.bg} ${variant[intent].hover.text} ${
-          disabled && 'opacity-25'
-        }`}
+        className={`flex h-12 max-w-xs items-center justify-center gap-2 rounded-lg px-5 sm:px-4 ${
+          variant[intent].text
+        } ${variant[intent].bg} text-md font-bold leading-7  ${variant[intent].hover.bg} ${
+          variant[intent].hover.text
+        } ${disabled && 'opacity-25'} ${className}`}
         {...props}
         ref={forwardedRef}
       >
