@@ -10,8 +10,8 @@ const Header = () => {
   if (router.asPath === '/createWorkout') return null;
 
   return (
-    <header className="flex items-center justify-between bg-gray-800 py-3 pr-3 pl-8">
-      <h1 className="text-2xl font-bold leading-8 text-gray-100">Interval Workout App</h1>
+    <header className="flex items-center justify-between bg-gray-800 py-3 px-4">
+      <h1 className="text-2xl font-bold leading-8 text-gray-100">Circuit Workout Timer</h1>
       <nav>
         {session ? (
           <DropdownMenu user={session.user} />

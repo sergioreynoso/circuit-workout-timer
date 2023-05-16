@@ -1,5 +1,5 @@
 export const ladingPageData = {
-  title: 'Interval Workout App',
+  title: 'Circuit Timer',
   subtitle: 'To help you keep track of your work and rest periods during workouts.',
   bullets: [
     'Create customizable workouts with exercises, rests, and sets.',
