@@ -11,7 +11,7 @@ type Props = {
 
 const EditWorkoutHeader = ({ initialData, formId }: Props) => {
   return (
-    <header className="fixed top-0 left-0 right-0  h-20 bg-gray-800 py-4 px-4">
+    <header className="fixed top-0 left-0 right-0 bg-gray-800 px-4 pt-4 pb-4">
       <nav className=" mx-auto flex max-w-lg items-center gap-8">
         <Button intent="primary" type="submit" form={formId}>
           <ChevronLeftIcon className="h-6 w-6" />

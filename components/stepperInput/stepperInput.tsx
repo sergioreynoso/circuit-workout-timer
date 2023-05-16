@@ -41,7 +41,7 @@ const StepperInput = ({ label, min, max, initialValue, disabled = false, handleC
 
   return (
     <div className="flex flex-col gap-3">
-      <Label.Root htmlFor={id} className="text-base font-semibold leading-6 text-gray-300">
+      <Label.Root htmlFor={id} className="text-base font-bold leading-6 text-gray-100">
         {label}
       </Label.Root>
       <div className="flex items-center gap-2">
@@ -60,7 +60,7 @@ const StepperInput = ({ label, min, max, initialValue, disabled = false, handleC
           max={max}
           onChange={onChangeHandler}
           inputMode="decimal"
-          className="w-13 h-12 rounded-lg border border-gray-500 bg-transparent px-4"
+          className="w-13 h-12 rounded-lg border border-gray-500 bg-transparent px-4 text-gray-400"
           disabled={disabled}
         />
         <CircleButton

@@ -25,7 +25,7 @@ const TimerHeader = ({ data }: Props) => {
     <header>
       <nav className="flex h-24 items-center justify-between px-4 text-gray-400 md:px-0">
         <CircleButton intent="cancel" onClick={onCancel} />
-        <h1 className="text-xl font-medium leading-7">{data.name}</h1>
+        <h1 className="text-xl font-medium leading-7 text-gray-100">{data.name}</h1>
         <CircleButton intent="edit" onClick={onEdit} />
       </nav>
     </header>

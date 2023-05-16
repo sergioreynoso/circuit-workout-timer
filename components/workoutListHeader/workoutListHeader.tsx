@@ -44,7 +44,7 @@ const WorkoutListHeader = ({ userId, data }: Props) => {
     <div className="flex items-center justify-between">
       {createWorkout.isLoading && <Preloader />}
       <div className="flex flex-grow flex-col">
-        <h2 className="text-base font-bold leading-7 text-gray-300">Workouts</h2>
+        <h2 className="text-base font-bold leading-7 text-gray-100">Workouts</h2>
         <p className="text-base font-normal leading-6 text-gray-400">Create up to 5 workouts</p>
       </div>
       <Button intent="primary" onClick={onClickHandler} disabled={data.length >= MAX_WORKOUTS}>

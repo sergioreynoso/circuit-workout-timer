@@ -54,7 +54,7 @@ function ListItem({ item }: { item: Workout }) {
       <Link href={`/workout/${id}`} className="flex h-full grow items-center gap-5">
         {/* <DragHandleDots2Icon className="h-6 w-6 text-gray-400" /> */}
         <p className="text-base font-medium leading-6 text-amber-400">{formatTime(duration)}</p>
-        <p className="text-base font-bold leading-6 text-gray-400">{name}</p>
+        <p className="text-base font-bold leading-6 text-gray-300">{name}</p>
       </Link>
       <div className="flex gap-1">
         <Link

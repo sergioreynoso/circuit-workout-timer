@@ -10,10 +10,14 @@ const Input = ({ label, ...delegated }: Props) => {
   const id = useId();
   return (
     <div className="flex w-full flex-col gap-3">
-      <Label.Root htmlFor={id} className="text-base font-normal leading-6 text-gray-300">
+      <Label.Root htmlFor={id} className="text-base font-bold leading-6 text-gray-100">
         {label}
       </Label.Root>
-      <input id={id} {...delegated} className="max-w h-12 rounded-lg border border-gray-500 bg-transparent px-4" />
+      <input
+        id={id}
+        {...delegated}
+        className="max-w h-12 rounded-lg border border-gray-500 bg-transparent px-4 text-gray-400"
+      />
     </div>
   );
 };

@@ -146,7 +146,7 @@ const EditWorkoutForm = ({ data, formId, ...delegated }: Props) => {
             handleChange={value => handleOnStepperChange(value)}
           />
           <div className={`flex flex-col gap-4 ${state.setCount === 1 ? 'opacity-30' : ''}`}>
-            <p className="mt-4 w-full flex-wrap">How long would you like to rest between sets?</p>
+            <p className="mt-4 w-full flex-wrap font-bold">How long would you like to rest between sets?</p>
             <div className="mt-2 flex items-center justify-between gap-8">
               <p className="w-16 flex-grow text-left  text-2xl font-bold text-green-500 ">
                 {formatTime(state.setRestDuration)}
