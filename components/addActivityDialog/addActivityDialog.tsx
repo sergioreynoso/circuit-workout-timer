@@ -72,7 +72,7 @@ const AddActivityDialog = ({ data }: Props) => {
 
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Add Activity">
-      <div className="flex flex-col p-6">
+      <div className="flex flex-col">
         {createActivity.isLoading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
             <p className="text-xl font-bold text-gray-300">Creating New Activity...</p>{' '}

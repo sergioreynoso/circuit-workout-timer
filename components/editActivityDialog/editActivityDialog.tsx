@@ -57,7 +57,7 @@ const EditActivityDialog = ({ activity }: Props) => {
 
   return (
     <AlertDialog TriggerButton={TriggerButton} isOpen={isOpen} setIsOpen={setIsOpen} title="Edit Activity">
-      <div className="flex flex-col p-6">
+      <div className="flex flex-col">
         {updateActivity.isLoading && (
           <div className="absolute top-0 bottom-0 left-0 right-0 z-10 flex items-center justify-center bg-gray-900/95 ">
             <p className="text-xl font-bold text-gray-300">Updating Activity...</p>{' '}
@@ -76,7 +76,7 @@ const EditActivityDialog = ({ activity }: Props) => {
             maxLength={18}
           />
           <div className="w-full ">
-            <Label.Root className="w-full text-base font-normal leading-6 text-gray-300">{'Duration'}</Label.Root>
+            <Label.Root className="w-full text-base font-bold leading-6 text-gray-100">{'Duration'}</Label.Root>
             <div className="mt-2 flex items-center gap-8">
               <p className="w-16 text-end text-2xl font-bold text-green-500">{formatTime(formValues.duration)}</p>
               <SliderStepper value={formValues.duration} onChange={handleOnSliderChange} maxValue={90000} />
