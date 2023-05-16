@@ -3,11 +3,11 @@ import Avatar from '../avatar';
 import { signOut } from 'next-auth/react';
 import { ChevronDownIcon, ExitIcon } from '@radix-ui/react-icons';
 import { Button } from '../button';
-const homepage = process.env.NEXTAUTH_URL;
+const homepage = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
 
 const DropDownMenu = ({ user }: { user: any }) => (
   <DropdownMenu.Root>
-    <DropdownMenu.Trigger className="flex items-center gap-3">
+    <DropdownMenu.Trigger className="flex items-center gap-1">
       <ChevronDownIcon className="text-white" />
       <Avatar user={user} />
     </DropdownMenu.Trigger>
@@ -23,7 +23,13 @@ const DropDownMenu = ({ user }: { user: any }) => (
         <p className="">{user.name}</p>
         {user.email && <label>{user.email}</label>}
         <DropdownMenu.Separator className=" h-[1px] bg-gray-400" />
-        <Button intent="transparent" onClick={() => signOut({ callbackUrl: `${homepage}` })}>
+        <Button
+          intent="transparent"
+          onClick={() => {
+            console.log(homepage);
+            return signOut({ callbackUrl: `${homepage}/` });
+          }}
+        >
           <ExitIcon />
           Logout
         </Button>
