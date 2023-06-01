@@ -5,7 +5,6 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import { prisma } from '../../../lib/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { redirect } from 'next/dist/server/api-utils';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
